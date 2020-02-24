@@ -69,15 +69,17 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if(_formKey.currentState.validate()) {
-                    print(email);
-                    print(password);
-                    dynamic result = await _auth.signUpWithEmail(
-                        email, password);
-                    if (result == null) {
+                    dynamic result = await _auth.signUpWithEmail(email, password);
+                    if(result == null) {
                       setState(() => error = 'Netfang fannst ekki');
                     }
                   }
                 },
+              ),
+
+              SizedBox(height: 12.0),
+              Text(
+                error,
               ),
             ],
           ),
