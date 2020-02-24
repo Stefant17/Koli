@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "345268038640",
+    "firebase_url": "https://koli-5df8f.firebaseio.com",
+    "project_id": "koli-5df8f",
+    "storage_bucket": "koli-5df8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345268038640:android:c0544b197d0b4f71ad8b35",
+        "android_client_info": {
+          "package_name": "com.computerboyz.koli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345268038640-ts9ugthjlk3kkvlv5phmd3pl6todiso4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8-QV712DAjDGDagEKwbu3D1c7EFnD73Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345268038640-ts9ugthjlk3kkvlv5phmd3pl6todiso4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
