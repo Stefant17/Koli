@@ -70,7 +70,7 @@ class _SignInState extends State<SignIn> {
                 onPressed: () async {
                   dynamic result = await _auth.signInWithEmail(email, password);
                   if(result == null) {
-                    setState(() => error = 'Villa kom upp við innskráningu. \nErtu viss um að netfang og lykilorð var rétt?');
+                    setState(() => error = 'Villa kom upp við innskráningu. \nErtu viss um að netfang og lykilorð sé rétt?');
                   }
                 },
               ),

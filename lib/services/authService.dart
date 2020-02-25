@@ -9,6 +9,7 @@ class AuthService {
     if(user != null) {
       return User(uid: user.uid);
     }
+    return null;
   }
 
   // Change user stream on authentication
