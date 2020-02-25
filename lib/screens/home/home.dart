@@ -11,7 +11,7 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   var currentDate = DateTime.now();
 
-  List<Widget> dropdownButtons = [
+  List<FlatButton> dropdownButtons = [
     FlatButton(
       child: Text(
         'Yfirlit',
@@ -53,6 +53,7 @@ class _HomeState extends State<Home> {
     ),
   ];
 
+
   List<String> menuList = [
     'Yfirlit',
     'Dags yfirlit',
@@ -82,6 +83,10 @@ class _HomeState extends State<Home> {
             margin: EdgeInsets.fromLTRB(0.0, 0.0, 270.0, 0.0),
             alignment: Alignment.topLeft,
             child: PopupMenuButton(
+              onSelected: (String choice) {
+                Navigator.pushNamed(context, '/' + choice);
+              },
+
               icon: Icon(Icons.menu),
               itemBuilder: (BuildContext context) {
                 return menuList.map((String item) {
