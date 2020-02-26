@@ -44,6 +44,9 @@ class _RegisterState extends State<Register> {
             children: <Widget> [
               SizedBox(height: 20.0),
               TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Netfang',
+                ),
                 validator: (val) => val.isEmpty ? 'Vinsamlegast sláðu inn netfang' : null,
                 onChanged: (val) {
                   setState(() => email = val);
@@ -52,6 +55,9 @@ class _RegisterState extends State<Register> {
 
               SizedBox(height: 20.0),
               TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Lykilorð',
+                ),
                 validator: (val) => val.length < 6 ? 'Lykilorðið þarf að vera a.m.k. 6 stafir að lengd' : null,
                 obscureText: true,
                 onChanged: (val) {

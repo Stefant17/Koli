@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/date.dart';
+import 'package:koli/models/user.dart';
+import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/authService.dart';
+import 'package:koli/services/dataService.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,58 +15,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   var currentDate = DateTime.now();
-
-  List<FlatButton> dropdownButtons = [
-    FlatButton(
-      child: Text(
-        'Yfirlit',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-      },
-    ),
-    FlatButton(
-      child: Text(
-        'Yfirlit',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-      },
-    ),
-    FlatButton(
-      child: Text(
-        'Dags Yfirlit',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {},
-    ),
-    FlatButton(
-      child: Text(
-        'Tölfræði',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-      },
-    ),
-    FlatButton(
-      child: Text(
-        'Orður',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-      },
-    ),
-  ];
-
-
-  List<String> menuList = [
-    'Yfirlit',
-    'Dags yfirlit',
-    'Tölfræði',
-    'Orður',
-  ];
-
-  bool showMenu = false;
+  var constants = Constants();
 
   Date getCurrentDate() {
     return Date(currentDate);
@@ -69,115 +23,110 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.brown[50],
-      appBar: AppBar(
-        //title: Text('Koli'),
-        //centerTitle: true,
-        backgroundColor: Colors.grey[400],
-        elevation: 0.0,
+    final user = Provider.of<User>(context);
 
-        // Dropdown list, user profile
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 270.0, 0.0),
-            alignment: Alignment.topLeft,
-            child: PopupMenuButton(
-              onSelected: (String choice) {
-                Navigator.pushNamed(context, '/' + choice);
-              },
+    return StreamBuilder<UserProfile>(
+      stream: DatabaseService(uid: user.uid).userProfile,
+      builder: (context, snapshot) {
+        if(snapshot.hasData) {
+          UserProfile userData = snapshot.data;
 
-              icon: Icon(Icons.menu),
-              itemBuilder: (BuildContext context) {
-                return menuList.map((String item) {
-                  return PopupMenuItem<String> (
-                    value: item,
-                    child: Text('$item'),
-                  );
-                }).toList();
-              },
-            ),
-          ),
-          /*
-          FlatButton.icon(
-            padding: EdgeInsets.only(right: 280),
-            icon: Icon(Icons.menu),
-            label: Text(''),
-            onPressed: () {
-              this.toggleMenu();
-            },
-          ),
+          return Scaffold(
+            backgroundColor: Colors.brown[50],
+            appBar: AppBar(
+              //title: Text('Koli'),
+              //centerTitle: true,
+              backgroundColor: Colors.grey[400],
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
 
-           */
+              // Dropdown list, user profile
+              actions: <Widget>[
+                Container(
+                  margin: EdgeInsets.fromLTRB(0.0, 0.0, 270.0, 0.0),
+                  alignment: Alignment.topLeft,
+                  child: PopupMenuButton(
+                    onSelected: (String choice) {
+                      Navigator.pushNamed(context, '/' + choice);
+                    },
 
-          FlatButton.icon(
-            icon: Icon(Icons.face),
-            label: Text(''),
-            onPressed: () {
+                    icon: Icon(Icons.menu),
+                    itemBuilder: (BuildContext context) {
+                      return constants.menuList.map((String item) {
+                        return PopupMenuItem<String> (
+                          value: item,
+                          child: Text('$item'),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
 
-            },
-          ),
-        ],
-      ),
+                FlatButton.icon(
+                  icon: Icon(Icons.face),
+                  label: Text(''),
+                  onPressed: () {
 
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          children: <Widget> [
-
-            /*
-            Visibility(
-              visible: showMenu,
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 270, 0),
-                child: menu(),
-              ),
+                  },
+                ),
+              ],
             ),
 
-             */
-
-
-            Container(
-              margin: EdgeInsets.fromLTRB(50, 20, 0, 0),
+            body: Container(
+              alignment: Alignment.center,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                children: <Widget> [
                   Container(
-                    child: Text(
-                      '${getCurrentDate().getCurrentDate()}',
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
+                    //margin: EdgeInsets.fromLTRB(50, 20, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            '${getCurrentDate().getCurrentDate()}',
+                            style: TextStyle(
+                              fontSize: 40,
+                            ),
+                          ),
+                        ),
+
+                        Container(
+                          child: Text(
+                            '${getCurrentDate().getCurrentWeekday()}',
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
-                  Container(
+                  SizedBox(height: 50),
+                  //HomeUserInfo(),
+                  Text('${userData.firstName} ${userData.lastName}'),
+                  SizedBox(height: 50),
+
+                  RaisedButton(
+                    color: Colors.black,
                     child: Text(
-                      '${getCurrentDate().getCurrentWeekday()}',
+                      'Skrá út',
                       style: TextStyle(
-                        fontSize: 30,
+                        color: Colors.white,
                       ),
                     ),
+                    onPressed: () async {
+                      await _auth.signOut();
+                    },
                   ),
                 ],
               ),
             ),
-
-            RaisedButton(
-              color: Colors.black,
-              child: Text(
-                'Skrá út',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-          ],
-        ),
-      ),
+          );
+        } else {
+          return Scaffold();
+        }
+      }
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:koli/models/user.dart';
+import 'package:koli/services/dataService.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,6 +24,9 @@ class AuthService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+
+      // Create a new user profile in the database
+      await DatabaseService(uid: user.uid).initializeUserProfile();
       return _userFromFirebaseUser(user);
     } catch(error) {
       print(error.toString());
