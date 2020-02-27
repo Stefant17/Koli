@@ -1,48 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:koli/models/company.dart';
-import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
 
-
-class CreateTransactionForm extends StatefulWidget {
-  final Function toggleCreateTransaction;
-  final user;
-  CreateTransactionForm({ this.toggleCreateTransaction, this.user });
+class EditTransactionForm extends StatefulWidget {
+  final Function toggleEditTrans;
+  final Function editTransaction;
+  final userTransaction;
+  EditTransactionForm({ this.toggleEditTrans, this.editTransaction, this.userTransaction });
 
   @override
-  _CreateTransactionFormState createState() => _CreateTransactionFormState();
+  _EditTransactionFormState createState() => _EditTransactionFormState();
 }
 
-class _CreateTransactionFormState extends State<CreateTransactionForm> {
-  static final _formKey = GlobalKey<FormState>();
-  DateTime currentDate = DateTime.now();
+class _EditTransactionFormState extends State<EditTransactionForm> {
+  final _formKey = GlobalKey<FormState>();
 
-  String newStore = '';
-  String newDate = Date(DateTime.now()).getCurrentDate();
+  String newStore = ''; //widget.userTransaction.company;
   String newMCC = '';
   String newRegion = '';
   int newAmount = 0;
-
-  void createNewTransaction(UserTransaction trans, String uid) async {
-    await DatabaseService(uid: uid).createUserTransaction(trans);
-  }
-
-  Future<Null> selectDate(BuildContext context) async {
-    int nextYear = currentDate.year + 1;
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: currentDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(nextYear),
-    );
-
-    if(picked != null) {
-      setState(() {
-        newDate = Date(picked).getCurrentDate();
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +28,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
       builder: (context, snapshot) {
         if(snapshot.hasData) {
           List<Company> companies = snapshot.data;
+
           return Card(
             margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 1.0),
             child: Padding(
@@ -61,7 +39,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
-                      'Ný færsla',
+                      'Breyta færslu',
                       style: (
                         TextStyle(
                           fontSize: 25,
@@ -74,7 +52,6 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                         Expanded(
                           child: DropdownButtonFormField<Company>(
                             hint: newStore == '' ? Text('Fyrirtæki') : Text(newStore),
-                            //value: newStore,
                             items: companies.map((com) {
                               return DropdownMenuItem<Company>(
                                 value: com,
@@ -92,13 +69,12 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                           ),
                         ),
 
-                        SizedBox(width: 50),
+                        SizedBox(width: 80),
 
                         Expanded(
                           child: TextFormField(
-                            validator: (val) =>
-                            val.isEmpty ? 'Vinsamlegast sláðu inn verð' : null,
                             decoration: InputDecoration(
+                              hintText: '${widget.userTransaction.amount}',
                               labelText: 'Verð',
                               fillColor: Colors.white,
                               filled: true,
@@ -112,63 +88,53 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                           ),
                         ),
 
+                        Text('kr.'),
+
                         IconButton(
                           alignment: Alignment.topRight,
-                          icon: Icon(Icons.cancel),
+                          icon: Icon(Icons.arrow_back),
                           onPressed: () {
                             setState(() {
-                              widget.toggleCreateTransaction(false);
+                              widget.toggleEditTrans(false);
                             });
                           },
                         ),
                       ],
                     ),
 
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            onPressed: () {
-                              selectDate(context);
-                            },
-                          ),
+                    SizedBox(
+                      width: 10,
+                      child: RaisedButton(
+                        elevation: 0.0,
+                        color: Colors.black,
+                        child: Text(
+                          'Staðfesta',
+                          style: TextStyle(color: Colors.white),
+                        ),
 
-                          Text(newDate),
-                        ],
+                        onPressed: () async {
+                          UserTransaction updatedTrans = widget.userTransaction;
+                          if (newAmount == null || newAmount == 0) {
+                            newAmount = updatedTrans.amount;
+                          }
+
+                          updatedTrans.company = newStore;
+                          updatedTrans.amount = newAmount;
+                          updatedTrans.mcc = newMCC;
+                          updatedTrans.region = newRegion;
+
+                          widget.editTransaction(updatedTrans, widget.userTransaction.transID);
+                          widget.toggleEditTrans(false);
+                        },
                       ),
                     ),
-
-                    RaisedButton(
-                      elevation: 0.0,
-                      color: Colors.black,
-                      child: Text(
-                        'Staðfesta',
-                        style: TextStyle(color: Colors.white),
-                      ),
-
-                      onPressed: () async {
-                        var newTrans = UserTransaction(
-                          amount: newAmount,
-                          company: newStore,
-                          date: newDate,
-                          mcc: newMCC,
-                          region: newRegion,
-                        );
-
-                        createNewTransaction(newTrans, widget.user.uid);
-                        widget.toggleCreateTransaction(false);
-                        newDate = Date(DateTime.now()).getCurrentDate();
-                      },
-                    ),
-                  ]
+                  ],
                 ),
               ),
             ),
           );
         } else {
-          return Scaffold();
+          return Card();
         }
       }
     );

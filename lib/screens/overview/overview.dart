@@ -19,10 +19,6 @@ class _OverviewState extends State<Overview> {
   var constants = Constants();
   bool createTransaction = false;
 
-  void editTransaction(UserTransaction trans, String transID, String uid) {
-    DatabaseService(uid: uid).editUserTransaction(trans, transID);
-  }
-
   void toggleCreateTransaction(bool state) {
     setState(() {
       createTransaction = state;
@@ -51,7 +47,6 @@ class _OverviewState extends State<Overview> {
                       children: userTransactions.map((trans) => TransactionView(
                         userTransaction: trans,
                         uid: user.uid,
-                        editTransaction: this.editTransaction,
                       )).toList(),
                     ),
 
