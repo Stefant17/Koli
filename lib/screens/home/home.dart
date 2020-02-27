@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
           UserProfile userData = snapshot.data;
 
           return Scaffold(
-            backgroundColor: Colors.brown[50],
+            backgroundColor: Colors.white,
             appBar: AppBar(
               //title: Text('Koli'),
               //centerTitle: true,

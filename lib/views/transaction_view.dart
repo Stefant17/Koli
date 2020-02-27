@@ -3,8 +3,8 @@ import 'package:koli/models/transaction.dart';
 
 class TransactionView extends StatefulWidget {
   final UserTransaction userTransaction;
-  final String uid;
   final Function editTransaction;
+  final String uid;
   TransactionView({ this.userTransaction, this.uid, this.editTransaction });
 
   @override
@@ -12,17 +12,17 @@ class TransactionView extends StatefulWidget {
 }
 
 class _TransactionViewState extends State<TransactionView> {
-  final _formKey = GlobalKey<FormState> ();
+  final _formKey = GlobalKey<FormState>();
 
   bool editTrans = false;
-  String newStore = '';
+  String newStore = ''; //widget.userTransaction.company;
   int newAmount = 0;
 
   @override
   Widget build(BuildContext context) {
     if(!editTrans) {
       return Card(
-          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 1.0),
+          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
@@ -38,24 +38,34 @@ class _TransactionViewState extends State<TransactionView> {
                       ),
                     ),
 
-                    SizedBox(width: 80),
+                    //SizedBox(width: 80),
+  
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              '${widget.userTransaction.amount} kr.',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.grey[800],
+                              ),
+                            ),
 
-                    Text(
-                      '${widget.userTransaction.amount} kr.',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.grey[800],
+                            IconButton(
+                              alignment: Alignment.topRight,
+                              icon: Icon(Icons.mode_edit),
+                              onPressed: () {
+                                setState(() {
+                                  editTrans = true;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-
-                    IconButton(
-                      alignment: Alignment.topRight,
-                      icon: Icon(Icons.mode_edit),
-                      onPressed: () {
-                        setState(() {
-                          editTrans = true;
-                        });
-                      },
                     ),
                   ],
                 ),
@@ -68,7 +78,7 @@ class _TransactionViewState extends State<TransactionView> {
                   ),
                 ),
 
-                SizedBox(height: 8.0),
+                //SizedBox(height: 8.0),
               ],
             ),
           )
@@ -83,12 +93,21 @@ class _TransactionViewState extends State<TransactionView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                Text(
+                    'Breyta færslu',
+                    style: (
+                        TextStyle(
+                          fontSize: 25,
+                        )
+                    )
+                ),
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: widget.userTransaction.company,
+                          hintText: widget.userTransaction.company,
+                          labelText: 'Fyrirtæki',
                           fillColor: Colors.white,
                           filled: true,
                         ),
@@ -106,7 +125,8 @@ class _TransactionViewState extends State<TransactionView> {
                     Expanded(
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: '${widget.userTransaction.amount}',
+                          hintText: '${widget.userTransaction.amount}',
+                          labelText: 'Verð',
                           fillColor: Colors.white,
                           filled: true,
                         ),
@@ -118,6 +138,8 @@ class _TransactionViewState extends State<TransactionView> {
                         },
                       ),
                     ),
+
+                    Text('kr.'),
 
                     IconButton(
                       alignment: Alignment.topRight,
@@ -131,24 +153,31 @@ class _TransactionViewState extends State<TransactionView> {
                   ],
                 ),
 
-                RaisedButton(
-                  elevation: 0.0,
-                  color: Colors.black,
-                  child: Text(
-                    'Staðfesta',
-                    style:TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    UserTransaction updatedTrans = widget.userTransaction;
-                    updatedTrans.company = newStore;
-                    updatedTrans.amount = newAmount;
+                SizedBox(
+                  width: 10,
+                  child: RaisedButton(
+                    elevation: 0.0,
+                    color: Colors.black,
+                    child: Text(
+                      'Staðfesta',
+                      style:TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      UserTransaction updatedTrans = widget.userTransaction;
+                      if(newAmount == null || newAmount == 0) {
+                        newAmount = updatedTrans.amount;
+                      }
 
-                    widget.editTransaction(updatedTrans, widget.uid);
-                    editTrans = false;
-                  },
+                      updatedTrans.company = newStore;
+                      updatedTrans.amount = newAmount;
+
+                      widget.editTransaction(updatedTrans, widget.userTransaction.transID, widget.uid);
+                      editTrans = false;
+                    },
+                  ),
                 ),
 
-                SizedBox(height: 8.0),
+                //SizedBox(height: 8.0),
               ],
             ),
           ),

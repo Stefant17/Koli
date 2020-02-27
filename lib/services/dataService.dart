@@ -25,6 +25,41 @@ class DatabaseService {
     });
   }
 
+  Future createUserTransaction(UserTransaction trans) async {
+    return await userCollection.document(uid).collection('Trans').document().setData({
+      'Amount': trans.amount,
+      'Company': trans.company,
+      'Date': trans.date,
+      'MCC': trans.mcc,
+      'Region': trans.region,
+    });
+  }
+
+  void editUserTransaction(UserTransaction editedTrans, String transID) async {
+    return await userCollection.document(uid).collection('Trans').document(transID).updateData({
+      'Amount': editedTrans.amount,
+      'Company': editedTrans.company,
+      'Date': editedTrans.date,
+      'MCC': editedTrans.mcc,
+      'Region': editedTrans.region,
+    });
+  }
+
+  // Converts our date format to a format which can be handled by DateTime
+  String convertToDateTimeFormat(String date) {
+    List<String> splitDate = date.split("/");
+
+    if(splitDate[1].length == 1) {
+      splitDate[1] = '0' + splitDate[1];
+    }
+
+    if(splitDate[0].length == 1) {
+      splitDate[0] = '0' + splitDate[0];
+    }
+
+    return splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0] + ' 00:00:00.00';
+  }
+
   List<UserTransaction> _userTransactionsFromSnapshot(QuerySnapshot snapshot) {
     var list = snapshot.documents.map((doc) {
       return UserTransaction(
@@ -37,7 +72,12 @@ class DatabaseService {
       );
     }).toList();
 
-    list.sort((a, b) => b.date.compareTo(a.date));
+    list.sort((a, b) {
+      String aDate = convertToDateTimeFormat(a.date);
+      String bDate = convertToDateTimeFormat(b.date);
+
+      return DateTime.parse(bDate).compareTo(DateTime.parse(aDate));
+    });
     return list;
   }
 

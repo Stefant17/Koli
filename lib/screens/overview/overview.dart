@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
@@ -11,22 +12,50 @@ class Overview extends StatefulWidget {
   _OverviewState createState() => _OverviewState();
 }
 
-class _OverviewState extends State<Overview> {
-  var constants = Constants();
-  var createTransaction = false;
+/////////////////////////////VALIDATE
 
-  void editTransaction(UserTransaction trans, String uid) {
+class _OverviewState extends State<Overview> {
+  static final _formKey = GlobalKey<FormState> ();
+  DateTime currentDate = DateTime.now();
+  var constants = Constants();
+  bool createTransaction = false;
+
+  int newAmount = 0;
+  String newCompany = '';
+  String newDate = Date(DateTime.now()).getCurrentDate();
+  String newMcc = '';
+  String newRegion = '';
+
+  void editTransaction(UserTransaction trans, String transID, String uid) {
     print(trans.transID);
+    DatabaseService(uid: uid).editUserTransaction(trans, transID);
   }
 
-  void addTransaction(String uid) {
+  void createNewTransaction(UserTransaction trans, String uid) async {
+    await DatabaseService(uid: uid).createUserTransaction(trans);
+  }
 
+  Future<Null> selectDate(BuildContext context) async {
+    int nextYear = currentDate.year + 1;
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: currentDate,
+        firstDate: DateTime(2010),
+        lastDate: DateTime(nextYear),
+    );
+
+    if(picked != null) {
+      setState(() {
+        newDate = Date(picked).getCurrentDate();
+      });
+
+      print(newDate);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final _formKey = GlobalKey<FormState> ();
 
     return StreamBuilder<List<UserTransaction>>(
       stream: DatabaseService(uid: user.uid).userTransactions,
@@ -36,7 +65,7 @@ class _OverviewState extends State<Overview> {
           List<UserTransaction> userTransactions = snapshot.data;
 
           return Scaffold(
-              backgroundColor: Colors.brown[50],
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 // title: Text('Koli'),
                 // centerTitle: true,
@@ -99,10 +128,19 @@ class _OverviewState extends State<Overview> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
+                                Text(
+                                  'Ný færsla',
+                                  style: (
+                                    TextStyle(
+                                      fontSize: 25,
+                                    )
+                                  )
+                                ),
                                 Row(
                                   children: <Widget>[
                                     Expanded(
                                       child: TextFormField(
+                                        validator: (val) => val.isEmpty ? 'Vinsamlegast veldu fyrirtæki' : null,
                                         decoration: InputDecoration(
                                           labelText: 'Fyrirtæki',
                                           fillColor: Colors.white,
@@ -111,7 +149,7 @@ class _OverviewState extends State<Overview> {
 
                                         onChanged: (val) {
                                           setState(() {
-                                            //newStore = val;
+                                            newCompany = val;
                                           });
                                         },
                                       ),
@@ -121,6 +159,7 @@ class _OverviewState extends State<Overview> {
 
                                     Expanded(
                                       child: TextFormField(
+                                        validator: (val) => val.isEmpty ? 'Vinsamlegast sláðu inn verð' : null,
                                         decoration: InputDecoration(
                                           labelText: 'Verð',
                                           fillColor: Colors.white,
@@ -129,7 +168,7 @@ class _OverviewState extends State<Overview> {
 
                                         onChanged: (val) {
                                           setState(() {
-                                            //newAmount = int.parse(val);
+                                            newAmount = int.parse(val);
                                           });
                                         },
                                       ),
@@ -146,6 +185,21 @@ class _OverviewState extends State<Overview> {
                                     ),
                                   ],
                                 ),
+                                Container(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.calendar_today),
+                                        onPressed: () {
+                                          selectDate(context);
+                                        },
+                                      ),
+
+                                      Text(newDate),
+                                    ],
+                                  ),
+                                ),
 
                                 RaisedButton(
                                   elevation: 0.0,
@@ -155,7 +209,16 @@ class _OverviewState extends State<Overview> {
                                     style:TextStyle(color: Colors.white),
                                   ),
                                   onPressed: () async {
+                                    var newTrans = UserTransaction(
+                                      amount: newAmount,
+                                      company: newCompany,
+                                      date: newDate,
+                                      mcc: newMcc,
+                                      region: newRegion,
+                                    );
+                                    createNewTransaction(newTrans, user.uid);
                                     createTransaction = false;
+                                    newDate = Date(DateTime.now()).getCurrentDate();
                                   },
                                 ),
 
@@ -168,14 +231,22 @@ class _OverviewState extends State<Overview> {
                     :
                     Column(
                       children: <Widget>[
-                        SizedBox(height: 20),
-                        FloatingActionButton(
-                          child: Icon(Icons.add),
-                          onPressed: () {
-                            setState(() {
-                              createTransaction = true;
-                            });
-                          },
+                        SizedBox(
+                          width: double.infinity,
+                          child: RaisedButton(
+                            elevation: 0.0,
+                            
+                            color: Colors.black,
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                createTransaction = true;
+                              });
+                            },
+                          ),
                         ),
                       ],
                     ),
