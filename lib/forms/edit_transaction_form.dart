@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koli/models/company.dart';
+import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
 
@@ -15,11 +16,29 @@ class EditTransactionForm extends StatefulWidget {
 
 class _EditTransactionFormState extends State<EditTransactionForm> {
   final _formKey = GlobalKey<FormState>();
+  DateTime currentDate = DateTime.now();
 
-  String newStore = ''; //widget.userTransaction.company;
+  String newStore = '';
   String newMCC = '';
   String newRegion = '';
+  String newDate = '';
   int newAmount = 0;
+
+  Future<Null> selectDate(BuildContext context) async {
+    int nextYear = currentDate.year + 1;
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: currentDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(nextYear),
+    );
+
+    if(picked != null) {
+      setState(() {
+        newDate = Date(picked).getCurrentDate();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +70,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                       children: <Widget>[
                         Expanded(
                           child: DropdownButtonFormField<Company>(
-                            hint: newStore == '' ? Text('Fyrirtæki') : Text(newStore),
+                            hint: newStore == '' ? Text('${widget.userTransaction.company}') : Text(newStore),
                             items: companies.map((com) {
                               return DropdownMenuItem<Company>(
                                 value: com,
@@ -75,7 +94,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                           child: TextFormField(
                             decoration: InputDecoration(
                               hintText: '${widget.userTransaction.amount}',
-                              labelText: 'Verð',
+                              labelText: '${widget.userTransaction.amount}',
                               fillColor: Colors.white,
                               filled: true,
                             ),
@@ -102,6 +121,22 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                       ],
                     ),
 
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.calendar_today),
+                            onPressed: () {
+                              selectDate(context);
+                            },
+                          ),
+
+                          newDate == '' ? Text('${widget.userTransaction.date}') : Text(newDate),
+                        ],
+                      ),
+                    ),
+
                     SizedBox(
                       width: 10,
                       child: RaisedButton(
@@ -118,10 +153,19 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                             newAmount = updatedTrans.amount;
                           }
 
+                          if (newStore == null || newStore == '') {
+                            newStore = updatedTrans.company;
+                          }
+
+                          if(newDate == null || newDate == '') {
+                            newDate = updatedTrans.date;
+                          }
+
                           updatedTrans.company = newStore;
                           updatedTrans.amount = newAmount;
                           updatedTrans.mcc = newMCC;
                           updatedTrans.region = newRegion;
+                          updatedTrans.date = newDate;
 
                           widget.editTransaction(updatedTrans, widget.userTransaction.transID);
                           widget.toggleEditTrans(false);
