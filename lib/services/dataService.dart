@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:koli/models/company.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 
 class DatabaseService {
   //final CollectionReference transactionCollection = Firestore.instance.collection('Trans');
   final CollectionReference userCollection = Firestore.instance.collection('Users');
+  final CollectionReference companyCollection = Firestore.instance.collection('Companies');
   final String uid;
 
+
   DatabaseService({ this.uid });
+
 
   Future initializeUserProfile() async {
     return await userCollection.document(uid).setData({
@@ -17,6 +21,7 @@ class DatabaseService {
     });
   }
 
+
   Future updateUserProfile(String firstName, String lastName, int age) async {
     return await userCollection.document(uid).setData({
       'FirstName': firstName,
@@ -24,6 +29,7 @@ class DatabaseService {
       'Age': age,
     });
   }
+
 
   Future createUserTransaction(UserTransaction trans) async {
     return await userCollection.document(uid).collection('Trans').document().setData({
@@ -35,6 +41,7 @@ class DatabaseService {
     });
   }
 
+
   void editUserTransaction(UserTransaction editedTrans, String transID) async {
     return await userCollection.document(uid).collection('Trans').document(transID).updateData({
       'Amount': editedTrans.amount,
@@ -44,6 +51,7 @@ class DatabaseService {
       'Region': editedTrans.region,
     });
   }
+
 
   // Converts our date format to a format which can be handled by DateTime
   String convertToDateTimeFormat(String date) {
@@ -60,8 +68,9 @@ class DatabaseService {
     return splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0] + ' 00:00:00.00';
   }
 
+
   List<UserTransaction> _userTransactionsFromSnapshot(QuerySnapshot snapshot) {
-    var list = snapshot.documents.map((doc) {
+    List<UserTransaction> transList = snapshot.documents.map((doc) {
       return UserTransaction(
         transID: doc.documentID,
         amount: doc.data['Amount'],
@@ -72,14 +81,15 @@ class DatabaseService {
       );
     }).toList();
 
-    list.sort((a, b) {
+    transList.sort((a, b) {
       String aDate = convertToDateTimeFormat(a.date);
       String bDate = convertToDateTimeFormat(b.date);
 
       return DateTime.parse(bDate).compareTo(DateTime.parse(aDate));
     });
-    return list;
+    return transList;
   }
+
 
   // TODO: filter by month, day, week
   Stream<List<UserTransaction>> get userTransactions {
@@ -87,6 +97,7 @@ class DatabaseService {
     return transactionCollection.snapshots()
       .map(_userTransactionsFromSnapshot);
   }
+
 
   UserProfile _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserProfile(
@@ -97,9 +108,28 @@ class DatabaseService {
     );
   }
 
+
   // Get user doc stream
   Stream<UserProfile> get userProfile {
     return userCollection.document(uid).snapshots()
         .map(_userDataFromSnapshot);
+  }
+
+  List<Company> _companiesFromSnapshot(QuerySnapshot snapshot) {
+    List<Company> companyList = snapshot.documents.map((doc) {
+      return Company(
+        companyID: doc.documentID,
+        mccID: doc.data['MCC'],
+        name: doc.data['Name'],
+        region: doc.data['Region'],
+      );
+    }).toList();
+
+    return companyList;
+  }
+
+  Stream<List<Company>> get companies {
+    return companyCollection.snapshots()
+      .map(_companiesFromSnapshot);
   }
 }
