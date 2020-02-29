@@ -109,11 +109,14 @@ class _TransactionViewState extends State<TransactionView> {
           )
       );
     } else {
-      return EditTransactionForm(
-        toggleEditTrans: this.toggleEditTrans,
-        editTransaction: this.editTransaction,
-        userTransaction: widget.userTransaction
-      );
+      //return AlertDialog(
+          //content:
+          return EditTransactionForm(
+            toggleEditTrans: this.toggleEditTrans,
+            editTransaction: this.editTransaction,
+            userTransaction: widget.userTransaction
+          );
+      //);
     }
   }
 }
