@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/models/category.dart';
 import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
@@ -23,6 +24,8 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
   String newRegion = '';
   String newDate = '';
   int newAmount = 0;
+  String newCategory = '';
+  String newCategoryID = '';
 
   Future<Null> selectDate(BuildContext context) async {
     int nextYear = currentDate.year + 1;
@@ -48,134 +51,192 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
         if(snapshot.hasData) {
           List<Company> companies = snapshot.data;
 
-          return Card(
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 1.0),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Text(
-                      'Breyta færslu',
-                      style: (
-                        TextStyle(
-                          fontSize: 25,
-                        )
-                      )
-                    ),
+          return StreamBuilder<List<Category>>(
+            stream: DatabaseService().categories,
+            builder: (context, categorySnapshot) {
+              if(categorySnapshot.hasData) {
+                List<Category> categories = categorySnapshot.data;
 
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: DropdownButtonFormField<Company>(
-                            hint: newStore == '' ? Text('${widget.userTransaction.company}') : Text(newStore),
-                            items: companies.map((com) {
-                              return DropdownMenuItem<Company>(
-                                value: com,
-                                child: Text('${com.name}'),
-                              );
-                            }).toList(),
-
-                            onChanged: (val) {
-                              setState(() {
-                                newStore = val.name;
-                                newMCC = val.mccID;
-                                newRegion = val.region;
-                              });
-                            },
-                          ),
-                        ),
-
-                        SizedBox(width: 80),
-
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: '${widget.userTransaction.amount}',
-                              labelText: '${widget.userTransaction.amount}',
-                              fillColor: Colors.white,
-                              filled: true,
-                            ),
-
-                            onChanged: (val) {
-                              setState(() {
-                                newAmount = int.parse(val);
-                              });
-                            },
-                          ),
-                        ),
-
-                        Text('kr.'),
-
-                        IconButton(
-                          alignment: Alignment.topRight,
-                          icon: Icon(Icons.arrow_back),
-                          onPressed: () {
-                            setState(() {
-                              widget.toggleEditTrans(false);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Row(
+                return Card(
+                  margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            onPressed: () {
-                              selectDate(context);
-                            },
+                          Text(
+                              'Breyta færslu',
+                              style: (
+                                  TextStyle(
+                                    fontSize: 25,
+                                  )
+                              )
                           ),
 
-                          newDate == '' ? Text('${widget.userTransaction.date}') : Text(newDate),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: DropdownButtonFormField<Company>(
+                                  hint: newStore == ''
+                                      ? Text(
+                                      '${widget.userTransaction.company}')
+                                      : Text(newStore),
+                                  items: companies.map((com) {
+                                    return DropdownMenuItem<Company>(
+                                      value: com,
+                                      child: Text('${com.name}'),
+                                    );
+                                  }).toList(),
+
+                                  onChanged: (val) {
+                                    setState(() {
+                                      newStore = val.name;
+                                      newMCC = val.mccID;
+                                      newRegion = val.region;
+                                    });
+                                  },
+                                ),
+                              ),
+
+                              SizedBox(width: 25),
+
+                              Expanded(
+                                child: DropdownButtonFormField<Category>(
+                                  hint: newCategory == ''
+                                      ? Text(
+                                          '${widget.userTransaction.category}'
+                                        )
+                                      : Text(newCategory),
+                                  items: categories.map((cat) {
+                                    return DropdownMenuItem<Category>(
+                                      value: cat,
+                                      child: Text('${cat.name}'),
+                                    );
+                                  }).toList(),
+
+                                  onChanged: (val) {
+                                    setState(() {
+                                      newCategoryID = val.catID;
+                                      newCategory = val.name;
+                                    });
+                                  },
+                                ),
+                              ),
+
+                              SizedBox(width: 25),
+
+                              Expanded(
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: '${widget.userTransaction
+                                        .amount}',
+                                    labelText: '${widget.userTransaction
+                                        .amount}',
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
+
+                                  onChanged: (val) {
+                                    setState(() {
+                                      newAmount = int.parse(val);
+                                    });
+                                  },
+                                ),
+                              ),
+
+                              Text('kr.'),
+
+                              IconButton(
+                                alignment: Alignment.topRight,
+                                icon: Icon(Icons.arrow_back),
+                                onPressed: () {
+                                  setState(() {
+                                    widget.toggleEditTrans(false);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            child: Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.calendar_today),
+                                  onPressed: () {
+                                    selectDate(context);
+                                  },
+                                ),
+
+                                newDate == '' ? Text(
+                                    '${widget.userTransaction.date}') : Text(
+                                    newDate),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(
+                            width: 10,
+                            child: RaisedButton(
+                              elevation: 0.0,
+                              color: Colors.black,
+                              child: Text(
+                                'Staðfesta',
+                                style: TextStyle(color: Colors.white),
+                              ),
+
+                              onPressed: () async {
+                                UserTransaction updatedTrans = widget
+                                    .userTransaction;
+                                if (newAmount == null || newAmount == 0) {
+                                  newAmount = updatedTrans.amount;
+                                }
+
+                                if (newStore == null || newStore == '') {
+                                  newStore = updatedTrans.company;
+                                }
+
+                                if (newDate == null || newDate == '') {
+                                  newDate = updatedTrans.date;
+                                }
+
+                                if(newRegion == null || newRegion == '') {
+                                  newRegion = updatedTrans.region;
+                                }
+
+                                if (newCategoryID == null || newCategoryID == '') {
+                                  newCategoryID = updatedTrans.categoryID;
+                                  newCategory = updatedTrans.category;
+                                }
+
+                                updatedTrans.company = newStore;
+                                updatedTrans.amount = newAmount;
+                                updatedTrans.mcc = newMCC;
+                                updatedTrans.region = newRegion;
+                                updatedTrans.date = newDate;
+                                updatedTrans.categoryID = newCategoryID;
+                                updatedTrans.category = newCategory;
+
+                                widget.editTransaction(
+                                    updatedTrans,
+                                    widget.userTransaction.transID
+                                );
+                                widget.toggleEditTrans(false);
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
-
-                    SizedBox(
-                      width: 10,
-                      child: RaisedButton(
-                        elevation: 0.0,
-                        color: Colors.black,
-                        child: Text(
-                          'Staðfesta',
-                          style: TextStyle(color: Colors.white),
-                        ),
-
-                        onPressed: () async {
-                          UserTransaction updatedTrans = widget.userTransaction;
-                          if (newAmount == null || newAmount == 0) {
-                            newAmount = updatedTrans.amount;
-                          }
-
-                          if (newStore == null || newStore == '') {
-                            newStore = updatedTrans.company;
-                          }
-
-                          if(newDate == null || newDate == '') {
-                            newDate = updatedTrans.date;
-                          }
-
-                          updatedTrans.company = newStore;
-                          updatedTrans.amount = newAmount;
-                          updatedTrans.mcc = newMCC;
-                          updatedTrans.region = newRegion;
-                          updatedTrans.date = newDate;
-
-                          widget.editTransaction(updatedTrans, widget.userTransaction.transID);
-                          widget.toggleEditTrans(false);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                );
+              } else {
+                return Card();
+              }
+            }
           );
         } else {
           return Card();

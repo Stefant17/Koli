@@ -37,11 +37,31 @@ class _TransactionViewState extends State<TransactionView> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      widget.userTransaction.company,
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.grey[600],
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.userTransaction.company,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //SizedBox(width: 100),
+
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          widget.userTransaction.category,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.grey[600],
+                          ),
+                        ),
                       ),
                     ),
   

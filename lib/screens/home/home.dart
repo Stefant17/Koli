@@ -26,6 +26,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
+    //DatabaseService(uid: user.uid).checkForBadgesEarned();
+
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,
       builder: (context, snapshot) {

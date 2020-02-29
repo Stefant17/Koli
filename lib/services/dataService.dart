@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:koli/models/badge.dart';
+import 'package:koli/models/category.dart';
 import 'package:koli/models/company.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
@@ -7,6 +9,8 @@ class DatabaseService {
   //final CollectionReference transactionCollection = Firestore.instance.collection('Trans');
   final CollectionReference userCollection = Firestore.instance.collection('Users');
   final CollectionReference companyCollection = Firestore.instance.collection('Companies');
+  final CollectionReference badgeCollection = Firestore.instance.collection('Badges');
+  final CollectionReference categoryCollection = Firestore.instance.collection('Categories');
   final String uid;
 
 
@@ -38,6 +42,8 @@ class DatabaseService {
       'Date': trans.date,
       'MCC': trans.mcc,
       'Region': trans.region,
+      'CategoryID': trans.categoryID,
+      'Category': trans.category,
     });
   }
 
@@ -49,6 +55,8 @@ class DatabaseService {
       'Date': editedTrans.date,
       'MCC': editedTrans.mcc,
       'Region': editedTrans.region,
+      'Category': editedTrans.category,
+      'CategoryID': editedTrans.categoryID,
     });
   }
 
@@ -78,6 +86,8 @@ class DatabaseService {
         date: doc.data['Date'],
         mcc: doc.data['MCC'],
         region: doc.data['Region'],
+        categoryID: doc.data['CategoryID'],
+        category: doc.data['Category']
       );
     }).toList();
 
@@ -132,4 +142,37 @@ class DatabaseService {
     return companyCollection.snapshots()
       .map(_companiesFromSnapshot);
   }
+
+  List<Category> _categoriesFromSnapshot(QuerySnapshot snapshot) {
+    List<Category> categories = snapshot.documents.map((doc) {
+      print('yo');
+      return Category(
+        catID: doc.documentID,
+        name: doc.data['Name'],
+      );
+    }).toList();
+
+    return categories;
+  }
+
+  Stream<List<Category>> get categories {
+    return categoryCollection.snapshots()
+      .map(_categoriesFromSnapshot);
+  }
+
+  /*
+  List<Badge> _badgesFromSnapshot(QuerySnapshot snapshot) {
+    List<Badge> badges = snapshot.documents.map((doc) {
+      doc.
+      return Badge(
+
+      );
+    });
+  }
+
+  void checkForBadgesEarned() {
+    Stream<List<Badge>> badges = badgeCollection.snapshots()
+      .map(_badgesFromSnapshot);//userCollection.
+  }
+  */
 }
