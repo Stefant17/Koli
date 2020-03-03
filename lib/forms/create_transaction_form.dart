@@ -21,6 +21,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
   DateTime currentDate = DateTime.now();
 
   String newStore = '';
+  String newStoreID = '';
   String newDate = Date(DateTime.now()).getCurrentDate();
   String newMCC = '';
   String newRegion = '';
@@ -99,6 +100,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                                     onChanged: (val) {
                                       setState(() {
                                         newStore = val.name;
+                                        newStoreID = val.companyID;
                                         newMCC = val.mccID;
                                         newRegion = val.region;
                                       });
@@ -194,6 +196,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                                   var newTrans = UserTransaction(
                                     amount: newAmount,
                                     company: newStore,
+                                    companyID: newStoreID,
                                     date: newDate,
                                     mcc: newMCC,
                                     region: newRegion,
@@ -205,6 +208,7 @@ class _CreateTransactionFormState extends State<CreateTransactionForm> {
                                       newTrans,
                                       widget.user.uid
                                   );
+
                                   widget.toggleCreateTransaction(false);
                                   newDate = Date(DateTime.now()).getCurrentDate();
                                 }

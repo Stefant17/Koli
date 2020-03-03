@@ -20,6 +20,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
   DateTime currentDate = DateTime.now();
 
   String newStore = '';
+  String newStoreID = '';
   String newMCC = '';
   String newRegion = '';
   String newDate = '';
@@ -93,6 +94,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                                   onChanged: (val) {
                                     setState(() {
                                       newStore = val.name;
+                                      newStoreID = val.companyID;
                                       newMCC = val.mccID;
                                       newRegion = val.region;
                                     });
@@ -189,14 +191,19 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                               ),
 
                               onPressed: () async {
-                                UserTransaction updatedTrans = widget
-                                    .userTransaction;
+                                UserTransaction updatedTrans = widget.userTransaction;
+                                print(updatedTrans.companyID);
+
                                 if (newAmount == null || newAmount == 0) {
                                   newAmount = updatedTrans.amount;
                                 }
 
                                 if (newStore == null || newStore == '') {
                                   newStore = updatedTrans.company;
+                                }
+
+                                if (newStoreID == null || newStoreID == '') {
+                                  newStoreID = updatedTrans.companyID;
                                 }
 
                                 if (newDate == null || newDate == '') {
@@ -212,7 +219,12 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                                   newCategory = updatedTrans.category;
                                 }
 
+                                if (newMCC == null || newMCC == '') {
+                                  newMCC = updatedTrans.mcc;
+                                }
+
                                 updatedTrans.company = newStore;
+                                updatedTrans.companyID = newStoreID;
                                 updatedTrans.amount = newAmount;
                                 updatedTrans.mcc = newMCC;
                                 updatedTrans.region = newRegion;

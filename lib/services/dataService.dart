@@ -35,31 +35,74 @@ class DatabaseService {
   }
 
 
+  Future<int> getCO2fromCompany(UserTransaction trans) async {
+    var company = companyCollection.document(trans.companyID);
+    var user = userCollection.document(uid);
+
+    if(trans.category == 'Bensín') {
+      var emissionPerLitre = 0.18;
+      var avgKmPerLitre = 13;
+
+      var carSize = '';
+      var carFuel = '';
+      var litrePrice = 0.0;
+
+      await user.get().then((user) {
+        carSize = user.data['CarSize'];
+        carFuel = user.data['CarFuelType'];
+      });
+
+      await company.get().then((com) {
+        if(carFuel == '95 Oktan') {
+          litrePrice = com.data['PetrolPrice'];
+        }
+
+        else if(carFuel == 'Diesel') {
+          litrePrice = com.data['DieselPrice'];
+        }
+      });
+
+
+      double litres = trans.amount / litrePrice;
+      return (litres * avgKmPerLitre * emissionPerLitre).toInt();
+    }
+
+    return 0;
+  }
+
+
   Future createUserTransaction(UserTransaction trans) async {
+    trans.co2 = await getCO2fromCompany(trans);
+
     return await userCollection.document(uid).collection('Trans').document().setData({
       'Amount': trans.amount,
       'Company': trans.company,
+      'CompanyID': trans.companyID,
       'Date': trans.date,
       'MCC': trans.mcc,
       'Region': trans.region,
       'CategoryID': trans.categoryID,
       'Category': trans.category,
+      'CO2': trans.co2,
     });
   }
 
 
   void editUserTransaction(UserTransaction editedTrans, String transID) async {
+    editedTrans.co2 = await getCO2fromCompany(editedTrans);
+
     return await userCollection.document(uid).collection('Trans').document(transID).updateData({
       'Amount': editedTrans.amount,
       'Company': editedTrans.company,
+      'CompanyID': editedTrans.companyID,
       'Date': editedTrans.date,
       'MCC': editedTrans.mcc,
       'Region': editedTrans.region,
       'Category': editedTrans.category,
       'CategoryID': editedTrans.categoryID,
+      'CO2': editedTrans.co2,
     });
   }
-
 
   // Converts our date format to a format which can be handled by DateTime
   String convertToDateTimeFormat(String date) {
@@ -83,11 +126,13 @@ class DatabaseService {
         transID: doc.documentID,
         amount: doc.data['Amount'],
         company: doc.data['Company'],
+        companyID: doc.data['CompanyID'],
         date: doc.data['Date'],
         mcc: doc.data['MCC'],
         region: doc.data['Region'],
         categoryID: doc.data['CategoryID'],
-        category: doc.data['Category']
+        category: doc.data['Category'],
+        co2: doc.data['CO2'],
       );
     }).toList();
 
@@ -99,7 +144,6 @@ class DatabaseService {
     });
     return transList;
   }
-
 
   // TODO: filter by month, day, week
   Stream<List<UserTransaction>> get userTransactions {
@@ -132,6 +176,7 @@ class DatabaseService {
         mccID: doc.data['MCC'],
         name: doc.data['Name'],
         region: doc.data['Region'],
+        co2: doc.data['Co2'],
       );
     }).toList();
 
@@ -158,6 +203,17 @@ class DatabaseService {
   Stream<List<Category>> get categories {
     return categoryCollection.snapshots()
       .map(_categoriesFromSnapshot);
+  }
+
+
+  int _co2FromSnapshot(QuerySnapshot snapshot) {
+
+  }
+
+
+  Stream<int> get co2valueForCurrentMonth {
+    return userCollection.document(uid).collection('Trans').snapshots()
+      .map(_co2FromSnapshot);
   }
 
   /*

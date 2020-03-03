@@ -3,17 +3,26 @@ class Date {
   var day;
   var month;
   var year;
+
+  var monthName;
   var weekday;
 
   List weekdays = [
     null, 'Mánudagur', 'Þriðjudagur', 'Miðvikudagur',
-    'Fimmtudagur', 'Föstudagur', 'Laugadagur', 'Sunnudagur'
+    'Fimmtudagur', 'Föstudagur', 'Laugardagur', 'Sunnudagur'
+  ];
+
+  List months = [
+    null, 'Janúar', 'Febrúar', 'Mars', 'Apríl', 'Maí',
+    'Júní', 'Júlí', 'Ágúst', 'September', 'Október',
+    'Nóvember', 'Desember',
   ];
 
   Date(var currentDate) {
     day = currentDate.day;
     month = currentDate.month;
     year = currentDate.year;
+    monthName = months[currentDate.month];
     weekday = weekdays[currentDate.weekday];
   }
 
@@ -23,5 +32,9 @@ class Date {
 
   String getCurrentWeekday() {
     return '$weekday';
+  }
+
+  String getCurrentMonthName() {
+    return '$monthName';
   }
 }
