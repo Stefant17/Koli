@@ -120,6 +120,16 @@ class DatabaseService {
   }
 
 
+  String getMonth(String date) {
+    List<String> splitDate = date.split("/");
+    return splitDate[1];
+  }
+
+  String getDay(String date) {
+
+  }
+
+
   List<UserTransaction> _userTransactionsFromSnapshot(QuerySnapshot snapshot) {
     List<UserTransaction> transList = snapshot.documents.map((doc) {
       return UserTransaction(
@@ -190,7 +200,6 @@ class DatabaseService {
 
   List<Category> _categoriesFromSnapshot(QuerySnapshot snapshot) {
     List<Category> categories = snapshot.documents.map((doc) {
-      print('yo');
       return Category(
         catID: doc.documentID,
         name: doc.data['Name'],
@@ -207,12 +216,22 @@ class DatabaseService {
 
 
   int _co2FromSnapshot(QuerySnapshot snapshot) {
+    DateTime currentDate = DateTime.now();
+    int total = 0;
 
+    snapshot.documents.map((doc) {
+      if(getMonth(doc.data['Date']) == currentDate.month.toString()) {
+        total += doc.data['CO2'];
+      }
+    }).toList();
+
+    return total;
   }
 
 
   Stream<int> get co2valueForCurrentMonth {
-    return userCollection.document(uid).collection('Trans').snapshots()
+    CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
+    return transactionCollection.snapshots()
       .map(_co2FromSnapshot);
   }
 

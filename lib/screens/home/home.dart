@@ -67,12 +67,20 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
+                  SizedBox(height: 40),
+
                   StreamBuilder<int>(
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       int co2 = snapshot.data;
                       return Container(
-                        child: Text('$co2'),
+                        child: Text(
+                          '$co2 kg',
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.blue
+                          ),
+                        ),
                       );
                     }
                   ),

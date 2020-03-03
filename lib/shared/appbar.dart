@@ -18,7 +18,11 @@ Widget appBar (var context){
           alignment: Alignment.topLeft,
           child: PopupMenuButton(
             onSelected: (String choice) {
-              Navigator.pushNamed(context, '/' + choice);
+              if(choice == 'Heim') {
+                Navigator.pushNamed(context, '/');
+              } else {
+                Navigator.pushNamed(context, '/' + choice);
+              }
             },
 
             icon: Icon(Icons.menu),
