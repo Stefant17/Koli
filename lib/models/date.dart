@@ -37,4 +37,27 @@ class Date {
   String getCurrentMonthName() {
     return '$monthName';
   }
+
+  // Returns a list of the current month and the months that have passed this year
+  List<String> getListOfMonthsToDate(int currentMonth) {
+    List<String> monthList = [];
+    for(var i = 1; i <= currentMonth; i++) {
+      monthList.add(months[i]);
+    }
+    return monthList;
+  }
+
+  int getMonthNumberFromString(String month) {
+    for(var i = 1; i < months.length; i++) {
+      if(months[i] == month) {
+        return i;
+      }
+    }
+
+    return 0;
+  }
+
+  List getMonthList() {
+    return months;
+  }
 }

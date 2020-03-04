@@ -1,5 +1,6 @@
 Refactora útlistun yfir í spretti
 litakóða áhættugreiningu, ræða um helstu áhættu
+taka fram ef við höfum e-h öðruvísi en staðall og útskýra af hverju
 
 Sprint 1 plan í framvinduskýrslu
 tala meira um hönnun í drög að hönnun

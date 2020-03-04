@@ -1,0 +1,3 @@
+class CO2ByDay {
+
+}

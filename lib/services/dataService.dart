@@ -1,9 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/category.dart';
+import 'package:koli/models/co2_by_day.dart';
+import 'package:koli/models/co2_by_month.dart';
+import 'package:koli/models/co2_by_week.dart';
+import 'package:koli/models/co2_date.dart';
 import 'package:koli/models/company.dart';
+import 'package:koli/models/date.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
+
+// Used only for statistic testing purposes
+// Set to 0 when done with testing
+const int monthOffset = 0;
 
 class DatabaseService {
   //final CollectionReference transactionCollection = Firestore.instance.collection('Trans');
@@ -120,10 +129,17 @@ class DatabaseService {
   }
 
 
+  String getYear(String date) {
+    List<String> splitDate = date.split('/');
+    return splitDate[2];
+  }
+
+
   String getMonth(String date) {
-    List<String> splitDate = date.split("/");
+    List<String> splitDate = date.split('/');
     return splitDate[1];
   }
+
 
   String getDay(String date) {
 
@@ -172,7 +188,6 @@ class DatabaseService {
     );
   }
 
-
   // Get user doc stream
   Stream<UserProfile> get userProfile {
     return userCollection.document(uid).snapshots()
@@ -193,10 +208,12 @@ class DatabaseService {
     return companyList;
   }
 
+
   Stream<List<Company>> get companies {
     return companyCollection.snapshots()
       .map(_companiesFromSnapshot);
   }
+
 
   List<Category> _categoriesFromSnapshot(QuerySnapshot snapshot) {
     List<Category> categories = snapshot.documents.map((doc) {
@@ -209,13 +226,14 @@ class DatabaseService {
     return categories;
   }
 
+
   Stream<List<Category>> get categories {
     return categoryCollection.snapshots()
       .map(_categoriesFromSnapshot);
   }
 
 
-  int _co2FromSnapshot(QuerySnapshot snapshot) {
+  int _co2ForCurrentMonthFromSnapshot(QuerySnapshot snapshot) {
     DateTime currentDate = DateTime.now();
     int total = 0;
 
@@ -232,7 +250,58 @@ class DatabaseService {
   Stream<int> get co2valueForCurrentMonth {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
-      .map(_co2FromSnapshot);
+      .map(_co2ForCurrentMonthFromSnapshot);
+  }
+
+
+  CO2ByMonth _co2ByMonthFromSnapshot(QuerySnapshot snapshot) {
+    DateTime currentDate = DateTime.now();
+    int currentMonth = currentDate.month + monthOffset;
+    int currentYear = currentDate.year;
+
+    List<String> months = Date(currentDate).getListOfMonthsToDate(currentMonth);
+    List<int> co2ValuePerMonth = [];
+
+    for(var i = 0; i < currentMonth; i++) {
+      co2ValuePerMonth.add(0);
+    }
+
+    snapshot.documents.map((trans) {
+      int year = int.parse(getYear(trans.data['Date']));
+
+      if(year == currentYear) {
+        int month = int.parse(getMonth(trans.data['Date']));
+
+        if(co2ValuePerMonth[month - 1] == 0) {
+          co2ValuePerMonth[month - 1] = trans.data['CO2'];
+        } else {
+          int total = co2ValuePerMonth[month - 1];
+
+          total += trans.data['CO2'];
+          co2ValuePerMonth[month - 1] = total;
+        }
+      }
+    }).toList();
+
+    return CO2ByMonth(
+      months: months,
+      co2Values: co2ValuePerMonth,
+    );
+  }
+
+
+  Stream<CO2ByMonth> get co2ByMonth {
+    CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
+    return transactionCollection.snapshots()
+        .map(_co2ByMonthFromSnapshot);
+  }
+
+  Stream<CO2ByWeek> get co2ByWeek {
+
+  }
+
+  Stream<CO2ByDay> get co2ByDay {
+
   }
 
   /*
