@@ -194,6 +194,7 @@ class DatabaseService {
         .map(_userDataFromSnapshot);
   }
 
+
   List<Company> _companiesFromSnapshot(QuerySnapshot snapshot) {
     List<Company> companyList = snapshot.documents.map((doc) {
       return Company(
@@ -296,27 +297,35 @@ class DatabaseService {
         .map(_co2ByMonthFromSnapshot);
   }
 
+
   Stream<CO2ByWeek> get co2ByWeek {
 
   }
+
 
   Stream<CO2ByDay> get co2ByDay {
 
   }
 
-  /*
-  List<Badge> _badgesFromSnapshot(QuerySnapshot snapshot) {
-    List<Badge> badges = snapshot.documents.map((doc) {
-      doc.
-      return Badge(
 
-      );
-    });
+  List<Badge> _badgesFromSnapshot(QuerySnapshot snapshot) {
+    print('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+
+    //List<Badge> badges =
+    snapshot.documents.map((doc) {
+      print('hello');
+    }).toList();
+
+    return List<Badge>();
+  }
+
+  Stream<List<Badge>> get badgesEarned {
+    print('checking');
+    return badgeCollection.snapshots()
+      .map(_badgesFromSnapshot);
   }
 
   void checkForBadgesEarned() {
-    Stream<List<Badge>> badges = badgeCollection.snapshots()
-      .map(_badgesFromSnapshot);//userCollection.
+    Stream<List<Badge>> badges = badgesEarned;
   }
-  */
 }
