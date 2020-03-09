@@ -1,8 +1,8 @@
 class Badge {
   String name;
-  String condition;
-  int conditionValue;
+  String description;
   String dateEarned;
+  String image;
 
-  Badge({ this.name, this.condition, this.conditionValue, this.dateEarned });
+  Badge({ this.name, this.description, this.dateEarned, this.image });
 }

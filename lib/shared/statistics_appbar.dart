@@ -6,7 +6,7 @@ var constants = Constants();
 
 Widget statisticsAppBar (var context){
   return AppBar(
-    backgroundColor: Colors.grey[400],
+    backgroundColor: Colors.grey[900],
     elevation: 0.0,
     automaticallyImplyLeading: false,
 
@@ -36,9 +36,11 @@ Widget statisticsAppBar (var context){
         ),
       ),
 
-      FlatButton.icon(
-        icon: Icon(Icons.face),
-        label: Text(''),
+      FlatButton(
+        child: Icon(
+          Icons.face,
+          color: Colors.white,
+        ),
         onPressed: () {
 
         },

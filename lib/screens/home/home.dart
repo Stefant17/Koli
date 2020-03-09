@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/models/badge.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
+import 'package:koli/shared/achievement_get.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/appbar.dart';
 
@@ -17,21 +19,34 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   var currentDate = DateTime.now();
   var constants = Constants();
+  bool checkedForBadges = false;
 
   Date getCurrentDate() {
     return Date(currentDate);
   }
 
+  Function addNewBadge(Badge badge) {
+    achievementGet(this.context, badge);
+    setState(() {
+      checkedForBadges = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    DatabaseService(uid: user.uid).checkForBadgesEarned();
 
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,
       builder: (context, snapshot) {
         if(snapshot.hasData) {
           UserProfile userData = snapshot.data;
+
+          if(!checkedForBadges) {
+            DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
+            checkedForBadges = true;
+          }
+
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: appBar(context),

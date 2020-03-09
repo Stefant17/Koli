@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:koli/models/user.dart';
+import 'package:koli/screens/badges/badges.dart';
 import 'package:koli/screens/overview/overview.dart';
 import 'package:koli/screens/statistics/statistics.dart';
 import 'package:koli/screens/wrapper.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => Wrapper(),
           '/Yfirlit': (context) => Overview(),
           '/Tölfræði': (context) => Statistics(),
+          '/Orður': (context) => Badges(),
         },
       ),
     );

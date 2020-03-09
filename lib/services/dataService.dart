@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/category.dart';
 import 'package:koli/models/co2_by_day.dart';
@@ -7,6 +8,7 @@ import 'package:koli/models/co2_by_week.dart';
 import 'package:koli/models/co2_date.dart';
 import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
+import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 
@@ -31,6 +33,10 @@ class DatabaseService {
       'FirstName': '',
       'LastName': '',
       'Age': 0,
+      'CarFuelType': '95 Oktan',
+      'CarSize': 'Medium',
+      'DaysActive': 1,
+      'TreesPlanted': 0,
     });
   }
 
@@ -74,6 +80,17 @@ class DatabaseService {
 
       double litres = trans.amount / litrePrice;
       return (litres * avgKmPerLitre * emissionPerLitre).toInt();
+    }
+
+    else if(trans.category == 'Fatnaður' || trans.category == 'Matvörur') {
+      var category = categoryCollection.document(trans.categoryID);
+      int total = 0;
+
+      await category.get().then((cat) {
+        total = (trans.amount * cat['co2_per_kr']).toInt();
+      });
+
+      return total.toInt();
     }
 
     return 0;
@@ -308,24 +325,93 @@ class DatabaseService {
   }
 
 
-  List<Badge> _badgesFromSnapshot(QuerySnapshot snapshot) {
-    print('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+  // Does the user already own this badge?
+  Future<bool> doesBadgeExist(String badgeID, CollectionReference userBadges) async {
+    bool exists = false;
 
-    //List<Badge> badges =
-    snapshot.documents.map((doc) {
-      print('hello');
+    QuerySnapshot badges = await userBadges.getDocuments();
+    badges.documents.forEach((DocumentSnapshot snapshot) {
+      if(snapshot.documentID == badgeID) {
+        exists = true;
+      }
+    });
+
+    return exists;
+  }
+
+  Future<Badge> createBadge(user, badge) async {
+    var newBadge = Badge(
+      name: badge.data['Name'],
+      dateEarned: Date(DateTime.now()).getCurrentDate(),
+      description: badge.data['Description'],
+      image: badge.data['Image'],
+    );
+
+    await user.collection('Badges').document(badge.documentID).setData({
+      'Name': newBadge.name,
+      'DateEarned': newBadge.dateEarned,
+      'Description': newBadge.description,
+      'Image': newBadge.image,
+    });
+
+    return newBadge;
+  }
+
+  Future<bool> checkConditions(user, badge) async {
+    if (badge.data['Condition'] == 'Plant Trees') {
+      return await user.get().then((u) {
+        if (u.data['TreesPlanted'] >= badge.data['ConditionValue']) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
+    else if(badge.data['Condition'] == 'Number of Days') {
+      return await user.get().then((u) {
+        if (u.data['DaysActive'] >= badge.data['ConditionValue']) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+
+    return false;
+  }
+
+  Future awardBadges(Function addNewBadge) async {
+    DocumentReference user = userCollection.document(uid);
+    CollectionReference userBadges = user.collection('Badges');
+    List<Badge> newBadges = [];
+
+    await badgeCollection.snapshots().map((snapshot) {
+      snapshot.documents.map((doc) async {
+        if(!await doesBadgeExist(doc.documentID, userBadges)) {
+          if(await checkConditions(user, doc)) {
+            Badge newBadge = await createBadge(user, doc);
+            newBadges.add(newBadge);
+            addNewBadge(newBadge);
+          }
+        }
+      }).toList();
     }).toList();
-
-    return List<Badge>();
   }
 
-  Stream<List<Badge>> get badgesEarned {
-    print('checking');
-    return badgeCollection.snapshots()
-      .map(_badgesFromSnapshot);
+  List<Badge> _userBadgesFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Badge(
+        name: doc.data['Name'],
+        description: doc.data['Description'],
+        dateEarned: doc.data['DateEarned'],
+        image: doc.data['Image'],
+      );
+    }).toList();
   }
 
-  void checkForBadgesEarned() {
-    Stream<List<Badge>> badges = badgesEarned;
+  Stream<List<Badge>> get userBadges {
+    return userCollection.document(uid).collection('Badges').snapshots()
+      .map(_userBadgesFromSnapshot);
   }
 }

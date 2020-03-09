@@ -7,7 +7,7 @@ Widget appBar (var context){
     return AppBar(
       // title: Text('Koli'),
       // centerTitle: true,
-      backgroundColor: Colors.grey[400],
+      backgroundColor: Colors.grey[900],
       elevation: 0.0,
       automaticallyImplyLeading: false,
 
@@ -37,9 +37,11 @@ Widget appBar (var context){
           ),
         ),
 
-        FlatButton.icon(
-          icon: Icon(Icons.face),
-          label: Text(''),
+        FlatButton(
+          child: Icon(
+            Icons.face,
+            color: Colors.white,
+          ),
           onPressed: () {
 
           },

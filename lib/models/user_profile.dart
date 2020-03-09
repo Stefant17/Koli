@@ -4,5 +4,7 @@ class UserProfile {
   String lastName;
   int age;
 
-  UserProfile({ this.uid, this.firstName, this.lastName, this.age });
+  int treesPlanted;
+
+  UserProfile({ this.uid, this.firstName, this.lastName, this.age, this.treesPlanted });
 }
