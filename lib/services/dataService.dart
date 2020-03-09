@@ -202,6 +202,10 @@ class DatabaseService {
       firstName: snapshot.data['FirstName'],
       lastName: snapshot.data['LastName'],
       age: snapshot.data['Age'],
+      treesPlanted: snapshot.data['TreesPlanted'],
+      daysActive: snapshot.data['DaysActive'],
+      carSize: snapshot.data['CarSize'],
+      carFuelType: snapshot.data['CarFuelType'],
     );
   }
 

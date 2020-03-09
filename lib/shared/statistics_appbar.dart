@@ -5,6 +5,14 @@ import 'package:koli/constants/constants.dart';
 var constants = Constants();
 
 Widget statisticsAppBar (var context){
+  void reroute(String choice) {
+    if(choice == 'Heim') {
+      Navigator.pushNamed(context, '/');
+    } else {
+      Navigator.pushNamed(context, '/' + choice);
+    }
+  }
+
   return AppBar(
     backgroundColor: Colors.grey[900],
     elevation: 0.0,
@@ -17,11 +25,7 @@ Widget statisticsAppBar (var context){
         alignment: Alignment.topLeft,
         child: PopupMenuButton(
           onSelected: (String choice) {
-            if(choice == 'Heim') {
-              Navigator.pushNamed(context, '/');
-            } else {
-              Navigator.pushNamed(context, '/' + choice);
-            }
+            reroute(choice);
           },
 
           icon: Icon(Icons.menu),
@@ -42,7 +46,7 @@ Widget statisticsAppBar (var context){
           color: Colors.white,
         ),
         onPressed: () {
-
+          reroute('Prófíll');
         },
       ),
     ],
