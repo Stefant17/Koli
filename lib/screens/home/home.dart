@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/badge.dart';
@@ -20,6 +22,7 @@ class _HomeState extends State<Home> {
   var currentDate = DateTime.now();
   var constants = Constants();
   bool checkedForBadges = false;
+  bool checkedForNewCardTrans = false;
 
   Date getCurrentDate() {
     return Date(currentDate);
@@ -32,20 +35,36 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void setRefreshTimers(String uid) {
+    new Timer.periodic(Duration(seconds: 20), (Timer t) {
+      if(!checkedForNewCardTrans) {
+        print('checking');
+        DatabaseService(uid: uid).checkForNewCardTransactions();
+        checkedForNewCardTrans = true;
+        setState((){});
+      }
+    });
+
+    new Timer.periodic(Duration(seconds: 3), (Timer t) {
+      checkedForNewCardTrans = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    setRefreshTimers(user.uid);
+
+    if(!checkedForBadges) {
+      DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
+      checkedForBadges = true;
+    }
 
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,
       builder: (context, snapshot) {
         if(snapshot.hasData) {
           UserProfile userData = snapshot.data;
-
-          if(!checkedForBadges) {
-            DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
-            checkedForBadges = true;
-          }
 
           return Scaffold(
             backgroundColor: Colors.white,

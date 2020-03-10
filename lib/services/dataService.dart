@@ -1,14 +1,15 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:koli/models/badge.dart';
+import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
 import 'package:koli/models/co2_by_day.dart';
 import 'package:koli/models/co2_by_month.dart';
 import 'package:koli/models/co2_by_week.dart';
-import 'package:koli/models/co2_date.dart';
 import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
-import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 
@@ -22,6 +23,7 @@ class DatabaseService {
   final CollectionReference companyCollection = Firestore.instance.collection('Companies');
   final CollectionReference badgeCollection = Firestore.instance.collection('Badges');
   final CollectionReference categoryCollection = Firestore.instance.collection('Categories');
+  final CollectionReference mccCollection = Firestore.instance.collection('MCC');
   final String uid;
 
 
@@ -47,6 +49,127 @@ class DatabaseService {
       'LastName': lastName,
       'Age': age,
     });
+  }
+
+
+  Future<String> getCompanyIdFromName(String companyName) async {
+    String ID = '';
+    var companies = await companyCollection.getDocuments();
+    companies.documents.forEach((com) {
+      if(com.data['Name'] == companyName) {
+        ID = com.documentID;
+      }
+    });
+
+    //TODO: if no id was found, create new store
+    return ID;
+  }
+
+
+  Future<String> getMCCnameFromCode(String mcc) async {
+    String ID = '';
+
+    var companies = await mccCollection.getDocuments();
+    companies.documents.forEach((m) {
+      if(m.data['MCC'].toString() == mcc.toString()) {
+        ID = m.documentID;
+        return;
+      }
+    });
+
+    //TODO: if no id was found, create new store
+    return ID;
+  }
+
+
+  Future<Category> getDefaultCategoryFromCompany(String companyID) async {
+    var company = companyCollection.document(companyID);
+    String catID = await company.get().then((com) {
+      return com.data['DefaultCategory'];
+    });
+
+    var category = categoryCollection.document(catID);
+    String catName = await category.get().then((cat) {
+      return cat.data['Name'];
+    });
+
+    return Category(
+      catID: catID,
+      name: catName,
+    );
+  }
+
+
+  Future parseCardTransactions(var cardTransactions, int numberOfTrans) async {
+    for(var i = numberOfTrans; i < cardTransactions.length; i++) {
+      String compID = await getCompanyIdFromName(cardTransactions[i]['SOLUADILI']);
+      String mcc = await getMCCnameFromCode(cardTransactions[i]['MCC']);
+
+      Category cat = await getDefaultCategoryFromCompany(compID);
+      var date = convertCardDateToAppFormat(cardTransactions[i]['FAERSLUDAGS']);
+
+      UserTransaction newTrans = UserTransaction(
+        amount: int.parse(cardTransactions[i]['FAERSLUUPPHAED']),
+        company: cardTransactions[i]['SOLUADILI'],
+        companyID: compID,
+        category: cat.name,
+        categoryID: cat.catID,
+        date: date,
+        mcc: mcc,
+        region: cardTransactions[i]['INNLEND_ERLEND'],
+      );
+
+      createUserTransaction(newTrans);
+    }
+  }
+
+
+  void updateCardTransCount(UserCard card, int newTransCount) {
+    userCollection.document(uid).collection('Cards').document(card.cardID).setData({
+      'CardNumber': card.cardNumber,
+      'Expiry': card.expiry,
+      'CVV': card.cvv,
+      'TransCount': newTransCount,
+    });
+  }
+
+
+  Future<List<UserCard>> getUserCards(CollectionReference cardsCollection) async {
+    List<UserCard> userCards = [];
+
+    QuerySnapshot cards = await cardsCollection.getDocuments();
+    cards.documents.forEach((DocumentSnapshot snapshot) {
+      UserCard newCard = UserCard(
+        cardID: snapshot.documentID,
+        cardNumber: snapshot.data['CardNumber'],
+        cvv: snapshot.data['CVV'],
+        expiry: snapshot.data['Expiry'],
+        transCount: snapshot.data['TransCount']
+      );
+
+      userCards.add(newCard);
+    });
+
+    return userCards;
+  }
+
+
+  Future checkForNewCardTransactions() async {
+    List<UserCard> cardList = await getUserCards(userCollection.document(uid).collection('Cards'));
+
+    for(var i = 0; i < cardList.length; i++) {
+      String cardLines = await rootBundle.loadString(
+          'assets/testing/card_transactions/${cardList[i].cardNumber}.json'
+      );
+
+      var decodedLines = json.decode(cardLines);
+      int numberOfTrans = cardList[i].transCount;
+
+      if(decodedLines.length > numberOfTrans) {
+        updateCardTransCount(cardList[i], decodedLines.length);
+        parseCardTransactions(decodedLines, numberOfTrans);
+      }
+    }
   }
 
 
@@ -130,9 +253,27 @@ class DatabaseService {
     });
   }
 
+
+  String convertCardDateToAppFormat(String date) {
+    var newDate = date.toString().split(' ');
+    var formattedDate = newDate[0].toString().split('.');
+
+    return formattedDate[0].toString()[1] + '/'
+        + formattedDate[1].toString()[1] + '/'
+        + formattedDate[2].toString();
+  }
+
   // Converts our date format to a format which can be handled by DateTime
   String convertToDateTimeFormat(String date) {
-    List<String> splitDate = date.split("/");
+    List<String> splitDate;
+
+    if(date.contains('/')) {
+      splitDate = date.split('/');
+    }
+
+    else if(date.contains('.')) {
+      splitDate = date.split('.');
+    }
 
     if(splitDate[1].length == 1) {
       splitDate[1] = '0' + splitDate[1];
@@ -159,7 +300,8 @@ class DatabaseService {
 
 
   String getDay(String date) {
-
+    List<String> splitDate = date.split('/');
+    return splitDate[0];
   }
 
 
@@ -188,7 +330,7 @@ class DatabaseService {
     return transList;
   }
 
-  // TODO: filter by month, day, week
+
   Stream<List<UserTransaction>> get userTransactions {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()

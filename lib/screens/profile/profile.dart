@@ -25,6 +25,8 @@ class _ProfileState extends State<Profile> {
               if(snapshot.hasData) {
                 UserProfile userData = snapshot.data;
                 return Text('${userData.firstName}');
+
+
               } else {
                 return Text('No data found');
               }

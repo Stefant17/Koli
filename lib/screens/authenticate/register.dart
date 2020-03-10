@@ -22,13 +22,23 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.grey[400],
+        backgroundColor: Colors.grey[900],
         elevation: 0.0,
-        title: Text('Nýskráning'),
+        title: Text(
+          'Nýskráning',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
         actions: <Widget> [
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Innskráning'),
+            label: Text(
+              'Innskráning',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             onPressed: () {
               widget.toggleView();
             },

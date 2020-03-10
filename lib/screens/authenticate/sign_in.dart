@@ -22,13 +22,23 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.grey[400],
+        backgroundColor: Colors.grey[900],
         elevation: 0.0,
-        title: Text('Innskráning'),
+        title: Text(
+          'Innskráning',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
         actions: <Widget> [
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text('Nýskráning'),
+            label: Text(
+              'Nýskráning',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
             onPressed: () {
               widget.toggleView();
             },
