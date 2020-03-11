@@ -28,7 +28,7 @@ dependencies:
   provider: ^3.1.0
   charts_flutter: ^0.6.0
   font_awesome_flutter: ^8.7.0
-  sliding_up_panel: ^0.3.4
+  flutter_sliding_up_panel: ^0.0.3
 
 
   firebase_storage: ^3.0.8
