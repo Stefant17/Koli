@@ -1,9 +1,11 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class Constants {
-  List<String> menuList = [
-    'Heim',
-    'Yfirlit',
-    'Dags yfirlit',
-    'Tölfræði',
-    'Orður',
+  List<List> menuList = [
+    [FontAwesomeIcons.home, 'Heim'],
+    [FontAwesomeIcons.stackOverflow, 'Yfirlit'],
+    [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
+    [FontAwesomeIcons.chartArea, 'Tölfræði'],
+    [FontAwesomeIcons.award, 'Orður'],
   ];
 }

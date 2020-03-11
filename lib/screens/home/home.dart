@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/date.dart';
@@ -9,6 +10,7 @@ import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
+import 'package:koli/shared/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/appbar.dart';
 
@@ -35,25 +37,16 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void setRefreshTimers(String uid) {
-    new Timer.periodic(Duration(seconds: 20), (Timer t) {
-      if(!checkedForNewCardTrans) {
-        print('checking');
-        DatabaseService(uid: uid).checkForNewCardTransactions();
-        checkedForNewCardTrans = true;
-        setState((){});
-      }
-    });
 
-    new Timer.periodic(Duration(seconds: 3), (Timer t) {
-      checkedForNewCardTrans = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    setRefreshTimers(user.uid);
+
+    if(!checkedForNewCardTrans) {
+      DatabaseService(uid: user.uid).checkForNewCardTransactions();
+      checkedForNewCardTrans = true;
+    }
 
     if(!checkedForBadges) {
       DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
@@ -138,6 +131,8 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
+
+            bottomNavigationBar: BottomBar(),
           );
         } else {
           return Scaffold();

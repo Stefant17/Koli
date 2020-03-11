@@ -4,6 +4,7 @@ import 'package:koli/models/user.dart';
 import 'package:koli/screens/statistics/bar_chart.dart';
 import 'package:koli/screens/statistics/line_chart.dart';
 import 'package:koli/screens/statistics/pie_chart.dart';
+import 'package:koli/shared/bottom_navbar.dart';
 import 'package:koli/shared/statistics_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,8 @@ class _StatisticsState extends State<Statistics> {
             PieChart(uid: user.uid),
           ],
         ),
+
+        bottomNavigationBar: BottomBar(),
       ),
     );
   }

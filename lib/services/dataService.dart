@@ -77,7 +77,6 @@ class DatabaseService {
       }
     });
 
-    //TODO: if no id was found, create new store
     return ID;
   }
 
@@ -155,7 +154,8 @@ class DatabaseService {
 
 
   Future checkForNewCardTransactions() async {
-    List<UserCard> cardList = await getUserCards(userCollection.document(uid).collection('Cards'));
+    List<UserCard> cardList = await getUserCards(userCollection.document(uid)
+        .collection('Cards'));
 
     for(var i = 0; i < cardList.length; i++) {
       String cardLines = await rootBundle.loadString(
@@ -263,7 +263,7 @@ class DatabaseService {
         + formattedDate[2].toString();
   }
 
-  // Converts our date format to a format which can be handled by DateTime
+  // Converts the app date format to a format which can be handled by DateTime
   String convertToDateTimeFormat(String date) {
     List<String> splitDate;
 

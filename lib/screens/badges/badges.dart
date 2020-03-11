@@ -3,6 +3,7 @@ import 'package:koli/models/badge.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
+import 'package:koli/shared/bottom_navbar.dart';
 import 'package:koli/views/badge_view.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,8 @@ class Badges extends StatelessWidget {
                 );
               }).toList()
             ),
+
+            bottomNavigationBar: BottomBar(),
           );
         } else {
           return Text('NOTHING!');

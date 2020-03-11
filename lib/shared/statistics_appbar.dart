@@ -24,16 +24,27 @@ Widget statisticsAppBar (var context){
         margin: EdgeInsets.fromLTRB(0.0, 0.0, 270.0, 0.0),
         alignment: Alignment.topLeft,
         child: PopupMenuButton(
-          onSelected: (String choice) {
-            reroute(choice);
+          onSelected: (List choice) {
+            reroute(choice[1]);
           },
 
           icon: Icon(Icons.menu),
           itemBuilder: (BuildContext context) {
-            return constants.menuList.map((String item) {
-              return PopupMenuItem<String>(
+            return constants.menuList.map((List item) {
+              return PopupMenuItem<List>(
                 value: item,
-                child: Text('$item'),
+                child: Row(
+                  children: <Widget> [
+                    Icon(
+                        item[0],
+                        color: Colors.black
+                    ),
+
+                    SizedBox(width: 20),
+
+                    Text('${item[1]}'),
+                  ]
+                ),
               );
             }).toList();
           },

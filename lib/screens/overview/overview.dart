@@ -5,6 +5,7 @@ import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
+import 'package:koli/shared/bottom_navbar.dart';
 import 'package:koli/views/transaction_view.dart';
 import 'package:provider/provider.dart';
 
@@ -80,6 +81,8 @@ class _OverviewState extends State<Overview> {
                 ),
               ],
             ),
+
+            bottomNavigationBar: BottomBar(),
           );
         } else {
           return Scaffold();
