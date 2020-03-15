@@ -1,8 +1,9 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:koli/models/badge.dart';
+import 'package:koli/models/notification.dart';
+import 'package:koli/models/user.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
 import 'package:koli/models/co2_by_day.dart';
@@ -32,6 +33,7 @@ class DatabaseService {
 
   Future initializeUserProfile() async {
     return await userCollection.document(uid).setData({
+      'Username': '',
       'FirstName': '',
       'LastName': '',
       'Age': 0,
@@ -485,6 +487,7 @@ class DatabaseService {
     return exists;
   }
 
+
   Future<Badge> createBadge(user, badge) async {
     var newBadge = Badge(
       name: badge.data['Name'],
@@ -502,6 +505,7 @@ class DatabaseService {
 
     return newBadge;
   }
+
 
   Future<bool> checkConditions(user, badge) async {
     if (badge.data['Condition'] == 'Plant Trees') {
@@ -526,6 +530,7 @@ class DatabaseService {
 
     return false;
   }
+
 
   Future awardBadges(Function addNewBadge) async {
     DocumentReference user = userCollection.document(uid);
@@ -556,8 +561,161 @@ class DatabaseService {
     }).toList();
   }
 
+
   Stream<List<Badge>> get userBadges {
     return userCollection.document(uid).collection('Badges').snapshots()
       .map(_userBadgesFromSnapshot);
+  }
+
+
+  List<UserProfile> _userFriendsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return UserProfile(
+        uid: doc.documentID,
+        firstName: doc.data['FirstName'],
+        lastName: doc.data['LastName'],
+        pendingInvite: doc.data['PendingInvite'],
+      );
+    }).toList();
+  }
+
+
+  Stream<List<UserProfile>> get friendList {
+    return userCollection.document(uid).collection('Friends').snapshots()
+      .map(_userFriendsFromSnapshot);
+  }
+
+  Future<List<UserProfile>> userSearch(String query) async {
+    List<String> preExistingFriends = [];
+    List<UserProfile> result = [];
+    if(query == '') {
+      return result;
+    }
+
+    var friends = await userCollection.document(uid).collection('Friends').getDocuments();
+    friends.documents.forEach((friend) {
+      preExistingFriends.add(friend.documentID);
+    });
+
+    var users = await userCollection.getDocuments();
+    users.documents.forEach((user) {
+      if(user.documentID != uid) {
+        if(user.data['FirstName'].toString().toLowerCase().contains(query.toLowerCase())) {
+          if(!preExistingFriends.contains(user.documentID)) {
+            result.add(
+              UserProfile(
+                uid: user.documentID,
+                firstName: user.data['FirstName'],
+                lastName: user.data['LastName']
+              )
+            );
+          }
+        }
+      }
+    });
+
+    return result;
+  }
+
+  Future<void> addFriend(String newFriendID) async {
+    UserProfile newFriend = await userCollection.document(newFriendID).get().then((friend) {
+      return UserProfile(
+        uid: friend.documentID,
+        firstName: friend.data['FirstName'],
+        lastName: friend.data['LastName'],
+        age: friend.data['Age'],
+        treesPlanted: friend.data['TreesPlanted'],
+        daysActive: friend.data['DaysActive'],
+        carSize: friend.data['CarSize'],
+        carFuelType: friend.data['CarFuelType'],
+      );
+    });
+
+    userCollection.document(uid).collection('Friends').document(newFriendID).setData({
+      'FirstName': newFriend.firstName,
+      'LastName': newFriend.lastName,
+      'Age': newFriend.age,
+      'TreesPlanted': newFriend.treesPlanted,
+      'DaysActive': newFriend.daysActive,
+      'CarSize': newFriend.carSize,
+      'CarFuelType': newFriend.carFuelType,
+      'PendingInvite': true,
+    });
+
+    String currentUserName  = await userCollection.document(uid).get().then((u){
+      return u.data['FirstName'];
+    });
+
+    userCollection.document(newFriendID).collection('Notifications').add({
+      'Type': 'Friend Request',
+      'From': currentUserName,
+      'FromID': uid
+    });
+  }
+
+
+  List<UserNotification> _friendRequestsFromSnapshot(QuerySnapshot snapshot) {
+    List<UserNotification> requests = [];
+    snapshot.documents.map((doc) {
+      if(doc.data['Type'] == 'Friend Request') {
+        requests.add(UserNotification(
+          notificationID: doc.documentID,
+          type: doc.data['Type'],
+          from: doc.data['From'],
+          fromID: doc.data['FromID'],
+        ));
+      }
+    }).toList();
+
+    return requests;
+  }
+
+
+  Stream<List<UserNotification>> get friendRequests {
+    return userCollection.document(uid).collection('Notifications').snapshots()
+      .map(_friendRequestsFromSnapshot);
+  }
+
+
+  Stream<List<UserNotification>> get notifications {
+    return userCollection.document(uid).collection('Notifications').snapshots()
+      .map(_friendRequestsFromSnapshot);
+  }
+
+  Future<void> acceptFriendRequest(String fromID, String notifID) async {
+    UserProfile newFriend = await userCollection.document(fromID).get().then((friend) {
+      return UserProfile(
+        uid: friend.documentID,
+        firstName: friend.data['FirstName'],
+        lastName: friend.data['LastName'],
+        age: friend.data['Age'],
+        treesPlanted: friend.data['TreesPlanted'],
+        daysActive: friend.data['DaysActive'],
+        carSize: friend.data['CarSize'],
+        carFuelType: friend.data['CarFuelType'],
+      );
+    });
+
+    userCollection.document(uid).collection('Friends').document(fromID).setData({
+      'FirstName': newFriend.firstName,
+      'LastName': newFriend.lastName,
+      'Age': newFriend.age,
+      'TreesPlanted': newFriend.treesPlanted,
+      'DaysActive': newFriend.daysActive,
+      'CarSize': newFriend.carSize,
+      'CarFuelType': newFriend.carFuelType,
+      'PendingInvite': false,
+    });
+
+    userCollection.document(fromID).collection('Friends').document(uid).updateData({
+      'PendingInvite': false,
+    });
+
+    userCollection.document(uid).collection('Notifications').document(notifID).delete();
+  }
+
+  // TODO: Decline friend request
+  Future<void> declineFriendRequest(String fromID, String notifID) async {
+
   }
 }

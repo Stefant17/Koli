@@ -29,6 +29,9 @@ dependencies:
   charts_flutter: ^0.6.0
   font_awesome_flutter: ^8.7.0
   flutter_sliding_up_panel: ^0.0.3
+  flutter_spinkit: ^4.0.0
+  flutter_email_sender: ^2.2.2
+  mailer: ^3.0.4
 
 
   firebase_storage: ^3.0.8

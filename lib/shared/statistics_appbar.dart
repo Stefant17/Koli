@@ -28,7 +28,10 @@ Widget statisticsAppBar (var context){
             reroute(choice[1]);
           },
 
-          icon: Icon(Icons.menu),
+          icon: Icon(
+            Icons.menu,
+            size: 35,
+          ),
           itemBuilder: (BuildContext context) {
             return constants.menuList.map((List item) {
               return PopupMenuItem<List>(
@@ -36,8 +39,8 @@ Widget statisticsAppBar (var context){
                 child: Row(
                   children: <Widget> [
                     Icon(
-                        item[0],
-                        color: Colors.black
+                      item[0],
+                      color: Colors.black
                     ),
 
                     SizedBox(width: 20),
@@ -55,6 +58,7 @@ Widget statisticsAppBar (var context){
         child: Icon(
           Icons.face,
           color: Colors.white,
+          size: 35,
         ),
         onPressed: () {
           reroute('Prófíll');
