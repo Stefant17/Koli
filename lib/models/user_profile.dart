@@ -6,6 +6,7 @@ class UserProfile {
   String lastName;
   String carFuelType;
   String carSize;
+  String username;
 
   int age;
   int daysActive;
@@ -13,24 +14,15 @@ class UserProfile {
 
   bool pendingInvite;
 
-  List<List> foodPrefrences = [
-    ['meat',  0.09],
-    ['veg', 0.23],
-    ['fruit', 0.19],
-    ['fisth', 0.05],
-    ['grains', 0.28],
-    ['dairy', 0.14],
-    ['fish', 0.05],
-    ['nuts', 0.02]
-  ];
 
-  double meat = 9.0;
-  double veg = 23;
-  double fruit = 19;
-  double  fish = 5;
-  double grains = 28;
-  double dairy = 0.14;
-  double nuts =  0.02;
+  String meat;
+  String veg;
+  String fruit;
+  String  fish;
+  String dairy;
+  String grains;
+  String nuts;
+
 
 
   UserProfile({
@@ -39,14 +31,8 @@ class UserProfile {
     this.carSize, this.carFuelType,
     this.daysActive, this.treesPlanted,
     this.pendingInvite,
-    this.meat = 9.0,
-
+    this.meat, this.fish, this.fruit, this.dairy, this.grains,
+    this.username,
   });
 
- // void updatevariables(String name, double content) async {
- //   if(name == 'meat'){
- //     print(content);
- //     this.meat = content;
- //   }
- // }
 }
