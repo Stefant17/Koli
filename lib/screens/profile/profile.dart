@@ -1,4 +1,49 @@
+
 import 'dart:ffi';
+import 'package:flutter/material.dart';
+import 'package:koli/models/user.dart';
+import 'package:koli/models/user_profile.dart';
+import 'package:koli/services/dataService.dart';
+import 'package:koli/shared/appbar.dart';
+import 'package:provider/provider.dart';
+
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
+    return Scaffold(
+      appBar: appBar(context),
+      body: Column(
+        children: <Widget>[
+          StreamBuilder<UserProfile>(
+              stream: DatabaseService(uid: user.uid).userProfile,
+              builder: (context, snapshot) {
+                if(snapshot.hasData) {
+                  UserProfile userData = snapshot.data;
+                  return Text('${userData.firstName}');
+
+
+                } else {
+                  return Text('No data found');
+                }
+              }
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
+/*
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +110,7 @@ class _ProfileState extends State<Profile> {
           StreamBuilder<UserProfile>(
             stream: DatabaseService(uid: user.uid).userProfile,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData) {/*
                 UserProfile userData = snapshot.data;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -284,11 +329,13 @@ class _ProfileState extends State<Profile> {
                         if(new_username == ''){
                           new_username = userData.username;
                         }
-                          DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_grain, CarFuelType, CarSize, userData.treesPlanted, userData.username, userData.daysActive);
+                        print(userData.treesPlanted);
+                         // DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_grain, CarFuelType, CarSize, userData.treesPlanted, userData.username, userData.daysActive);
                       },
                     )
                   ],
-                );
+                );*/
+                return Text('nodatafound');
               }else{
                 return Text('No data found');
               }
@@ -301,3 +348,5 @@ class _ProfileState extends State<Profile> {
 }
 
 
+
+*/

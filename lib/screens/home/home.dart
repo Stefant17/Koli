@@ -135,6 +135,7 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomBar(),
           );
         } else {
+          print('no data');
           return Scaffold();
         }
       }

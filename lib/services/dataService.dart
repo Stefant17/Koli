@@ -30,7 +30,7 @@ class DatabaseService {
 
   DatabaseService({ this.uid });
 
- // ToDo Stefan bæta við variables fyrir user profile screenið
+
   Future initializeUserProfile() async {
     return await userCollection.document(uid).setData({
       'Username': '',
@@ -41,14 +41,17 @@ class DatabaseService {
       'CarSize': 'Medium',
       'DaysActive': 1,
       'TreesPlanted': 0,
-      'Meat': '',
-      'Fish': '',
-      'Dairy': '',
-      'Grains': '',
     });
   }
 
 
+  Future updateUserProfile(String firstName, String lastName, int age) async {
+    return await userCollection.document(uid).setData({
+      'FirstName': firstName,
+      'LastName': lastName,
+      'Age': age,
+    });
+  }
 
 
   Future<String> getCompanyIdFromName(String companyName) async {
@@ -138,11 +141,11 @@ class DatabaseService {
     QuerySnapshot cards = await cardsCollection.getDocuments();
     cards.documents.forEach((DocumentSnapshot snapshot) {
       UserCard newCard = UserCard(
-        cardID: snapshot.documentID,
-        cardNumber: snapshot.data['CardNumber'],
-        cvv: snapshot.data['CVV'],
-        expiry: snapshot.data['Expiry'],
-        transCount: snapshot.data['TransCount']
+          cardID: snapshot.documentID,
+          cardNumber: snapshot.data['CardNumber'],
+          cvv: snapshot.data['CVV'],
+          expiry: snapshot.data['Expiry'],
+          transCount: snapshot.data['TransCount']
       );
 
       userCards.add(newCard);
@@ -333,10 +336,10 @@ class DatabaseService {
   Stream<List<UserTransaction>> get userTransactions {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
-      .map(_userTransactionsFromSnapshot);
+        .map(_userTransactionsFromSnapshot);
   }
 
-// ToDo stefan, get functions fyrir profile screen
+
   UserProfile _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserProfile(
       uid: uid,
@@ -347,8 +350,6 @@ class DatabaseService {
       daysActive: snapshot.data['DaysActive'],
       carSize: snapshot.data['CarSize'],
       carFuelType: snapshot.data['CarFuelType'],
-      meat: snapshot.data['Meat'],
-      fish: snapshot.data['Fish'],
     );
   }
 
@@ -376,7 +377,7 @@ class DatabaseService {
 
   Stream<List<Company>> get companies {
     return companyCollection.snapshots()
-      .map(_companiesFromSnapshot);
+        .map(_companiesFromSnapshot);
   }
 
 
@@ -394,7 +395,7 @@ class DatabaseService {
 
   Stream<List<Category>> get categories {
     return categoryCollection.snapshots()
-      .map(_categoriesFromSnapshot);
+        .map(_categoriesFromSnapshot);
   }
 
 
@@ -415,7 +416,7 @@ class DatabaseService {
   Stream<int> get co2valueForCurrentMonth {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
-      .map(_co2ForCurrentMonthFromSnapshot);
+        .map(_co2ForCurrentMonthFromSnapshot);
   }
 
 
@@ -563,7 +564,7 @@ class DatabaseService {
 
   Stream<List<Badge>> get userBadges {
     return userCollection.document(uid).collection('Badges').snapshots()
-      .map(_userBadgesFromSnapshot);
+        .map(_userBadgesFromSnapshot);
   }
 
 
@@ -581,7 +582,7 @@ class DatabaseService {
 
   Stream<List<UserProfile>> get friendList {
     return userCollection.document(uid).collection('Friends').snapshots()
-      .map(_userFriendsFromSnapshot);
+        .map(_userFriendsFromSnapshot);
   }
 
   Future<List<UserProfile>> userSearch(String query) async {
@@ -602,11 +603,11 @@ class DatabaseService {
         if(user.data['FirstName'].toString().toLowerCase().contains(query.toLowerCase())) {
           if(!preExistingFriends.contains(user.documentID)) {
             result.add(
-              UserProfile(
-                uid: user.documentID,
-                firstName: user.data['FirstName'],
-                lastName: user.data['LastName']
-              )
+                UserProfile(
+                    uid: user.documentID,
+                    firstName: user.data['FirstName'],
+                    lastName: user.data['LastName']
+                )
             );
           }
         }
@@ -672,13 +673,13 @@ class DatabaseService {
 
   Stream<List<UserNotification>> get friendRequests {
     return userCollection.document(uid).collection('Notifications').snapshots()
-      .map(_friendRequestsFromSnapshot);
+        .map(_friendRequestsFromSnapshot);
   }
 
 
   Stream<List<UserNotification>> get notifications {
     return userCollection.document(uid).collection('Notifications').snapshots()
-      .map(_friendRequestsFromSnapshot);
+        .map(_friendRequestsFromSnapshot);
   }
 
   Future<void> acceptFriendRequest(String fromID, String notifID) async {
@@ -716,21 +717,5 @@ class DatabaseService {
   // TODO: Decline friend request
   Future<void> declineFriendRequest(String fromID, String notifID) async {
 
-  }
-
-  Future<void> updateUserProfile(String firstName, String lastName, int age, String meat, String fish, String dariy, String grains, String CarFuelType, String CarSize, int TreesPlanted, String Username, int DaysActive) async {
-    return await userCollection.document(uid).setData({
-      'FirstName': firstName,
-      'LastName': lastName,
-      'Age': age,
-      'Meat': meat,
-      'Fish': fish,
-      'Grains': grains,
-      'CarFuelType': CarFuelType,
-      'CarSize': CarSize,
-      'Username': Username,
-      'TreesPlanted': TreesPlanted,
-      'DaysActive': DaysActive,
-    });
   }
 }
