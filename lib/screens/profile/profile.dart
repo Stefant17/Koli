@@ -28,15 +28,15 @@ List<DropdownMenuItem<String>>  makelist_String(List Car){
   for(String i in Car){
     temp.add(new DropdownMenuItem(value: i, child: Text(i)));
   }
-  print(temp);
+  print(temp[0]);
   return temp;
 }
 
 class _ProfileState extends State<Profile> {
   // temp lists that are used
-  static List<String> _persentages = ['aldrei', '1 sinni', '2 sinnum', '3 sinnum' , '4 sinnum' 'oftar'];
-  static List<String> _carTypes = ['disel', 'oktan', 'elextric'];
-  static List<String> _carSizes = ['small', 'medium', 'big'];
+  static List<String> _persentages = ['aldrei', '1 sinni', '2 sinnum', '3 sinnum' , '4 sinnum', 'oftar', ''];
+  static List<String> _carTypes = ['disel', "95 Oktan", 'elextric',''];
+  static List<String> _carSizes = ['small', 'Medium', 'big',''];
   //making the lists into "DropdownMenuItem" so it can be used for dopdownbuttons later
   List<DropdownMenuItem<String>> _persentagesList = makelist_String(_persentages);
   List<DropdownMenuItem<String>> _carTypesList = makelist_String(_carTypes);
@@ -119,7 +119,7 @@ class _ProfileState extends State<Profile> {
                          Expanded(child:DropdownButton(
                            // isDense: false,
                             isExpanded: true,
-                            value: new_meat == ''? new_meat: userData.meat,
+                            value: new_meat != ''? new_meat: userData.meat,
                             items: _persentagesList,
                             onChanged: (newPersentage) {
                               setState(() {
@@ -141,11 +141,10 @@ class _ProfileState extends State<Profile> {
                         Expanded(child: DropdownButton(
                           isDense: false,
                           isExpanded: true,
-                          value: new_fish == ''? new_fish: userData.fish,
+                          value: new_fish != ''? new_fish:  userData.fish,
                           items: _persentagesList,
                           onChanged: (newPersentage) {
                             setState(() {
-                              print(userData.fish);
                               new_fish = newPersentage;
                             });
                           },
@@ -173,7 +172,7 @@ class _ProfileState extends State<Profile> {
                       Expanded(child:DropdownButton(
                         // isDense: false,
                         isExpanded: true,
-                        value: new_grain == ''? new_grain: userData.grains,
+                        value: new_grain != ''? new_grain:  userData.grains,
                         items: _persentagesList,
                         onChanged: (newPersentage) {
                           setState(() {
@@ -194,7 +193,7 @@ class _ProfileState extends State<Profile> {
                       Expanded(child:DropdownButton(
                         // isDense: false,
                         isExpanded: true,
-                        value: new_dairy == ''? new_dairy: userData.dairy,
+                        value: new_dairy != ''? new_dairy: userData.dairy,
                         items: _persentagesList,
                         onChanged: (newPersentage) {
                           setState(() {
@@ -224,7 +223,7 @@ class _ProfileState extends State<Profile> {
                        //change to disel, electric og oktan
                         Expanded(child:DropdownButton(
                       isExpanded: true,
-                      value:  new_CarFuelType,
+                      value:  new_CarFuelType != ''? new_CarFuelType: userData.carFuelType,
                       items: _carTypesList ,
                       onChanged: (new_value){
                         setState(() {
@@ -245,7 +244,7 @@ class _ProfileState extends State<Profile> {
                     // choose how large your car is
                       Expanded(child:DropdownButton(
                         isExpanded: true,
-                      value:  new_CarSize,
+                      value:  new_CarSize != ''? new_CarSize: userData.carSize,
                       items: _carSizeList ,
                       onChanged: (new_value){
                           setState(() {
