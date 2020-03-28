@@ -22,6 +22,7 @@ class _BottomBarState extends State<BottomBar> {
     int index = selectedIndex;
 
     showModalBottomSheet(
+      isDismissible: false,
       context: context,
       builder: (context){
         return StatefulBuilder (

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/notification.dart';
-import 'package:koli/models/user.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
 import 'package:koli/models/co2_by_day.dart';
@@ -13,6 +12,8 @@ import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
+import 'package:http/http.dart' as http;
+
 
 // Used only for statistic testing purposes
 // Set to 0 when done with testing
@@ -172,6 +173,16 @@ class DatabaseService {
         parseCardTransactions(decodedLines, numberOfTrans);
       }
     }
+  }
+
+
+  Future<bool> addCardToUser(String number, String expiry, String cvv) async {
+    await userCollection.document(uid).collection('Cards').add({
+      'CardNumber': number,
+      'Expiry': expiry,
+      'CVV': cvv,
+      'TransCount': 0
+    });
   }
 
 
@@ -470,6 +481,23 @@ class DatabaseService {
 
   Stream<CO2ByDay> get co2ByDay {
 
+  }
+
+  Future<http.Response> getInfo() {
+    return http.get('http://mbl.is'); //mavg/tas/2020/2039/ISL');
+  }
+
+  Future<void> getClimateChangeInfo() async {
+    var response = await getInfo();
+
+    if(response.statusCode == 200) {
+      print('hurra');
+    } else {
+      print('oh no');
+    }
+    print('body: [${response.body}]');
+    //print(response.body);
+    //print(json.decode(response.body));
   }
 
 

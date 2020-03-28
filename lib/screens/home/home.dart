@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/forms/add_card_form.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/user.dart';
@@ -30,14 +31,12 @@ class _HomeState extends State<Home> {
     return Date(currentDate);
   }
 
-  Function addNewBadge(Badge badge) {
+  void addNewBadge(Badge badge) {
     achievementGet(this.context, badge);
     setState(() {
       checkedForBadges = false;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +51,8 @@ class _HomeState extends State<Home> {
       DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
       checkedForBadges = true;
     }
+
+    DatabaseService().getClimateChangeInfo();
 
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,
@@ -117,6 +118,7 @@ class _HomeState extends State<Home> {
                   SizedBox(height: 50),
 
                   RaisedButton(
+                    elevation: 0,
                     color: Colors.black,
                     child: Text(
                       'Skrá út',
@@ -126,6 +128,26 @@ class _HomeState extends State<Home> {
                     ),
                     onPressed: () async {
                       await _auth.signOut();
+                    },
+                  ),
+
+                  RaisedButton(
+                    elevation: 0,
+                    color: Colors.blue,
+                    child: Text(
+                      'Tengja kort',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AddCardForm();
+                        }
+                      );
                     },
                   ),
                 ],
