@@ -23,46 +23,41 @@ Widget statisticsAppBar (var context){
   }
 
   return AppBar(
+    title: PopupMenuButton(
+      onSelected: (List choice) {
+        reroute(choice[1]);
+      },
+
+      icon: Icon(
+        Icons.menu,
+        size: 35,
+      ),
+      itemBuilder: (BuildContext context) {
+        return constants.menuList.map((List item) {
+          return PopupMenuItem<List>(
+            value: item,
+            child: Row(
+                children: <Widget> [
+                  Icon(
+                      item[0],
+                      color: Colors.black
+                  ),
+
+                  SizedBox(width: 20),
+
+                  Text('${item[1]}'),
+                ]
+            ),
+          );
+        }).toList();
+      },
+    ),
     backgroundColor: Colors.grey[900],
     elevation: 0.0,
     automaticallyImplyLeading: false,
 
     // Dropdown list, user profile, chart tabs
     actions: <Widget>[
-      Container(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 270.0, 0.0),
-        alignment: Alignment.topLeft,
-        child: PopupMenuButton(
-          onSelected: (List choice) {
-            reroute(choice[1]);
-          },
-
-          icon: Icon(
-            Icons.menu,
-            size: 35,
-          ),
-          itemBuilder: (BuildContext context) {
-            return constants.menuList.map((List item) {
-              return PopupMenuItem<List>(
-                value: item,
-                child: Row(
-                  children: <Widget> [
-                    Icon(
-                      item[0],
-                      color: Colors.black
-                    ),
-
-                    SizedBox(width: 20),
-
-                    Text('${item[1]}'),
-                  ]
-                ),
-              );
-            }).toList();
-          },
-        ),
-      ),
-
       FlatButton(
         child: Icon(
           Icons.face,

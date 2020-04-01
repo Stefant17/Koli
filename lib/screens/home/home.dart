@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
@@ -70,7 +71,7 @@ class _HomeState extends State<Home> {
               alignment: Alignment.center,
               child: Column(
                 children: <Widget> [
-                  Container(
+                  /*Container(
                     //margin: EdgeInsets.fromLTRB(50, 20, 0, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,27 +97,91 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
+
+
                   SizedBox(height: 40),
+                  */
+
 
                   StreamBuilder<int>(
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       int co2 = snapshot.data;
+
                       return Container(
-                        child: Text(
-                          '$co2 kg',
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.blue
-                          ),
+                        color: Color(0xFF2D2E2E),
+                        child: Row(
+                          children: <Widget>[
+                            Column(
+                              children: <Widget>[
+                                SizedBox(height: 20),
+                                Container(
+                                  padding: const EdgeInsets.all(40.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 5,
+                                      color: Colors.blue[200],
+                                    ),
+
+                                    shape: BoxShape.circle,
+                                  ),
+
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        '$co2 kg',
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          color: Colors.blue
+                                        ),
+                                      ),
+
+                                      Text('blabla')
+                                    ],
+                                  ),
+                                ),
+
+                                SizedBox(height: 20),
+
+                                Text(
+                                  'Þú ert með lægra kolefnisspor\n'
+                                  '          en 60% notenda',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                              ],
+                            ),
+
+                            //SizedBox(width: 40),
+                            VerticalDivider(color: Colors.white),
+
+                            Container(
+                              transform: Matrix4.translationValues(0.0, -25.0, 0.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.face,
+                                    size: 125,
+                                    color: Colors.grey[600],
+                                  ),
+                                  Text(
+                                    '${userData.firstName}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     }
                   ),
 
-                  SizedBox(height: 50),
-                  //HomeUserInfo(),
-                  Text('${userData.firstName} ${userData.lastName}'),
                   SizedBox(height: 50),
 
                   RaisedButton(
