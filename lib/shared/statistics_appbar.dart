@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/services/authService.dart';
 
 var constants = Constants();
 
 Widget statisticsAppBar (var context){
+  final AuthService _auth = AuthService();
+
   void reroute(String choice) {
     if(choice == 'Heim') {
       Navigator.pushNamed(context, '/');
-    } else {
+    }
+
+    else if(choice == 'Skrá út') {
+      _auth.signOut();
+    }
+
+    else {
       Navigator.pushNamed(context, '/' + choice);
     }
   }

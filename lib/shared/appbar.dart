@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/services/authService.dart';
 
 var constants = Constants();
 
 Widget appBar (var context){
+  final AuthService _auth = AuthService();
+
   void reroute(String choice) {
     if(choice == 'Heim') {
       Navigator.pushNamed(context, '/');
-    } else {
+    }
+
+    else if(choice == 'Skrá út') {
+      _auth.signOut();
+    }
+
+    else {
       Navigator.pushNamed(context, '/' + choice);
     }
   }

@@ -7,5 +7,6 @@ class Constants {
     [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
     [FontAwesomeIcons.chartArea, 'Tölfræði'],
     [FontAwesomeIcons.award, 'Orður'],
+    [FontAwesomeIcons.doorOpen, 'Skrá út'],
   ];
 }

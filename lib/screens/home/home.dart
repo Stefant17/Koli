@@ -12,6 +12,7 @@ import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/appbar.dart';
 
@@ -120,20 +121,6 @@ class _HomeState extends State<Home> {
 
                   RaisedButton(
                     elevation: 0,
-                    color: Colors.black,
-                    child: Text(
-                      'Skrá út',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () async {
-                      await _auth.signOut();
-                    },
-                  ),
-
-                  RaisedButton(
-                    elevation: 0,
                     color: Colors.blue,
                     child: Text(
                       'Tengja kort',
@@ -158,9 +145,7 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomBar(),
           );
         } else {
-          return Scaffold(
-            body: Text('noData home'),
-          );
+          return Loading();
         }
       }
     );
