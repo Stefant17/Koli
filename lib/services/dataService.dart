@@ -31,7 +31,7 @@ class DatabaseService {
 
   DatabaseService({ this.uid });
 
-
+ // ToDo Stefan bæta við variables fyrir user profile screenið
   Future initializeUserProfile() async {
     return await userCollection.document(uid).setData({
       'Username': '',
@@ -42,17 +42,14 @@ class DatabaseService {
       'CarSize': 'Medium',
       'DaysActive': 1,
       'TreesPlanted': 0,
+      'Meat': '',
+      'Fish': '',
+      'Dairy': '',
+      'Grains': '',
     });
   }
 
 
-  Future updateUserProfile(String firstName, String lastName, int age) async {
-    return await userCollection.document(uid).setData({
-      'FirstName': firstName,
-      'LastName': lastName,
-      'Age': age,
-    });
-  }
 
 
   Future<String> getCompanyIdFromName(String companyName) async {
@@ -369,7 +366,7 @@ class DatabaseService {
       .map(_userTransactionsFromSnapshot);
   }
 
-
+// ToDo stefan, get functions fyrir profile screen
   UserProfile _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserProfile(
       uid: uid,
@@ -380,6 +377,8 @@ class DatabaseService {
       daysActive: snapshot.data['DaysActive'],
       carSize: snapshot.data['CarSize'],
       carFuelType: snapshot.data['CarFuelType'],
+      meat: snapshot.data['Meat'],
+      fish: snapshot.data['Fish'],
     );
   }
 
@@ -764,5 +763,21 @@ class DatabaseService {
   // TODO: Decline friend request
   Future<void> declineFriendRequest(String fromID, String notifID) async {
 
+  }
+
+  Future<void> updateUserProfile(String firstName, String lastName, int age, String meat, String fish, String dariy, String grains, String CarFuelType, String CarSize, int TreesPlanted, String Username, int DaysActive) async {
+    return await userCollection.document(uid).setData({
+      'FirstName': firstName,
+      'LastName': lastName,
+      'Age': age,
+      'Meat': meat,
+      'Fish': fish,
+      'Grains': grains,
+      'CarFuelType': CarFuelType,
+      'CarSize': CarSize,
+      'Username': Username,
+      'TreesPlanted': TreesPlanted,
+      'DaysActive': DaysActive,
+    });
   }
 }
