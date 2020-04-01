@@ -6,3 +6,5 @@ Sprint 1 plan í framvinduskýrslu
 
 tala meira um hönnun í drög að hönnun
 gott að koma með solid hönnun fyri stöðufund
+
+

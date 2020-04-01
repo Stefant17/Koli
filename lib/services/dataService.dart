@@ -218,12 +218,31 @@ class DatabaseService {
       return (litres * avgKmPerLitre * emissionPerLitre).toInt();
     }
 
-    else if(trans.category == 'Fatnaður' || trans.category == 'Matvörur') {
+    else if(trans.category == 'Fatnaður') {
       var category = categoryCollection.document(trans.categoryID);
       int total = 0;
 
       await category.get().then((cat) {
         total = (trans.amount * cat['co2_per_kr']).toInt();
+      });
+
+      return total.toInt();
+    }
+
+    else if(trans.category == 'Matvörur') {
+      var user = userCollection.document(uid);
+      var category = categoryCollection.document(trans.categoryID);
+      int total = 0;
+
+      await user.get().then((user) {
+        print(user['FirstName']);
+      });
+
+      await category.get().then((cat) {
+        //var fish = cat['co2_per_kr_fish'];
+
+
+        //total = (trans.amount * cat['co2_per_kr']).toInt();
       });
 
       return total.toInt();
