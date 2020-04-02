@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
@@ -28,32 +29,60 @@ class _TransactionViewState extends State<TransactionView> {
   @override
   Widget build(BuildContext context) {
     if(!editTrans) {
-      return Card(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      return Container(
+        margin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.userTransaction.company,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                  Container(
+                    padding: EdgeInsets.all(15),
+
+                    child: Icon(
+                      widget.userTransaction.category == 'Bensín' ? FontAwesomeIcons.gasPump
+                      : widget.userTransaction.category == 'Matvörur' ? FontAwesomeIcons.shoppingBasket
+                      : widget.userTransaction.category == 'Fatnaður' ? FontAwesomeIcons.redhat
+                      : null,
+                      color: Color(0xFFF3F8F2),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: widget.userTransaction.category == 'Bensín' ? Color(0xFFD81E5B)
+                          : widget.userTransaction.category == 'Matvörur' ? Color(0xFF339989)
+                          : widget.userTransaction.category == 'Fatnaður' ? Color(0xFF736CED)
+                          : null,
                     ),
                   ),
 
-                  //SizedBox(width: 100),
+                  SizedBox(width: 10),
 
-                  Expanded(
-                    child: Container(
+                  Container(
+                      //alignment: Alignment.centerLeft,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            widget.userTransaction.company,
+                            style: TextStyle(
+                              fontSize: 25.0,
+                              color: Colors.black,
+                            ),
+                          ),
+
+                          Text(
+                            '${widget.userTransaction.date}',
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ],
+                      ),
+                  ),
+
+                  /*
+                  Container(
                       alignment: Alignment.center,
                       child: Text(
                         widget.userTransaction.category,
@@ -62,11 +91,9 @@ class _TransactionViewState extends State<TransactionView> {
                           color: Colors.grey[600],
                         ),
                       ),
-                    ),
                   ),
-  
-                  Expanded(
-                    child: Container(
+                  */
+                  Container(
                       alignment: Alignment.topRight,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -90,19 +117,9 @@ class _TransactionViewState extends State<TransactionView> {
                           ),
                         ],
                       ),
-                    ),
                   ),
                 ],
               ),
-
-              Text(
-                '${widget.userTransaction.date}',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.grey[800],
-                ),
-              ),
-
               //SizedBox(height: 8.0),
             ],
           ),

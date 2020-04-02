@@ -79,12 +79,14 @@ class _HomeState extends State<Home> {
                         int co2 = snapshot.data;
 
                         return Container(
-                          //alignment: Alignment.center,
+                          alignment: Alignment.center,
                           color: Color(0xFF2D2E2E),
                           child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(height: 20),
@@ -130,7 +132,7 @@ class _HomeState extends State<Home> {
 
                               //SizedBox(width: 40),
                               //VerticalDivider(color: Colors.white),
-
+                              SizedBox(width: 40),
                               Container(
                                 alignment: Alignment.topRight,
                                 transform: Matrix4.translationValues(0.0, -10.0, 0.0),
