@@ -41,12 +41,12 @@ class DatabaseService {
       'CarSize': 'Medium',
       'DaysActive': 1,
       'TreesPlanted': 0,
-      'Meat': '',
-      'Fish': '',
-      'Fruit': '',
-      'Dairy': '',
-      'Grains': '',
       'DateJoined': '',
+      'Meat': '0.09',
+      'Fish': '0.05',
+      'Fruit': '0.15',
+      'Dairy': '0.20',
+      'Grains': '0',
     });
   }
 
@@ -232,49 +232,42 @@ class DatabaseService {
     else if(trans.category == 'Matvörur') {
       var user = userCollection.document(uid);
       var category = categoryCollection.document(trans.categoryID);
-      int total = 0;
-      int fish;
-      int meat;
-      int fruit;
-      int dairy;
-      int grain;
-      int nuts;
-      int vegetables;
+      double total = 0;
+      double fish;
+      double meat;
+      double fruit;
+      double dairy;
+      double grain;
+      double nuts;
+      double vegetables;
 
       await user.get().then((user) {
         //print(user['FirstName']);
-        fish = int.parse( user['Fish']);
-        fruit = int.parse(user['Fruit']);
-        meat = int.parse(user['Meat']);
-        dairy = int.parse(user['Dairy']);
+        fish = double.parse( user['Fish']);
+        fruit = double.parse(user['Fruit']);
+        meat = double.parse(user['Meat']);
+        dairy = double.parse(user['Dairy']);
       });
-      print(fish);
-      print(fruit);
-      print(meat);
-      print(dairy);
 
-      grain = ((fish + fruit + meat + dairy)/3 *2).round();
-      nuts = ((fish + fruit + meat + dairy)/3).round();
+      grain = ((fish + fruit + meat + dairy)/3 *2);
+      nuts = ((fish + fruit + meat + dairy)/3);
 
       await category.get().then((cat) {
         //var fish = cat['co2_per_kr_fish'];
-        meat = (trans.amount * meat * cat['co2_per_kr_meat']).round();
-        fish = (trans.amount * fish * cat['co2_per_kr_fish']).round();
-        fruit = (trans.amount * fruit * cat['co2_per_kr_fruit']).round();
-        nuts = (trans.amount * nuts * cat['co2_per_kr_nuts']).round();
-        dairy =  (trans.amount * dairy * cat['co2_per_kg_dairy']).round();
-        grain = (trans.amount * grain * cat['co2_per_kr_grains']).round();
+        meat = (trans.amount * meat * cat['co2_per_kr_meat']);
+        fish = (trans.amount * fish * cat['co2_per_kr_fish']);
+        fruit = (trans.amount * fruit * cat['co2_per_kr_fruit']);
+        nuts = (trans.amount * nuts * cat['co2_per_kr_nuts']);
+        dairy =  (trans.amount * dairy * cat['co2_per_kg_dairy']);
+        grain = (trans.amount * grain * cat['co2_per_kr_grains']);
 
 
 
 
         total = meat + fish + fruit + nuts + dairy + grain;
-        print(total);
 
       });
-      print(total);
-
-      return total;
+      return (total).toInt();
     }
 
     return 0;

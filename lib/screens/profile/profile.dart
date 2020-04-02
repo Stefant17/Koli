@@ -21,18 +21,18 @@ String temp_values(String value){
   if (value == null){
     return '';
   }
-  int value2 = int.parse(value);
+  double value2 = double.parse(value);
   if (value2 == 0 ){
     return 'aldrei';
-  }else if ( value2 <6){
+  }else if ( value2 <0.06){
     return '1 sinni';
-  }else if (value2 < 11){
+  }else if (value2 < 0.11){
     return '2 sinnum';
-  }else if (value2 < 16){
+  }else if (value2 < 0.16){
     return '3 sinnum';
-  }else if (value2 < 21){
+  }else if (value2 < 0.21){
     return '4 sinnum';
-  }else if (value2 < 30){
+  }else if (value2 < 0.30){
     return 'oftar';
   }else {
     return '';
@@ -43,15 +43,15 @@ String Meat_value(String new_value, String default_val){
   if(new_value == 'aldrei'){
     return '0';
   }else if (new_value == '1 sinni'){
-    return '5';
+    return '0.05';
   }else if (new_value == '2 sinnum'){
-    return '9';
+    return '0.09';
   }else if (new_value == '3 sinnum'){
-    return '15';
+    return '0.15';
   }else if (new_value == '4 sinnum'){
-    return '20';
+    return '0.20';
   }else if (new_value == 'oftar'){
-    return '25';
+    return '0.25';
   }else{
     return default_val;
   }
@@ -60,49 +60,49 @@ String fish_value(String new_value, String default_val){
   if(new_value == 'aldrei'){
     return '0';
   }else if (new_value == '1 sinni'){
-    return '5';
+    return '0.5';
   }else if (new_value == '2 sinnum'){
-    return '9';
+    return '0.9';
   }else if (new_value == '3 sinnum'){
-    return '15';
+    return '0.15';
   }else if (new_value == '4 sinnum'){
-    return '20';
+    return '0.20';
   }else if (new_value == 'oftar'){
-    return '25';
+    return '0.25';
   }else{
     return default_val;
   }
 }
 String fruit_value(String new_value, String default_val){
   if(new_value == 'aldrei'){
-    return '0';
+    return '0.0';
   }else if (new_value == '1 sinni'){
-    return '5';
+    return '0.5';
   }else if (new_value == '2 sinnum'){
-    return '10';
+    return '0.10';
   }else if (new_value == '3 sinnum'){
-    return '15';
+    return '0.15';
   }else if (new_value == '4 sinnum'){
-    return '20';
+    return '0.20';
   }else if (new_value == 'oftar'){
-    return '25';
+    return '0.25';
   }else{
     return default_val;
   }
 }
 String dairy_value(String new_value, String default_val){
   if(new_value == 'aldrei'){
-    return '0';
+    return '0.0';
   }else if (new_value == '1 sinni'){
-    return '5';
+    return '0.05';
   }else if (new_value == '2 sinnum'){
-    return '10';
+    return '0.10';
   }else if (new_value == '3 sinnum'){
-    return '15';
+    return '0.15';
   }else if (new_value == '4 sinnum'){
-    return '20';
+    return '0.20';
   }else if (new_value == 'oftar'){
-    return '25';
+    return '0.25';
   }else{
     return default_val;
   }
