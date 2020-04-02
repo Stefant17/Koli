@@ -18,7 +18,7 @@ class UserProfile {
   String meat;
   String veg;
   String fruit;
-  String  fish;
+  String fish;
   String dairy;
   String grains;
   String nuts;

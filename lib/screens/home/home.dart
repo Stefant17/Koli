@@ -59,7 +59,6 @@ class _HomeState extends State<Home> {
       builder: (context, snapshot) {
         if(snapshot.hasData) {
           UserProfile userData = snapshot.data;
-          print(userData.carSize);
 
           return Scaffold(
             backgroundColor: Colors.white,

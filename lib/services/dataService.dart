@@ -31,19 +31,19 @@ class DatabaseService {
 
   DatabaseService({ this.uid });
 
- // ToDo Stefan bæta við variables fyrir user profile screenið
   Future initializeUserProfile() async {
     return await userCollection.document(uid).setData({
       'Username': '',
       'FirstName': '',
       'LastName': '',
       'Age': 0,
-      'CarFuelType': '95 Oktan',
+      'CarFuelType': "95 Oktan",
       'CarSize': 'Medium',
       'DaysActive': 1,
       'TreesPlanted': 0,
       'Meat': '',
       'Fish': '',
+      'Fruit': '',
       'Dairy': '',
       'Grains': '',
     });
@@ -226,23 +226,53 @@ class DatabaseService {
       return total.toInt();
     }
 
+    /// stefan implementar
     else if(trans.category == 'Matvörur') {
       var user = userCollection.document(uid);
       var category = categoryCollection.document(trans.categoryID);
       int total = 0;
+      int fish;
+      int meat;
+      int fruit;
+      int dairy;
+      int grain;
+      int nuts;
+      int vegetables;
 
       await user.get().then((user) {
-        print(user['FirstName']);
+        //print(user['FirstName']);
+        fish = int.parse( user['Fish']);
+        fruit = int.parse(user['Fruit']);
+        meat = int.parse(user['Meat']);
+        dairy = int.parse(user['Dairy']);
       });
+      print(fish);
+      print(fruit);
+      print(meat);
+      print(dairy);
+
+      grain = ((fish + fruit + meat + dairy)/3 *2).round();
+      nuts = ((fish + fruit + meat + dairy)/3).round();
 
       await category.get().then((cat) {
         //var fish = cat['co2_per_kr_fish'];
+        meat = (trans.amount * meat * cat['co2_per_kr_meat']).round();
+        fish = (trans.amount * fish * cat['co2_per_kr_fish']).round();
+        fruit = (trans.amount * fruit * cat['co2_per_kr_fruit']).round();
+        nuts = (trans.amount * nuts * cat['co2_per_kr_nuts']).round();
+        dairy =  (trans.amount * dairy * cat['co2_per_kg_dairy']).round();
+        grain = (trans.amount * grain * cat['co2_per_kr_grains']).round();
 
 
-        //total = (trans.amount * cat['co2_per_kr']).toInt();
+
+
+        total = meat + fish + fruit + nuts + dairy + grain;
+        print(total);
+
       });
+      print(total);
 
-      return total.toInt();
+      return total;
     }
 
     return 0;
@@ -366,7 +396,6 @@ class DatabaseService {
       .map(_userTransactionsFromSnapshot);
   }
 
-// ToDo stefan, get functions fyrir profile screen
   UserProfile _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserProfile(
       uid: uid,
@@ -379,6 +408,8 @@ class DatabaseService {
       carFuelType: snapshot.data['CarFuelType'],
       meat: snapshot.data['Meat'],
       fish: snapshot.data['Fish'],
+      dairy: snapshot.data['Dairy'],
+      fruit: snapshot.data['Fruit'],
     );
   }
 
@@ -509,11 +540,11 @@ class DatabaseService {
     var response = await getInfo();
 
     if(response.statusCode == 200) {
-      print('hurra');
+      //print('hurra');
     } else {
       print('oh no');
     }
-    print('body: [${response.body}]');
+    //print('body: [${response.body}]');
     //print(response.body);
     //print(json.decode(response.body));
   }
@@ -765,14 +796,15 @@ class DatabaseService {
 
   }
 
-  Future<void> updateUserProfile(String firstName, String lastName, int age, String meat, String fish, String dariy, String grains, String CarFuelType, String CarSize, int TreesPlanted, String Username, int DaysActive) async {
+  Future<void> updateUserProfile(String firstName, String lastName, int age, String meat, String fish, String dariy, String fruit, String CarFuelType, String CarSize, int TreesPlanted, String Username, int DaysActive) async {
     return await userCollection.document(uid).setData({
       'FirstName': firstName,
       'LastName': lastName,
       'Age': age,
       'Meat': meat,
       'Fish': fish,
-      'Grains': grains,
+      'Fruit': fruit,
+      'Dairy': dariy,
       'CarFuelType': CarFuelType,
       'CarSize': CarSize,
       'Username': Username,

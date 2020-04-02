@@ -15,6 +15,102 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+
+
+String temp_values(String value){
+  if (value == null){
+    return '';
+  }
+  int value2 = int.parse(value);
+  if (value2 == 0 ){
+    return 'aldrei';
+  }else if ( value2 <6){
+    return '1 sinni';
+  }else if (value2 < 11){
+    return '2 sinnum';
+  }else if (value2 < 16){
+    return '3 sinnum';
+  }else if (value2 < 21){
+    return '4 sinnum';
+  }else if (value2 < 30){
+    return 'oftar';
+  }else {
+    return '';
+  }
+}
+
+String Meat_value(String new_value, String default_val){
+  if(new_value == 'aldrei'){
+    return '0';
+  }else if (new_value == '1 sinni'){
+    return '5';
+  }else if (new_value == '2 sinnum'){
+    return '9';
+  }else if (new_value == '3 sinnum'){
+    return '15';
+  }else if (new_value == '4 sinnum'){
+    return '20';
+  }else if (new_value == 'oftar'){
+    return '25';
+  }else{
+    return default_val;
+  }
+}
+String fish_value(String new_value, String default_val){
+  if(new_value == 'aldrei'){
+    return '0';
+  }else if (new_value == '1 sinni'){
+    return '5';
+  }else if (new_value == '2 sinnum'){
+    return '9';
+  }else if (new_value == '3 sinnum'){
+    return '15';
+  }else if (new_value == '4 sinnum'){
+    return '20';
+  }else if (new_value == 'oftar'){
+    return '25';
+  }else{
+    return default_val;
+  }
+}
+String fruit_value(String new_value, String default_val){
+  if(new_value == 'aldrei'){
+    return '0';
+  }else if (new_value == '1 sinni'){
+    return '5';
+  }else if (new_value == '2 sinnum'){
+    return '10';
+  }else if (new_value == '3 sinnum'){
+    return '15';
+  }else if (new_value == '4 sinnum'){
+    return '20';
+  }else if (new_value == 'oftar'){
+    return '25';
+  }else{
+    return default_val;
+  }
+}
+String dairy_value(String new_value, String default_val){
+  if(new_value == 'aldrei'){
+    return '0';
+  }else if (new_value == '1 sinni'){
+    return '5';
+  }else if (new_value == '2 sinnum'){
+    return '10';
+  }else if (new_value == '3 sinnum'){
+    return '15';
+  }else if (new_value == '4 sinnum'){
+    return '20';
+  }else if (new_value == 'oftar'){
+    return '25';
+  }else{
+    return default_val;
+  }
+}
+
+
+
+
 List<DropdownMenuItem<double>> makelist_double(List persentages){
   List<DropdownMenuItem<double>> temp= List();
   for(double i in persentages){
@@ -28,7 +124,6 @@ List<DropdownMenuItem<String>>  makelist_String(List Car){
   for(String i in Car){
     temp.add(new DropdownMenuItem(value: i, child: Text(i)));
   }
-  print(temp[0]);
   return temp;
 }
 
@@ -45,7 +140,7 @@ class _ProfileState extends State<Profile> {
   String new_fish = '';
   String new_meat = '';
   String new_dairy = '';
-  String new_grain = '';
+  String new_fruit = '';
   String new_age = '';
   String new_FirstName = '';
   String new_LastName = '';
@@ -54,6 +149,11 @@ class _ProfileState extends State<Profile> {
   String CarFuelType = '';
   String CarSize = '';
   String new_username = '';
+// breyts values frá userdata í "1 sinni" "2 sinnum" svo það virki með dropdownlist
+  String temp_fish ;
+  String temp_meat ;
+  String temp_dairy;
+  String temp_fruit;
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -67,6 +167,10 @@ class _ProfileState extends State<Profile> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 UserProfile userData = snapshot.data;
+                temp_fish = temp_values(userData.fish);
+                temp_meat = temp_values(userData.meat);
+                temp_dairy = temp_values(userData.dairy);
+                temp_fruit = temp_values(userData.fruit);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -101,8 +205,8 @@ class _ProfileState extends State<Profile> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.all(8.0), child: Text('hversu mikið kjöt borðaru?'),),
-                          Padding(padding: EdgeInsets.all(8.0), child: Text("hversu oft borðaru fisk? "),),
+                          Padding(padding: EdgeInsets.all(8.0), child: Text(' kjöt á viku?'),),
+                          Padding(padding: EdgeInsets.all(8.0), child: Text(" fisk á viku? "),),
                         ]),
                     Row(
                       children: <Widget>[
@@ -119,7 +223,7 @@ class _ProfileState extends State<Profile> {
                          Expanded(child:DropdownButton(
                            // isDense: false,
                             isExpanded: true,
-                            value: new_meat != ''? new_meat: userData.meat,
+                            value: new_meat != ''? new_meat: temp_meat,
                             items: _persentagesList,
                             onChanged: (newPersentage) {
                               setState(() {
@@ -141,7 +245,7 @@ class _ProfileState extends State<Profile> {
                         Expanded(child: DropdownButton(
                           isDense: false,
                           isExpanded: true,
-                          value: new_fish != ''? new_fish:  userData.fish,
+                          value: new_fish != ''? new_fish:  temp_fish,
                           items: _persentagesList,
                           onChanged: (newPersentage) {
                             setState(() {
@@ -154,8 +258,8 @@ class _ProfileState extends State<Profile> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.all(8.0), child: Text('hversu mikið grain?'),),
-                          Padding(padding: EdgeInsets.all(8.0), child: Text("hversu oft borðaru dariy? "),),
+                          Padding(padding: EdgeInsets.all(8.0), child: Text('ávextir á dag?'),),
+                          Padding(padding: EdgeInsets.all(8.0), child: Text("mjólkuvörur á dag?"),),
                         ]),
                   Row(
                     children: <Widget>[
@@ -172,11 +276,11 @@ class _ProfileState extends State<Profile> {
                       Expanded(child:DropdownButton(
                         // isDense: false,
                         isExpanded: true,
-                        value: new_grain != ''? new_grain:  userData.grains,
+                        value: new_fruit != ''? new_fruit:  temp_fruit,
                         items: _persentagesList,
                         onChanged: (newPersentage) {
                           setState(() {
-                            new_grain = newPersentage;
+                            new_fruit = newPersentage;
                           });
                         },
                       )),
@@ -193,7 +297,7 @@ class _ProfileState extends State<Profile> {
                       Expanded(child:DropdownButton(
                         // isDense: false,
                         isExpanded: true,
-                        value: new_dairy != ''? new_dairy: userData.dairy,
+                        value: new_dairy != ''? new_dairy: temp_dairy,
                         items: _persentagesList,
                         onChanged: (newPersentage) {
                           setState(() {
@@ -262,28 +366,48 @@ class _ProfileState extends State<Profile> {
                         if(new_LastName == ''){
                           new_LastName = userData.lastName;
                         }
-                        if(new_meat == -1){
+                        if(new_meat == ''){
                           new_meat = userData.meat;
+                        }else{
+                          new_meat = Meat_value(new_meat, userData.meat);
                         }
-                        if(new_fish == -1) {
+                        if(new_fish == '') {
                           new_fish = userData.fish;
+                        }else{
+                          new_fish = fish_value(new_fish, userData.fish);
                         }
-                        if(new_dairy == -1){
+                        if(new_dairy == ''){
                           new_dairy = userData.dairy;
+                        }else{
+                          new_dairy = dairy_value(new_dairy, userData.dairy);
                         }
-                        if(new_grain == -1){
-                          new_grain = userData.grains;
+                        if(new_fruit == ''){
+                          new_fruit = userData.fruit;
+                        }else{
+                          new_fruit = fruit_value(new_fruit, userData.fruit);
                         }
-                        if(CarFuelType == ''){
-                          CarFuelType = userData.carFuelType;
+                        if(new_CarFuelType == ''){
+                          new_CarFuelType = userData.carFuelType;
                         }
-                        if(CarSize == ''){
-                          CarSize = userData.carSize;
+                        if(new_CarSize == ''){
+                          new_CarSize = userData.carSize;
                         }
                         if(new_username == ''){
                           new_username = userData.username;
                         }
-                          DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_grain, CarFuelType, CarSize, userData.treesPlanted, userData.username, userData.daysActive);
+                          DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_fruit, new_CarFuelType, new_CarSize, userData.treesPlanted, userData.username, userData.daysActive);
+                        new_fish = '';
+                        new_meat = '';
+                        new_dairy = '';
+                        new_fruit = '';
+                        new_age = '';
+                        new_FirstName = '';
+                        new_LastName = '';
+                        new_CarFuelType = '';
+                        new_CarSize = '';
+                        CarFuelType = '';
+                        CarSize = '';
+                        new_username = '';
                       },
                     )
                   ],
