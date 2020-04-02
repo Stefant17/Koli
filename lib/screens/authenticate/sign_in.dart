@@ -36,7 +36,10 @@ class _SignInState extends State<SignIn> {
           ),
           actions: <Widget> [
             FlatButton.icon(
-              icon: Icon(Icons.person),
+              icon: Icon(
+                Icons.person,
+                color: Colors.blueGrey,
+              ),
               label: Text(
                 'Nýskráning',
                 style: TextStyle(

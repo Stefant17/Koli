@@ -23,33 +23,37 @@ class _BottomBarState extends State<BottomBar> {
 
     showModalBottomSheet(
       isDismissible: false,
+      isScrollControlled: true,
       context: context,
       builder: (context){
-        return StatefulBuilder (
-          builder: (BuildContext context, StateSetter sheetSetState) {
-            void update(int newIndex) {
-              sheetSetState(() => index = newIndex);
-            }
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.88,
+          child: StatefulBuilder (
+            builder: (BuildContext context, StateSetter sheetSetState) {
+              void update(int newIndex) {
+                sheetSetState(() => index = newIndex);
+              }
 
-            if(selectedIndex >= 0) {
-              return Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: openBottomNav(update),
-                  ),
-
-                  Expanded(
-                    child: Container(
-                      child: panelList[index],
+              if(selectedIndex >= 0) {
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      child: openBottomNav(update),
                     ),
-                  ),
-                ]
-              );
-            } else {
-              return Text('');
+
+                    Expanded(
+                      child: Container(
+                        child: panelList[index],
+                      ),
+                    ),
+                  ]
+                );
+              } else {
+                return Text('');
+              }
             }
-          }
+          ),
         );
       }
     );

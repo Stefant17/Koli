@@ -32,7 +32,10 @@ class _RegisterState extends State<Register> {
         ),
         actions: <Widget> [
           FlatButton.icon(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              color: Colors.blueGrey,
+            ),
             label: Text(
               'Innskráning',
               style: TextStyle(

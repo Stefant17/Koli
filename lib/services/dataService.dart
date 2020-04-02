@@ -537,7 +537,7 @@ class DatabaseService {
   }
 
   Future<void> getClimateChangeInfo() async {
-    var response = await getInfo();
+    /*var response = await getInfo();
 
     if(response.statusCode == 200) {
       //print('hurra');
@@ -547,6 +547,8 @@ class DatabaseService {
     //print('body: [${response.body}]');
     //print(response.body);
     //print(json.decode(response.body));
+
+     */
   }
 
 
