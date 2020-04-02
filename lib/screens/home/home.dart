@@ -70,7 +70,6 @@ class _HomeState extends State<Home> {
 
             body: Container(
               color: Color(0xFF2E4057),
-              alignment: Alignment.center,
               child: Column(
                 children: <Widget> [
                   StreamBuilder<int>(
@@ -80,13 +79,17 @@ class _HomeState extends State<Home> {
                         int co2 = snapshot.data;
 
                         return Container(
+                          //alignment: Alignment.center,
                           color: Color(0xFF2D2E2E),
                           child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
                                   SizedBox(height: 20),
                                   Container(
+                                    alignment: Alignment.bottomCenter,
                                     padding: const EdgeInsets.all(40.0),
                                     decoration: BoxDecoration(
                                       border: Border.all(
@@ -111,7 +114,7 @@ class _HomeState extends State<Home> {
                                   ),
 
                                   SizedBox(height: 20),
-
+                                  /*
                                   Text(
                                     'Þú ert með lægra kolefnisspor\n'
                                         '          en 60% notenda',
@@ -119,15 +122,18 @@ class _HomeState extends State<Home> {
                                       color: Colors.white,
                                     ),
                                   ),
+
+                                   */
                                   SizedBox(height: 20),
                                 ],
                               ),
 
                               //SizedBox(width: 40),
-                              VerticalDivider(color: Colors.white),
+                              //VerticalDivider(color: Colors.white),
 
                               Container(
-                                transform: Matrix4.translationValues(0.0, -25.0, 0.0),
+                                alignment: Alignment.topRight,
+                                transform: Matrix4.translationValues(0.0, -10.0, 0.0),
                                 child: Column(
                                   children: <Widget>[
                                     Icon(
@@ -153,7 +159,7 @@ class _HomeState extends State<Home> {
                       }
                     }
                   ),
-
+                  /*
                   Container(
                     //margin: EdgeInsets.fromLTRB(50, 20, 0, 0),
                     child: Column(
@@ -179,6 +185,8 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
+
+                   */
 
                   SizedBox(height: 50),
 

@@ -46,6 +46,7 @@ class DatabaseService {
       'Fruit': '',
       'Dairy': '',
       'Grains': '',
+      'DateJoined': '',
     });
   }
 
@@ -184,6 +185,7 @@ class DatabaseService {
 
 
   Future<int> getCO2fromCompany(UserTransaction trans) async {
+    print('yo');
     var company = companyCollection.document(trans.companyID);
     var user = userCollection.document(uid);
 
