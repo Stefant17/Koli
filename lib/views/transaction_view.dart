@@ -103,7 +103,7 @@ class _TransactionViewState extends State<TransactionView> {
                   ),
                   */
                   Container(
-                      padding: EdgeInsets.fromLTRB(0, 0, 40, 20),
+                      padding: EdgeInsets.fromLTRB(0, 10, 40, 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,8 +111,9 @@ class _TransactionViewState extends State<TransactionView> {
                           Text(
                             '${widget.userTransaction.amount} kr.',
                             style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 16.0,
                               color: Colors.grey[800],
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
 
