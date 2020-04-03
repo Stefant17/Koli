@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  calendar_time:
+    dependency: "direct main"
+    description:
+      name: calendar_time
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   charcode:
     dependency: transitive
     description:

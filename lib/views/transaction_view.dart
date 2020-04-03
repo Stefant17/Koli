@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
@@ -58,27 +59,35 @@ class _TransactionViewState extends State<TransactionView> {
 
                   SizedBox(width: 10),
 
-                  Container(
-                      //alignment: Alignment.centerLeft,
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            widget.userTransaction.company,
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              color: Colors.black,
+                  Expanded(
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.userTransaction.company,
+                                style: TextStyle(
+                                  fontSize: 25.0,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
-                          ),
 
-                          Text(
-                            '${widget.userTransaction.date}',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.grey[800],
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${widget.userTransaction.date}',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                    ),
                   ),
 
                   /*
@@ -94,9 +103,10 @@ class _TransactionViewState extends State<TransactionView> {
                   ),
                   */
                   Container(
-                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.fromLTRB(0, 0, 40, 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             '${widget.userTransaction.amount} kr.',
@@ -106,6 +116,7 @@ class _TransactionViewState extends State<TransactionView> {
                             ),
                           ),
 
+                          /*
                           IconButton(
                             alignment: Alignment.topRight,
                             icon: Icon(Icons.mode_edit),
@@ -115,6 +126,8 @@ class _TransactionViewState extends State<TransactionView> {
                               });
                             },
                           ),
+
+                           */
                         ],
                       ),
                   ),

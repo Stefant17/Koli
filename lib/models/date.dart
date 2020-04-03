@@ -60,4 +60,8 @@ class Date {
   List getMonthList() {
     return months;
   }
+
+  String getDayAndMonth() {
+    return '$day. ${months[month]}';
+  }
 }
