@@ -19,7 +19,7 @@ class Badges extends StatelessWidget {
           List<Badge> badges = snapshot.data;
 
           return Scaffold(
-            appBar: appBar(context),
+            appBar: appBar(context, 'Orður'),
             body: Column(
               children: badges.map((badge){
                 return BadgeView(

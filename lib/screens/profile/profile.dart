@@ -159,7 +159,7 @@ class _ProfileState extends State<Profile> {
     final user = Provider.of<User>(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: appBar(context),
+      appBar: appBar(context, 'Prófíll'),
       body: ListView(
         children: <Widget>[
           StreamBuilder<UserProfile>(

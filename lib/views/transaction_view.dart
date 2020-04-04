@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
@@ -42,18 +43,12 @@ class _TransactionViewState extends State<TransactionView> {
                     padding: EdgeInsets.all(15),
 
                     child: Icon(
-                      widget.userTransaction.category == 'Bensín' ? FontAwesomeIcons.gasPump
-                      : widget.userTransaction.category == 'Matvörur' ? FontAwesomeIcons.shoppingBasket
-                      : widget.userTransaction.category == 'Fatnaður' ? FontAwesomeIcons.redhat
-                      : null,
-                      color: Color(0xFFF3F8F2),
+                      Constants().categoryIcons[widget.userTransaction.category]['Icon'],
+                      color: Colors.white,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: widget.userTransaction.category == 'Bensín' ? Color(0xFFD81E5B)
-                          : widget.userTransaction.category == 'Matvörur' ? Color(0xFF339989)
-                          : widget.userTransaction.category == 'Fatnaður' ? Color(0xFF736CED)
-                          : null,
+                      color: Color(Constants().categoryIcons[widget.userTransaction.category]['Color']),
                     ),
                   ),
 
@@ -81,27 +76,15 @@ class _TransactionViewState extends State<TransactionView> {
                                 '${widget.userTransaction.date}',
                                 style: TextStyle(
                                   fontSize: 12.0,
-                                  color: Colors.grey[800],
+                                  color: Colors.grey[500],
                                 ),
                               ),
                             ),
                           ],
-                        ),
+                       ),
                     ),
                   ),
 
-                  /*
-                  Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.userTransaction.category,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                  ),
-                  */
                   Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 40, 20),
                       child: Row(
@@ -112,7 +95,7 @@ class _TransactionViewState extends State<TransactionView> {
                             '${widget.userTransaction.amount} kr.',
                             style: TextStyle(
                               fontSize: 16.0,
-                              color: Colors.grey[800],
+                              color: Colors.grey[500],
                               fontWeight: FontWeight.bold,
                             ),
                           ),

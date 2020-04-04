@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
 
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: appBar(context),
+            appBar: appBar(context, 'Heima'),
 
             body: Container(
               color: Color(0xFF2E4057),
@@ -218,7 +218,8 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomBar(),
           );
         } else {
-          return Loading();
+          //return Loading();
+          return Text('loading');
         }
       }
     );

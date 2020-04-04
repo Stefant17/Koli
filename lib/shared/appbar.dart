@@ -4,7 +4,7 @@ import 'package:koli/services/authService.dart';
 
 var constants = Constants();
 
-Widget appBar (var context){
+Widget appBar (var context, String title){
   final AuthService _auth = AuthService();
 
   void reroute(String choice) {
@@ -23,36 +23,41 @@ Widget appBar (var context){
 
   return AppBar(
     // title: Text('Koli'),
-    title: PopupMenuButton(
-      onSelected: (List choice) {
-        reroute(choice[1]);
-      },
+    title: Row(
+      children: <Widget>[
+        PopupMenuButton(
+          onSelected: (List choice) {
+            reroute(choice[1]);
+          },
 
-      icon: Icon(
-        Icons.menu,
-        size: 35,
-      ),
-      itemBuilder: (BuildContext context) {
-        return constants.menuList.map((List item) {
-          return PopupMenuItem<List>(
-            value: item,
-            child: Row(
-                children: <Widget> [
-                  Icon(
-                      item[0],
-                      color: Colors.black
-                  ),
+          icon: Icon(
+            Icons.menu,
+            size: 35,
+          ),
+          itemBuilder: (BuildContext context) {
+            return constants.menuList.map((List item) {
+              return PopupMenuItem<List>(
+                value: item,
+                child: Row(
+                    children: <Widget> [
+                      Icon(
+                          item[0],
+                          color: Colors.black
+                      ),
 
-                  SizedBox(width: 20),
+                      SizedBox(width: 20),
 
-                  Text('${item[1]}'),
-                ]
-            ),
-          );
-        }).toList();
-      },
+                      Text('${item[1]}'),
+                    ]
+                ),
+              );
+            }).toList();
+          },
+        ),
+        SizedBox(width: 30),
+        Text('$title'),
+      ],
     ),
-    // centerTitle: true,
     backgroundColor: Colors.grey[900],
     elevation: 0.0,
     automaticallyImplyLeading: false,

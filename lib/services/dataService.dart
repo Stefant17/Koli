@@ -321,12 +321,20 @@ class DatabaseService {
   String convertToDateTimeFormat(String date) {
     List<String> splitDate;
 
+    if(date.contains(new RegExp(r'[A-Z]'))) {
+      return '';
+    }
+
     if(date.contains('/')) {
       splitDate = date.split('/');
     }
 
     else if(date.contains('.')) {
       splitDate = date.split('.');
+    }
+
+    else {
+      return '';
     }
 
     if(splitDate[1].length == 1) {

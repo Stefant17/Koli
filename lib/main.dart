@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:koli/screens/overview/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
-import 'package:koli/screens/overview/overview.dart';
+import 'package:koli/screens/overview/overview_wrapper.dart';
 import 'package:koli/screens/profile/profile.dart';
 import 'package:koli/screens/statistics/statistics.dart';
 import 'package:koli/screens/wrapper.dart';
@@ -19,10 +20,11 @@ class MyApp extends StatelessWidget {
         //home: Wrapper(),
         routes: {
           '/': (context) => Wrapper(),
-          '/Yfirlit': (context) => Overview(),
+          '/Yfirlit': (context) => OverViewWrapper(),
           '/Tölfræði': (context) => Statistics(),
           '/Orður': (context) => Badges(),
           '/Prófíll': (context) => Profile(),
+          '/Ný færsla': (context) => CreateTransaction(),
         },
       ),
     );
