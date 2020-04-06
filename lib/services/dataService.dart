@@ -41,6 +41,7 @@ class DatabaseService {
       'CarSize': 'Medium',
       'DaysActive': 1,
       'TreesPlanted': 0,
+      'DateJoined': '',
       'Meat': '0.09',
       'Fish': '0.05',
       'Fruit': '0.15',
@@ -184,6 +185,7 @@ class DatabaseService {
 
 
   Future<int> getCO2fromCompany(UserTransaction trans) async {
+    print('yo');
     var company = companyCollection.document(trans.companyID);
     var user = userCollection.document(uid);
 
@@ -319,12 +321,20 @@ class DatabaseService {
   String convertToDateTimeFormat(String date) {
     List<String> splitDate;
 
+    if(date.contains(new RegExp(r'[A-Z]'))) {
+      return '';
+    }
+
     if(date.contains('/')) {
       splitDate = date.split('/');
     }
 
     else if(date.contains('.')) {
       splitDate = date.split('.');
+    }
+
+    else {
+      return '';
     }
 
     if(splitDate[1].length == 1) {

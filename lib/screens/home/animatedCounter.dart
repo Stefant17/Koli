@@ -43,6 +43,7 @@ class _AnimatedCounterState extends State<AnimatedCounter>
         });
       });
     _controller.forward();
+    //_controller.dispose();
   }
 
   @override

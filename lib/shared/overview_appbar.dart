@@ -5,7 +5,7 @@ import 'package:koli/services/authService.dart';
 
 var constants = Constants();
 
-Widget statisticsAppBar (var context, String title){
+Widget overviewAppBar (var context, String title){
   final AuthService _auth = AuthService();
 
   void reroute(String choice) {
@@ -58,7 +58,6 @@ Widget statisticsAppBar (var context, String title){
         Text('$title'),
       ],
     ),
-
     backgroundColor: Colors.grey[900],
     elevation: 0.0,
     automaticallyImplyLeading: false,
@@ -80,9 +79,16 @@ Widget statisticsAppBar (var context, String title){
     bottom: TabBar(
       indicatorColor: Colors.white,
       tabs: [
-        Tab(icon: Icon(FontAwesomeIcons.solidChartBar)),
-        Tab(icon: Icon(FontAwesomeIcons.chartLine)),
-        Tab(icon: Icon(FontAwesomeIcons.chartPie)),
+        Tab(
+          child: Row(
+            children: <Widget>[
+              Icon(FontAwesomeIcons.creditCard),
+              SizedBox(width: 20),
+              Text('Kortafærslur'),
+            ],
+          ),
+        ),
+        Tab(text: 'Blabla')
       ],
     ),
   ); //AppBar

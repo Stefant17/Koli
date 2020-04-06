@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
@@ -28,57 +31,76 @@ class _TransactionViewState extends State<TransactionView> {
   @override
   Widget build(BuildContext context) {
     if(!editTrans) {
-      return Card(
-        margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      return Container(
+        margin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        widget.userTransaction.company,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                  Container(
+                    padding: EdgeInsets.all(15),
+
+                    child: Icon(
+                      Constants().categoryIcons[widget.userTransaction.category]['Icon'],
+                      color: Colors.white,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Color(Constants().categoryIcons[widget.userTransaction.category]['Color']),
                     ),
                   ),
 
-                  //SizedBox(width: 100),
+                  SizedBox(width: 10),
 
                   Expanded(
                     child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        widget.userTransaction.category,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                widget.userTransaction.company,
+                                style: TextStyle(
+                                  fontSize: 25.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${widget.userTransaction.date}',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.grey[500],
+                                ),
+                              ),
+                            ),
+                          ],
+                       ),
                     ),
                   ),
-  
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.topRight,
+
+                  Container(
+                      padding: EdgeInsets.fromLTRB(0, 10, 40, 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             '${widget.userTransaction.amount} kr.',
                             style: TextStyle(
-                              fontSize: 18.0,
-                              color: Colors.grey[800],
+                              fontSize: 16.0,
+                              color: Colors.grey[500],
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
 
+                          /*
                           IconButton(
                             alignment: Alignment.topRight,
                             icon: Icon(Icons.mode_edit),
@@ -88,21 +110,13 @@ class _TransactionViewState extends State<TransactionView> {
                               });
                             },
                           ),
+
+                           */
                         ],
                       ),
-                    ),
                   ),
                 ],
               ),
-
-              Text(
-                '${widget.userTransaction.date}',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.grey[800],
-                ),
-              ),
-
               //SizedBox(height: 8.0),
             ],
           ),

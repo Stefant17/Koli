@@ -21,7 +21,7 @@ class _StatisticsState extends State<Statistics> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: statisticsAppBar(context),
+        appBar: statisticsAppBar(context, 'Tölfræði'),
         body: TabBarView(
           children: <Widget>[
             BarChart(uid: user.uid),
