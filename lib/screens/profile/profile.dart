@@ -422,5 +422,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-

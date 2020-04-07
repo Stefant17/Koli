@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/screens/overview/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           '/Orður': (context) => Badges(),
           '/Prófíll': (context) => Profile(),
           '/Ný færsla': (context) => CreateTransaction(),
+          '/Breyta færslu': (context) => EditTransactionForm(),
         },
       ),
     );

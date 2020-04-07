@@ -36,12 +36,12 @@ class _OverviewState extends State<Overview> {
             var calendarDate = CalendarTime(DateTime.now());
 
             if(calendarDate.startOfToday().toString() == date + '0') {
-              userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
+              //userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
               todayTransactions.add(userTransactions[i]);
             }
 
             else if(calendarDate.startOfYesterday().toString() == date + '0') {
-              userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
+              //userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
               yesterdayTransactions.add(userTransactions[i]);
             }
 

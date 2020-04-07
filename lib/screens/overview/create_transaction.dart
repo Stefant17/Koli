@@ -17,12 +17,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 
 class CreateTransaction extends StatefulWidget {
-  /*final Function toggleCreateTransaction;
-  final user;
-
-  CreateTransactionForm({ this.toggleCreateTransaction, this.user });
-  */
-
   @override
   _CreateTransactionState createState() => _CreateTransactionState();
 }
@@ -49,6 +43,16 @@ class _CreateTransactionState extends State<CreateTransaction> {
 
   void createNewTransaction(UserTransaction trans, String uid) async {
     await DatabaseService(uid: uid).createUserTransaction(trans);
+  }
+
+  Widget suggestionRow(String name) {
+    return Container(
+      width: 50,
+      padding: EdgeInsets.fromLTRB(30, 15, 55, 15),
+      child: Text(
+        name,
+      ),
+    );
   }
 
   Future<Null> selectDate(BuildContext context) async {
@@ -103,7 +107,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
                 List<Category> categories = categorySnapshot.data;
 
                 return Scaffold(
-                  appBar: appBar(context, 'Ný færsla'),
+                  appBar: appBar(context, ''),
                   backgroundColor: Colors.white,
                   body: Column(
                     children: <Widget>[
@@ -137,7 +141,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
                                 alignment: Alignment.centerLeft,
                                 margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                                 child: Text(
-                                  'Upplýsingar',
+                                  'Ný færsla',
                                   style: TextStyle(
                                     fontSize: 30,
                                   ),
@@ -178,7 +182,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
                                 },
 
                                 itemBuilder: (context, item) {
-                                  return Text(item.name);
+                                  return suggestionRow(item.name);
                                 },
 
                                 keyboardType: TextInputType.emailAddress,
@@ -264,18 +268,18 @@ class _CreateTransactionState extends State<CreateTransaction> {
                       SizedBox(height: 10),
 
                       Container(
-                        padding: EdgeInsets.fromLTRB(70, 0, 70, 0),
+                        padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                         height: 75,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: categories.map((cat) {
                             return Column(
                               children: <Widget>[
-                                RaisedButton(
-                                  elevation: 0,
-                                  color: Colors.white,
+                                InkWell(
+                                  //elevation: 0,
+                                  //color: Colors.white,
                                   child: Container(
-                                    //margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                                     padding: EdgeInsets.all(15),
                                     child: Icon(
                                       Constants().categoryIcons[cat.name]['Icon'],
@@ -291,7 +295,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
                                     ),
                                   ),
 
-                                  onPressed: () {
+                                  onTap: () {
                                     setState(() {
                                       newCategory = cat.name;
                                       newCategoryID = cat.catID;

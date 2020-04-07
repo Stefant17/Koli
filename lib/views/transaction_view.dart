@@ -31,105 +31,111 @@ class _TransactionViewState extends State<TransactionView> {
   @override
   Widget build(BuildContext context) {
     if(!editTrans) {
-      return Container(
-        margin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(15),
+      return InkWell(
+        onTap: () {
+          setState(() {
+            Navigator.pushNamed(
+              context, '/Breyta færslu',
+              arguments:  {'trans' :widget.userTransaction}
+            );
+          });
+        },
+        child: Container(
+          margin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(15),
 
-                    child: Icon(
-                      Constants().categoryIcons[widget.userTransaction.category]['Icon'],
-                      color: Colors.white,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Color(Constants().categoryIcons[widget.userTransaction.category]['Color']),
-                    ),
-                  ),
-
-                  SizedBox(width: 10),
-
-                  Expanded(
-                    child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                widget.userTransaction.company,
-                                style: TextStyle(
-                                  fontSize: 25.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '${widget.userTransaction.date}',
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.grey[500],
-                                ),
-                              ),
-                            ),
-                          ],
-                       ),
-                    ),
-                  ),
-
-                  Container(
-                      padding: EdgeInsets.fromLTRB(0, 10, 40, 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            '${widget.userTransaction.amount} kr.',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.grey[500],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          /*
-                          IconButton(
-                            alignment: Alignment.topRight,
-                            icon: Icon(Icons.mode_edit),
-                            onPressed: () {
-                              setState(() {
-                                editTrans = true;
-                              });
-                            },
-                          ),
-
-                           */
-                        ],
+                      child: Icon(
+                        Constants().categoryIcons[widget.userTransaction.category]['Icon'],
+                        color: Colors.white,
                       ),
-                  ),
-                ],
-              ),
-              //SizedBox(height: 8.0),
-            ],
-          ),
-        )
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color(Constants().categoryIcons[widget.userTransaction.category]['Color']),
+                      ),
+                    ),
+
+                    SizedBox(width: 10),
+
+                    Expanded(
+                      child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  widget.userTransaction.company,
+                                  style: TextStyle(
+                                    fontSize: 25.0,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '${widget.userTransaction.date}',
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ),
+                            ],
+                         ),
+                      ),
+                    ),
+
+                    Container(
+                        padding: EdgeInsets.fromLTRB(0, 10, 40, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${widget.userTransaction.amount} kr.',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            /*
+                            IconButton(
+                              alignment: Alignment.topRight,
+                              icon: Icon(Icons.mode_edit),
+                              onPressed: () {
+                                setState(() {
+                                  editTrans = true;
+                                });
+                              },
+                            ),
+
+                             */
+                          ],
+                        ),
+                    ),
+                  ],
+                ),
+                //SizedBox(height: 8.0),
+              ],
+            ),
+          )
+        ),
       );
     } else {
       //return AlertDialog(
           //content:
-          return EditTransactionForm(
-            toggleEditTrans: this.toggleEditTrans,
-            editTransaction: this.editTransaction,
-            userTransaction: widget.userTransaction
-          );
+      return Text('yo');
       //);
     }
   }
