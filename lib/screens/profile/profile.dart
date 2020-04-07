@@ -108,9 +108,6 @@ String dairy_value(String new_value, String default_val){
   }
 }
 
-
-
-
 List<DropdownMenuItem<double>> makelist_double(List persentages){
   List<DropdownMenuItem<double>> temp= List();
   for(double i in persentages){
@@ -132,11 +129,13 @@ class _ProfileState extends State<Profile> {
   static List<String> _persentages = ['aldrei', '1 sinni', '2 sinnum', '3 sinnum' , '4 sinnum', 'oftar', ''];
   static List<String> _carTypes = ['disel', "95 Oktan", 'elextric',''];
   static List<String> _carSizes = ['small', 'Medium', 'big',''];
+
   //making the lists into "DropdownMenuItem" so it can be used for dopdownbuttons later
   List<DropdownMenuItem<String>> _persentagesList = makelist_String(_persentages);
   List<DropdownMenuItem<String>> _carTypesList = makelist_String(_carTypes);
   List<DropdownMenuItem<String>> _carSizeList = makelist_String(_carSizes);
-// temp variables that will be submitted when changed
+
+  //temp variables that will be submitted when changed
   String new_fish = '';
   String new_meat = '';
   String new_dairy = '';
@@ -149,11 +148,165 @@ class _ProfileState extends State<Profile> {
   String CarFuelType = '';
   String CarSize = '';
   String new_username = '';
-// breyts values frá userdata í "1 sinni" "2 sinnum" svo það virki með dropdownlist
+
+  // breytir values frá userdata í "1 sinni" "2 sinnum" svo það virki með dropdownlist
   String temp_fish ;
   String temp_meat ;
   String temp_dairy;
   String temp_fruit;
+
+  List<Widget> panels = [
+    Row(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+              children: <Widget>[
+                Padding(padding: EdgeInsets.all(8.0), child: Text(' kjöt á viku?'),),
+                Padding(padding: EdgeInsets.all(8.0), child: Text(" fisk á viku? "),),
+              ]
+            ),
+
+            Expanded(
+              child:Container(
+                width: 20,
+                color: Colors.red,
+                padding: EdgeInsets.all(10.0),
+                child: Image(
+                  width: 50.0,
+                  height: 50.0,
+                  image: AssetImage('assets/images/meatPng.png'),
+                ),
+              ),
+            ),
+
+            /*
+            Expanded(child:DropdownButton(
+              //isDense: false,
+              isExpanded: true,
+              value: new_meat != ''? new_meat: temp_meat,
+              items: _persentagesList,
+              onChanged: (newPersentage) {
+                setState(() {
+                  new_meat = newPersentage;
+                });
+              },
+            )),
+
+             */
+
+            Expanded(
+              child:Container(
+                width: 20,
+                color: Colors.blue,
+                padding: EdgeInsets.all(10.0),
+                child: Image(
+                  image: AssetImage('assets/images/fish_icon.png'),
+                  width: 50.0,
+                  height: 50.0,
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+                  children: <Widget>[
+                    Padding(padding: EdgeInsets.all(8.0), child: Text('ávextir á dag?'),),
+                    Padding(padding: EdgeInsets.all(8.0), child: Text("mjólkuvörur á dag?"),),
+                  ]
+              ),
+            ),
+
+            Expanded(
+              child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        width: 20,
+                        color: Colors.green,
+                        padding: EdgeInsets.all(10.0),
+                        child: Image(
+                          image: AssetImage('assets/images/grain_icon.png'),
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                      ),
+                    ),
+
+                    /*
+                    Expanded(
+                        child:DropdownButton(
+                          // isDense: false,
+                          isExpanded: true,
+                          value: new_fruit != ''? new_fruit:  temp_fruit,
+                          items: _persentagesList,
+                          onChanged: (newPersentage) {
+                            setState(() {
+                              new_fruit = newPersentage;
+                            });
+                          },
+                        )
+                    ),
+
+                     */
+
+                    Expanded(
+                      child:Container(
+                        width: 20,
+                        color: Colors.yellow,
+                        padding: EdgeInsets.all(10.0),
+                        child: Image(
+                          image: AssetImage('assets/images/dariy_icon.png'),
+                          width: 50.0,
+                          height: 50.0,
+                        ),
+                      ),
+                    ),
+
+                    /*
+                    Expanded(
+                        child:DropdownButton(
+                          // isDense: false,
+                          isExpanded: true,
+                          value: new_dairy != ''? new_dairy: temp_dairy,
+                          items: _persentagesList,
+                          onChanged: (newPersentage) {
+                            setState(() {
+                              new_dairy = newPersentage;
+                            });
+                          },
+                        )
+                    ),
+
+                     */
+                  ]
+              ),
+            ),
+
+          ],
+        ),
+        /*
+        Expanded(
+          child: DropdownButton(
+            isDense: false,
+            isExpanded: true,
+            value: new_fish != ''? new_fish:  temp_fish,
+            items: _persentagesList,
+            onChanged: (newPersentage) {
+              setState(() {
+                new_fish = newPersentage;
+              });
+            },
+          ),
+        ),
+
+         */
+      ],
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -171,10 +324,29 @@ class _ProfileState extends State<Profile> {
                 temp_meat = temp_values(userData.meat);
                 temp_dairy = temp_values(userData.dairy);
                 temp_fruit = temp_values(userData.fruit);
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    ExpansionPanelList(
+                      expansionCallback: (int index, bool isExpanded) {
+                        setState(() {
+
+                        });
+                      },
+
+                      children: panels.map((item) {
+                        return ExpansionPanel(
+                          headerBuilder: (BuildContext context, bool isExpanded) {
+                            return Text('ye');
+                          },
+                          isExpanded: true,
+                          body: item,
+                        );
+                      }).toList(),
+                    ),
+
                     Container(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
@@ -185,134 +357,39 @@ class _ProfileState extends State<Profile> {
                     ),
                     Row(
                       children: <Widget>[
-                         Expanded( child:TextField(
-                         decoration: new InputDecoration(
-                           hintText: "First name",),
-                           onChanged: (String str) {
-                           setState(() {
-                              new_FirstName = str;
-                            });},
-                           ),),
-                         Expanded(child:TextField(
+                        Expanded(
+                          child:TextField(
                             decoration: new InputDecoration(
+                              hintText: "First name",),
+                              onChanged: (String str) {
+                                setState(() {
+                                  new_FirstName = str;
+                                });
+                              },
+                           ),
+                        ),
+
+                        Expanded(child:TextField(
+                          decoration: new InputDecoration(
                             hintText: "Last name",),
                             onChanged: (String str) {
-                            setState(() {
-                              new_FirstName = str;
-                            });},
-                        ),
-              )],),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.all(8.0), child: Text(' kjöt á viku?'),),
-                          Padding(padding: EdgeInsets.all(8.0), child: Text(" fisk á viku? "),),
-                        ]),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child:Container(
-                            color: Colors.red,
-                            padding: EdgeInsets.all(10.0),
-                          child: Image(
-                            width: 50.0,
-                            height: 50.0,
-                            image: AssetImage('assets/images/meatPng.png'),
-                          ),
-                        ),),
-                         Expanded(child:DropdownButton(
-                           // isDense: false,
-                            isExpanded: true,
-                            value: new_meat != ''? new_meat: temp_meat,
-                            items: _persentagesList,
-                            onChanged: (newPersentage) {
                               setState(() {
-                                new_meat = newPersentage;
+                                new_FirstName = str;
                               });
-                          },
-                        )),
-                        Expanded(
-                          child:Container(
-                            color: Colors.blue,
-                            padding: EdgeInsets.all(10.0),
-                            child: Image(
-                              image: AssetImage('assets/images/fish_icon.png'),
-                              width: 50.0,
-                              height: 50.0,
-                            ),
+                            },
                           ),
-                        ),
-                        Expanded(child: DropdownButton(
-                          isDense: false,
-                          isExpanded: true,
-                          value: new_fish != ''? new_fish:  temp_fish,
-                          items: _persentagesList,
-                          onChanged: (newPersentage) {
-                            setState(() {
-                              new_fish = newPersentage;
-                            });
-                          },
-                        ),),
+                        )
                       ],
                     ),
+
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.all(8.0), child: Text('ávextir á dag?'),),
-                          Padding(padding: EdgeInsets.all(8.0), child: Text("mjólkuvörur á dag?"),),
-                        ]),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child:Container(
-                          color: Colors.green,
-                          padding: EdgeInsets.all(10.0),
-                          child: Image(
-                            image: AssetImage('assets/images/grain_icon.png'),
-                            width: 50.0,
-                            height: 50.0,
-                          ),
-                        ),),
-                      Expanded(child:DropdownButton(
-                        // isDense: false,
-                        isExpanded: true,
-                        value: new_fruit != ''? new_fruit:  temp_fruit,
-                        items: _persentagesList,
-                        onChanged: (newPersentage) {
-                          setState(() {
-                            new_fruit = newPersentage;
-                          });
-                        },
-                      )),
-                      Expanded(
-                        child:Container(
-                          color: Colors.yellow,
-                          padding: EdgeInsets.all(10.0),
-                          child: Image(
-                            image: AssetImage('assets/images/dariy_icon.png'),
-                            width: 50.0,
-                            height: 50.0,
-                          ),
-                        ),),
-                      Expanded(child:DropdownButton(
-                        // isDense: false,
-                        isExpanded: true,
-                        value: new_dairy != ''? new_dairy: temp_dairy,
-                        items: _persentagesList,
-                        onChanged: (newPersentage) {
-                          setState(() {
-                            new_dairy = newPersentage;
-                          });
-                        },
-                      )),
-                      ]),
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.all(8.0), child: Text('hvernig bensín notar bílinn þinn?'),),
+                        Padding(padding: EdgeInsets.all(8.0), child: Text("hversu stór er bílinn þinn? "),),
+                      ]
+                    ),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
-                        children: <Widget>[
-                          Padding(padding: EdgeInsets.all(8.0), child: Text('hvernig bensín notar bílinn þinn?'),),
-                          Padding(padding: EdgeInsets.all(8.0), child: Text("hversu stór er bílinn þinn? "),),
-                        ]),
-                   Row(
                      children: <Widget>[
                        Expanded(
                          child:Container(
@@ -323,18 +400,22 @@ class _ProfileState extends State<Profile> {
                              height: 50.0,
                              image: AssetImage('assets/images/car_icon.png'),
                            ),
-                         ),),
+                         ),
+                       ),
                        //change to disel, electric og oktan
-                        Expanded(child:DropdownButton(
-                      isExpanded: true,
-                      value:  new_CarFuelType != ''? new_CarFuelType: userData.carFuelType,
-                      items: _carTypesList ,
-                      onChanged: (new_value){
-                        setState(() {
-                          new_CarFuelType = new_value;
-                        });
-                      },
-                    ),),
+                       Expanded(
+                         child:DropdownButton(
+                            isExpanded: true,
+                            value:  new_CarFuelType != ''? new_CarFuelType: userData.carFuelType,
+                            items: _carTypesList ,
+                            onChanged: (new_value){
+                              setState(() {
+                                new_CarFuelType = new_value;
+                              });
+                            },
+                         ),
+                       ),
+
                        Expanded(
                          child:Container(
                            color: Colors.red,
@@ -344,72 +425,78 @@ class _ProfileState extends State<Profile> {
                              height: 50.0,
                              image: AssetImage('assets/images/fuel_icon.png'),
                            ),
-                         ),),
+                         ),
+                       ),
                     // choose how large your car is
-                      Expanded(child:DropdownButton(
-                        isExpanded: true,
-                      value:  new_CarSize != ''? new_CarSize: userData.carSize,
-                      items: _carSizeList ,
-                      onChanged: (new_value){
-                          setState(() {
-                            new_CarSize = new_value;
-                          });
-                      },
-                    ),),
-              ]),
-                    RaisedButton(
-                      child: Text('Staðfesta?'),
-                      onPressed: (){
-                        if(new_FirstName == ''){
-                          new_FirstName = userData.firstName;
-                        }
-                        if(new_LastName == ''){
-                          new_LastName = userData.lastName;
-                        }
-                        if(new_meat == ''){
-                          new_meat = userData.meat;
-                        }else{
-                          new_meat = Meat_value(new_meat, userData.meat);
-                        }
-                        if(new_fish == '') {
-                          new_fish = userData.fish;
-                        }else{
-                          new_fish = fish_value(new_fish, userData.fish);
-                        }
-                        if(new_dairy == ''){
-                          new_dairy = userData.dairy;
-                        }else{
-                          new_dairy = dairy_value(new_dairy, userData.dairy);
-                        }
-                        if(new_fruit == ''){
-                          new_fruit = userData.fruit;
-                        }else{
-                          new_fruit = fruit_value(new_fruit, userData.fruit);
-                        }
-                        if(new_CarFuelType == ''){
-                          new_CarFuelType = userData.carFuelType;
-                        }
-                        if(new_CarSize == ''){
-                          new_CarSize = userData.carSize;
-                        }
-                        if(new_username == ''){
-                          new_username = userData.username;
-                        }
-                          DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_fruit, new_CarFuelType, new_CarSize, userData.treesPlanted, userData.username, userData.daysActive);
-                        new_fish = '';
-                        new_meat = '';
-                        new_dairy = '';
-                        new_fruit = '';
-                        new_age = '';
-                        new_FirstName = '';
-                        new_LastName = '';
-                        new_CarFuelType = '';
-                        new_CarSize = '';
-                        CarFuelType = '';
-                        CarSize = '';
-                        new_username = '';
-                      },
-                    )
+                      Expanded(
+                        child:DropdownButton(
+                          isExpanded: true,
+                          value:  new_CarSize != ''? new_CarSize: userData.carSize,
+                          items: _carSizeList ,
+                          onChanged: (new_value){
+                            setState(() {
+                              new_CarSize = new_value;
+                            });
+                          },
+                        ),
+                      ),
+                    ]
+                  ),
+
+                  RaisedButton(
+                    child: Text('Staðfesta?'),
+                    onPressed: (){
+                      if(new_FirstName == ''){
+                        new_FirstName = userData.firstName;
+                      }
+                      if(new_LastName == ''){
+                        new_LastName = userData.lastName;
+                      }
+                      if(new_meat == ''){
+                        new_meat = userData.meat;
+                      }else{
+                        new_meat = Meat_value(new_meat, userData.meat);
+                      }
+                      if(new_fish == '') {
+                        new_fish = userData.fish;
+                      }else{
+                        new_fish = fish_value(new_fish, userData.fish);
+                      }
+                      if(new_dairy == ''){
+                        new_dairy = userData.dairy;
+                      }else{
+                        new_dairy = dairy_value(new_dairy, userData.dairy);
+                      }
+                      if(new_fruit == ''){
+                        new_fruit = userData.fruit;
+                      }else{
+                        new_fruit = fruit_value(new_fruit, userData.fruit);
+                      }
+                      if(new_CarFuelType == ''){
+                        new_CarFuelType = userData.carFuelType;
+                      }
+                      if(new_CarSize == ''){
+                        new_CarSize = userData.carSize;
+                      }
+                      if(new_username == ''){
+                        new_username = userData.username;
+                      }
+
+                      DatabaseService(uid: user.uid).updateUserProfile(new_FirstName, new_LastName, userData.age, new_meat, new_fish, new_dairy, new_fruit, new_CarFuelType, new_CarSize, userData.treesPlanted, userData.username, userData.daysActive);
+                      new_fish = '';
+                      new_meat = '';
+                      new_dairy = '';
+                      new_fruit = '';
+                      new_age = '';
+                      new_FirstName = '';
+                      new_LastName = '';
+                      new_CarFuelType = '';
+                      new_CarSize = '';
+                      CarFuelType = '';
+                      CarSize = '';
+                      new_username = '';
+                    },
+                  )
                   ],
                 );
               }else{
@@ -422,3 +509,5 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
+
+
