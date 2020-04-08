@@ -203,12 +203,7 @@ class _HomeState extends State<Home> {
                     ),
 
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AddCardForm();
-                        }
-                      );
+                      Navigator.pushNamed(context, '/Nýtt kort');
                     },
                   ),
                 ],

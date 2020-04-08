@@ -104,23 +104,10 @@ class _TransactionViewState extends State<TransactionView> {
                               '${widget.userTransaction.amount} kr.',
                               style: TextStyle(
                                 fontSize: 16.0,
-                                color: Colors.grey[500],
+                                color: widget.userTransaction.co2 > 0 ? Colors.grey[500] : Colors.green,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-
-                            /*
-                            IconButton(
-                              alignment: Alignment.topRight,
-                              icon: Icon(Icons.mode_edit),
-                              onPressed: () {
-                                setState(() {
-                                  editTrans = true;
-                                });
-                              },
-                            ),
-
-                             */
                           ],
                         ),
                     ),

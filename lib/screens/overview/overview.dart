@@ -130,36 +130,6 @@ class _OverviewState extends State<Overview> {
                         uid: user.uid,
                       )).toList(),
                     ),
-
-                    /*
-                    createTransaction ? CreateTransactionForm(
-                        toggleCreateTransaction: this.toggleCreateTransaction,
-                        user: user
-                    )
-                    :
-                    Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: double.infinity,
-                          child: RaisedButton(
-                            elevation: 0.0,
-                            color: Colors.black,
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-
-                            onPressed: () {
-                              setState(() {
-                                createTransaction = true;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-
-                     */
                   ],
                 ),
               ],

@@ -14,6 +14,8 @@ import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/userCard.dart';
+
 
 // Used only for statistic testing purposes
 // Set to 0 when done with testing
@@ -188,6 +190,15 @@ class DatabaseService {
     print('yo');
     var company = companyCollection.document(trans.companyID);
     var user = userCollection.document(uid);
+
+    var companyName = await company.get().then((com) {
+      return com['Name'];
+    });
+
+    // TODO: Finna út jöfnu til að lækka spor
+    if(companyName == 'Kolviður') {
+      return -10000;
+    }
 
     if(trans.category == 'Bensín') {
       var emissionPerLitre = 0.18;
@@ -816,5 +827,10 @@ class DatabaseService {
       'TreesPlanted': TreesPlanted,
       'DaysActive': DaysActive,
     });
+  }
+
+  //TODO: Implement this shiz
+  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName) {
+
   }
 }

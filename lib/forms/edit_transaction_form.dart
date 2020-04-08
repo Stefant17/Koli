@@ -1,5 +1,6 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/category.dart';
@@ -42,11 +43,13 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
 
   Future<Null> selectDate(BuildContext context) async {
     int nextYear = currentDate.year + 1;
-    final DateTime picked = await showDatePicker(
+    final DateTime picked = await showRoundedDatePicker(
       context: context,
       initialDate: currentDate,
       firstDate: DateTime(2010),
       lastDate: DateTime(nextYear),
+      borderRadius: 25,
+      theme: ThemeData.dark(),
     );
 
     if(picked != null) {

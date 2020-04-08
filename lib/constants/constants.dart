@@ -8,6 +8,9 @@ class Constants {
     [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
     [FontAwesomeIcons.chartArea, 'Tölfræði'],
     [FontAwesomeIcons.award, 'Orður'],
+    //[FontAwesomeIcons.handHoldingHeart, 'Góðgerðarmál'],
+    [FontAwesomeIcons.seedling, 'Kolefnisjöfnun'],
+    [FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
     [FontAwesomeIcons.signOutAlt, 'Skrá út'],
   ];
 
@@ -19,7 +22,7 @@ class Constants {
 
     'Bensín': {
       'Icon': FontAwesomeIcons.gasPump,
-      'Color': 0xFFD81E5B,
+      'Color': 0xFFD81E5B //0xFFD81E5B,
     },
 
     'Fatnaður': {
@@ -29,17 +32,22 @@ class Constants {
 
     'Raftæki': {
       'Icon': FontAwesomeIcons.plug,
-      'Color': 0xFF540D6E,
+      'Color': 0xFF63458A //0xFF480355,
     },
 
     'Húsgögn': {
       'Icon': FontAwesomeIcons.chair,
-      'Color': 0xFF336699,
+      'Color': 0xFF19647E //0xFF40586F //0xFF336699,
     },
 
     'Skyndibiti': {
       'Icon': FontAwesomeIcons.hamburger,
-      'Color': 0xFF9EE493,
+      'Color': 0xFFA23E48,
+    },
+
+    'Málefni': {
+      'Icon': FontAwesomeIcons.handHoldingHeart,
+      'Color': 0xFF3FA7D6,
     }
   };
 }
