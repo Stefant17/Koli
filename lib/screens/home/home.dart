@@ -28,8 +28,16 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   var currentDate = DateTime.now();
   var constants = Constants();
+
   bool checkedForBadges = false;
   bool checkedForNewCardTrans = false;
+
+  List<Color> gradientList = [
+    //Color(0xFF48A9A6),
+    //Colors.greenAccent,
+    Color(0xFFA5F8D3),
+    Colors.blue,
+  ];
 
   Date getCurrentDate() {
     return Date(currentDate);
@@ -65,18 +73,170 @@ class _HomeState extends State<Home> {
           UserProfile userData = snapshot.data;
 
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFF2D2E2E),
             appBar: appBar(context, 'Heima'),
 
             body: Container(
-              color: Color(0xFF2E4057),
-              child: Column(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              color: Color(0xFF2D2E2E),
+              child: ListView(
                 children: <Widget> [
+                  SizedBox(height: 20),
                   StreamBuilder<int>(
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       if(snapshot.hasData) {
                         int co2 = snapshot.data;
+
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 150,
+
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Velkominn',
+                                  style: TextStyle(
+                                    color: Color(0xFFFAF9F9),
+                                    fontSize: 30,
+                                  )
+                                ),
+                              ),
+
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  //begin: Alignment.bottomRight,
+                                  colors: gradientList,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(height: 10),
+
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                          width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            children: <Widget>[
+                                              SizedBox(height: 20),
+                                              Container(
+                                                alignment: Alignment.bottomCenter,
+                                                padding: const EdgeInsets.all(30.0),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 5,
+                                                    color: Colors.blue[200],
+                                                  ),
+                                                  shape: BoxShape.circle,
+                                                ),
+
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    AnimatedCounter(co2: co2),
+                                                    Text(
+                                                      'sæti #31',
+                                                      style: TextStyle(
+                                                        color: Colors.blue[300],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+
+                                              SizedBox(height: 20),
+                                            ],
+                                          ),
+
+                                        decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 210,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('bla'),
+
+
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                SizedBox(width: 10),
+
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 210,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('bla'),
+
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('bla'),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
 
                         return Container(
                           alignment: Alignment.center,
@@ -85,54 +245,13 @@ class _HomeState extends State<Home> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(height: 20),
-                                  Container(
-                                    alignment: Alignment.bottomCenter,
-                                    padding: const EdgeInsets.all(40.0),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 5,
-                                        color: Colors.blue[200],
-                                      ),
 
-                                      shape: BoxShape.circle,
-                                    ),
-
-                                    child: Column(
-                                      children: <Widget>[
-                                        AnimatedCounter(co2: co2),
-                                        Text(
-                                          'sæti #31',
-                                          style: TextStyle(
-                                            color: Colors.blue[300],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 20),
-                                  /*
-                                  Text(
-                                    'Þú ert með lægra kolefnisspor\n'
-                                        '          en 60% notenda',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-
-                                   */
-                                  SizedBox(height: 20),
-                                ],
-                              ),
 
                               //SizedBox(width: 40),
                               //VerticalDivider(color: Colors.white),
                               SizedBox(width: 40),
+
+                              /*
                               Container(
                                 alignment: Alignment.topRight,
                                 transform: Matrix4.translationValues(0.0, -10.0, 0.0),
@@ -153,6 +272,8 @@ class _HomeState extends State<Home> {
                                   ],
                                 ),
                               ),
+
+                               */
                             ],
                           ),
                         );
@@ -190,8 +311,8 @@ class _HomeState extends State<Home> {
 
                    */
 
-                  SizedBox(height: 50),
 
+                  /*
                   RaisedButton(
                     elevation: 0,
                     color: Colors.blue,
@@ -206,6 +327,8 @@ class _HomeState extends State<Home> {
                       Navigator.pushNamed(context, '/Nýtt kort');
                     },
                   ),
+
+                   */
                 ],
               ),
             ),
