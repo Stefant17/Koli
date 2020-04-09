@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
@@ -11,81 +12,285 @@ class AddCardForm extends StatefulWidget {
   _AddCardFormState createState() => _AddCardFormState();
 }
 
+class CardNumberInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    var text = newValue.text;
+
+    if (newValue.selection.baseOffset == 0) {
+      return newValue;
+    }
+
+    String newString = '';
+    for(var i = 0; i < text.length; i++) {
+      newString += text[i];
+      if((i + 1) % 4 == 0 && (i + 1) != text.length) {
+        newString += ' ';
+      }
+    }
+
+    return newValue.copyWith(
+      text: newString,
+      selection: TextSelection.collapsed(offset: newString.length)
+    );
+  }
+}
+
+class CardDateInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    var text = newValue.text;
+
+    if (newValue.selection.baseOffset == 0) {
+      return newValue;
+    }
+
+    String newString = '';
+    for(var i = 0; i < text.length; i++) {
+      newString += text[i];
+      if((i + 1) == 2) {
+        newString += '/';
+      }
+    }
+
+    return newValue.copyWith(
+        text: newString,
+        selection: TextSelection.collapsed(offset: newString.length)
+    );
+  }
+}
+
 class _AddCardFormState extends State<AddCardForm> {
   String cardNumber = '';
   String cardExpiry = '';
   String cardCVV = '';
+  String cardProvider = '';
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
     return Scaffold(
-      appBar: appBar(context, 'Nýtt kort'),
+      appBar: appBar(context, ''),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget> [
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Kortanúmer',
-                fillColor: Colors.white,
-                border: new OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(
+            Text(
+              'Bæta við nýju korti',
+              style: TextStyle(
+                fontSize: 30,
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            Text(
+              'Með því að stimpla inn kortaupplýsingar hér fyrir neðan geturðu'
+              ' tengt nýtt kort við aðganginn þinn. Færslur kortsins munu ganga'
+              ' upp í kolefnissporið þitt.'
+            ),
+
+            SizedBox(height: 20),
+
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Kortanúmer',
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                        ),
+                      ),
+                    ),
+
+                    validator: (val) =>
+                    val.isEmpty
+                        ? 'Sláðu inn númer'
+                        : null,
+
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                    ),
+
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(19),
+                      WhitelistingTextInputFormatter.digitsOnly,
+                      new CardNumberInputFormatter(),
+                    ],
+
+                    onChanged: (val) {
+                      setState(() {
+                        cardNumber = val;
+                      });
+                    },
                   ),
                 ),
-              ),
 
-              validator: (val) =>
-              val.isEmpty
-                  ? 'Sláðu inn verð'
-                  : null,
+                SizedBox(width: 10),
 
-              keyboardType: TextInputType.number,
-              style: TextStyle(
-                fontFamily: 'Poppins',
-              ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  width: 100,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Dags.',
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                        ),
+                      ),
+                    ),
 
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(19),
+                    validator: (val) =>
+                    val.isEmpty
+                        ? 'Sláðu inn dagsetningu'
+                        : null,
+
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                    ),
+
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(5),
+                      WhitelistingTextInputFormatter.digitsOnly,
+                      new CardDateInputFormatter(),
+                    ],
+
+                    onChanged: (val) {
+                      setState(() {
+                        cardExpiry = val;
+                      });
+                    },
+                  ),
+                ),
               ],
-
-              onChanged: (val) {
-                if(cardNumber.length <= 18) {
-                  if(cardNumber.length == 4 || cardNumber.length == 8 || cardNumber.length == 12) {
-                    setState(() {
-                      cardNumber += '-';
-                    });
-                  }
-
-                  setState(() {
-                    cardNumber = val;
-                  });
-                }
-              },
             ),
 
-            TextField(
-              onChanged: (val) {
-                cardExpiry = val;
-              },
+            SizedBox(height: 20),
+
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 100,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Öryggiskóði',
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                        ),
+                      ),
+                    ),
+
+                    validator: (val) =>
+                    val.isEmpty
+                        ? 'Sláðu inn öryggiskóða'
+                        : null,
+
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                    ),
+
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(3),
+                      WhitelistingTextInputFormatter.digitsOnly,
+                    ],
+
+                    onChanged: (val) {
+                      setState(() {
+                        cardCVV = val;
+                      });
+                    },
+                  ),
+                ),
+
+
+                //SizedBox(width: 40),
+
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        InkWell(
+                          child: Icon(
+                            FontAwesomeIcons.ccVisa,
+                            size: 45,
+                            color: cardProvider != 'visa' ? Colors.grey[500] : Colors.blue,
+                          ),
+
+                          onTap: () {
+                            setState(() {
+                              cardProvider = 'visa';
+                            });
+                          },
+                        ),
+
+                        SizedBox(width: 20),
+
+                        InkWell(
+                          child: Icon(
+                            FontAwesomeIcons.ccMastercard,
+                            size: 45,
+                            color: cardProvider != 'mastercard' ? Colors.grey[500] : Colors.red[400],
+                          ),
+
+                          onTap: () {
+                            setState(() {
+                              cardProvider = 'mastercard';
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
 
-            TextField(
-              onChanged: (val) {
-                cardCVV = val;
-              },
-            ),
+            SizedBox(height: 20),
 
-            RaisedButton(
-              elevation: 0,
-              child: Text('Staðfesta'),
-              onPressed: () {
-                DatabaseService(uid: user.uid).addCardToUser(cardNumber, cardExpiry, cardCVV);
-                Navigator.pop(context);
-              },
+            Container(
+              alignment: Alignment.centerRight,
+              child: RaisedButton(
+                elevation: 0.0,
+                color: Colors.white,
+                child: Text(
+                  'Staðfesta',
+                  style: TextStyle(color: Colors.black),
+                ),
+
+                padding: EdgeInsets.fromLTRB(40, 15, 40, 15),
+
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(20.0),
+                    side: BorderSide(
+                      color: Colors.black,
+                      width: 2,
+                    )
+                ),
+
+                onPressed: () {
+                  DatabaseService(uid: user.uid).addCardToUser(
+                      cardNumber, cardExpiry, cardCVV, cardProvider
+                  );
+                  Navigator.pop(context);
+                },
+              ),
             )
           ],
         ),

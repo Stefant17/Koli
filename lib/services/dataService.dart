@@ -176,11 +176,12 @@ class DatabaseService {
   }
 
 
-  Future<bool> addCardToUser(String number, String expiry, String cvv) async {
+  Future<bool> addCardToUser(String number, String expiry, String cvv, String provider) async {
     await userCollection.document(uid).collection('Cards').add({
       'CardNumber': number,
       'Expiry': expiry,
       'CVV': cvv,
+      'Provider': provider,
       'TransCount': 0
     });
   }
@@ -197,7 +198,7 @@ class DatabaseService {
 
     // TODO: Finna út jöfnu til að lækka spor
     if(companyName == 'Kolviður') {
-      return -10000;
+      return 0;
     }
 
     if(trans.category == 'Bensín') {
