@@ -44,6 +44,7 @@ dependencies:
   flutter_rounded_date_picker: 1.0.0
   autocomplete_textfield: ^1.7.3
   url_launcher: ^5.4.2
+  credit_card_number_validator: ^1.0.4
 
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git

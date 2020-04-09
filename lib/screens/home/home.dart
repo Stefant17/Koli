@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 210,
                                       alignment: Alignment.centerLeft,
-                                      child: Text('bla'),
+                                      child: Text('Leaderboard'),
 
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -217,7 +217,7 @@ class _HomeState extends State<Home> {
 
                                     Container(
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
-                                      height: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 160,
                                       alignment: Alignment.centerLeft,
                                       child: Text('bla'),
                                       decoration: BoxDecoration(
@@ -312,7 +312,7 @@ class _HomeState extends State<Home> {
                    */
 
 
-                  /*
+
                   RaisedButton(
                     elevation: 0,
                     color: Colors.blue,
@@ -327,8 +327,6 @@ class _HomeState extends State<Home> {
                       Navigator.pushNamed(context, '/Nýtt kort');
                     },
                   ),
-
-                   */
                 ],
               ),
             ),

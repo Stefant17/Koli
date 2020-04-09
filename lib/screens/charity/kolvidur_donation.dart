@@ -142,15 +142,15 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                                     Container(
                                       padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                                       child: Icon(
-                                        card.provider == 'visa' ?
+                                        card.provider == 'VISA' ?
                                         FontAwesomeIcons.ccVisa
-                                        :card.provider == 'mastercard' ?
+                                        :card.provider == 'MASTERCARD' ?
                                         FontAwesomeIcons.ccMastercard
                                         :null,
 
-                                        color: card.provider == 'visa' ?
+                                        color: card.provider == 'VISA' ?
                                         Colors.blueAccent
-                                        :card.provider == 'mastercard' ?
+                                        :card.provider == 'MASTERCARD' ?
                                         Colors.red[500]
                                         :null,
 
@@ -195,8 +195,10 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
 
                               onTap: () {
                                 setState(() {
-                                  print('yo');
                                   selectedCardID = card.cardID;
+                                  cardNumber = card.cardNumber;
+                                  cardCVV = card.cvv;
+                                  cardExpiry = card.expiry;
                                 });
                               },
                             );
@@ -226,7 +228,32 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
 
                         onPressed: () {
                           if(selectedCardID != '' && selectedTreeOption != '') {
-                            //blablabla
+                            var newCard = UserCard(
+                              cardNumber: cardNumber,
+                              expiry: cardExpiry,
+                              cvv: cardCVV,
+                            );
+
+                            int treeAmount;
+                            int price;
+
+                            for(var i = 0; i < treeOptions.length; i++) {
+                              if(treeOptions[i][1] == selectedTreeOption) {
+                                treeAmount = treeOptions[i][2];
+                                price = treeOptions[i][3];
+                              }
+                            }
+
+                            Navigator.pushNamed(
+                              context,
+                              '/Staðfesta framlag',
+                              arguments: {
+                                'card': newCard,
+                                'price': price,
+                                'treeAmount': treeAmount,
+                              }
+                            );
+
                             //Navigator.pop(context);
                           }
                         },

@@ -7,6 +7,7 @@ import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
 import 'package:koli/shared/card_input_formatters.dart';
 import 'package:provider/provider.dart';
+import 'package:credit_card_number_validator/credit_card_number_validator.dart';
 
 class AddCardForm extends StatefulWidget {
   @override
@@ -18,6 +19,11 @@ class _AddCardFormState extends State<AddCardForm> {
   String cardExpiry = '';
   String cardCVV = '';
   String cardProvider = '';
+
+  String errorMessage = '';
+
+  bool isCardValid = false;
+  bool hasCheckedCardNumber = false;
 
   AlertDialog confirmationPopup() {
     return AlertDialog(
@@ -102,14 +108,47 @@ class _AddCardFormState extends State<AddCardForm> {
                         cardNumber = val;
                       });
                     },
+
+                    onFieldSubmitted: (val) {
+                      Map<String, dynamic> cardData = CreditCardValidator.getCard(cardNumber.replaceAll(' ', ''));
+
+                      isCardValid = cardData[CreditCardValidator.isValidCard];
+
+                      setState(() {
+                        hasCheckedCardNumber = true;
+                      });
+
+                      if(isCardValid) {
+                        setState(() {
+                          cardProvider = cardData[CreditCardValidator.cardType];
+                        });
+                      } else {
+                        setState(() {
+                          cardProvider = '';
+                        });
+                      }
+                    },
                   ),
                 ),
 
                 SizedBox(width: 10),
 
+                !isCardValid && hasCheckedCardNumber ?
+                Icon(
+                  FontAwesomeIcons.times,
+                  color: Colors.red,
+                ): isCardValid ?
+                Icon(
+                  FontAwesomeIcons.check,
+                  color: Colors.green,
+                )
+                :Text(''),
+
+                SizedBox(width: 10),
+
                 Container(
                   alignment: Alignment.centerLeft,
-                  width: 100,
+                  width: 70,
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Dags.',
@@ -198,34 +237,18 @@ class _AddCardFormState extends State<AddCardForm> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        InkWell(
-                          child: Icon(
-                            FontAwesomeIcons.ccVisa,
-                            size: 45,
-                            color: cardProvider != 'visa' ? Colors.grey[500] : Colors.blue,
-                          ),
-
-                          onTap: () {
-                            setState(() {
-                              cardProvider = 'visa';
-                            });
-                          },
+                        Icon(
+                          FontAwesomeIcons.ccVisa,
+                          size: 45,
+                          color: cardProvider != 'VISA' ? Colors.grey[500] : Colors.blue,
                         ),
 
                         SizedBox(width: 20),
 
-                        InkWell(
-                          child: Icon(
-                            FontAwesomeIcons.ccMastercard,
-                            size: 45,
-                            color: cardProvider != 'mastercard' ? Colors.grey[500] : Colors.red[400],
-                          ),
-
-                          onTap: () {
-                            setState(() {
-                              cardProvider = 'mastercard';
-                            });
-                          },
+                        Icon(
+                          FontAwesomeIcons.ccMastercard,
+                          size: 45,
+                          color: cardProvider != 'MASTERCARD' ? Colors.grey[500] : Colors.red[400],
                         ),
                       ],
                     ),
@@ -243,7 +266,9 @@ class _AddCardFormState extends State<AddCardForm> {
                 color: Colors.white,
                 child: Text(
                   'Staðfesta',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                    color: isCardValid ? Colors.black : Colors.grey[100],
+                  ),
                 ),
 
                 padding: EdgeInsets.fromLTRB(40, 15, 40, 15),
@@ -251,22 +276,24 @@ class _AddCardFormState extends State<AddCardForm> {
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0),
                     side: BorderSide(
-                      color: Colors.black,
+                      color: isCardValid ? Colors.black : Colors.grey[100],
                       width: 2,
                     )
                 ),
 
                 onPressed: () {
-                  DatabaseService(uid: user.uid).addCardToUser(
+                  if(isCardValid) {
+                    DatabaseService(uid: user.uid).addCardToUser(
                       cardNumber, cardExpiry, cardCVV, cardProvider
-                  );
+                    );
 
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return confirmationPopup();
-                    }
-                  );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return confirmationPopup();
+                      }
+                    );
+                  }
                 },
               ),
             )

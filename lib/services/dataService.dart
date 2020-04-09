@@ -30,7 +30,6 @@ class DatabaseService {
   final CollectionReference mccCollection = Firestore.instance.collection('MCC');
   final String uid;
 
-
   DatabaseService({ this.uid });
 
   Future initializeUserProfile() async {
@@ -836,7 +835,7 @@ class DatabaseService {
   }
 
   //TODO: Implement this shiz
-  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName) {
+  Future<void> plantTrees(int treeCount, int price, String cardID, String donorName) {
 
   }
 
