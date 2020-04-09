@@ -104,7 +104,7 @@ class _TransactionViewState extends State<TransactionView> {
                               '${widget.userTransaction.amount} kr.',
                               style: TextStyle(
                                 fontSize: 16.0,
-                                color: widget.userTransaction.co2 > 0 ? Colors.grey[500] : Colors.green,
+                                color: widget.userTransaction.co2 > 0 ? Colors.grey[500] : Color(0xFF32E875),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

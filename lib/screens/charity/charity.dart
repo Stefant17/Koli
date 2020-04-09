@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:koli/screens/charity/kolvidur_donation.dart';
 import 'package:koli/screens/charity/kolvidur_info.dart';
 import 'package:koli/shared/charity_appbar.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../shared/appbar.dart';
 import '../../shared/bottom_navbar.dart';
 
 class CharityScreen extends StatefulWidget {
@@ -25,7 +23,7 @@ class _CharityScreenState extends State<CharityScreen> {
             KolvidurDonation(),
           ],
         ),
-
+        backgroundColor: Colors.white,
         bottomNavigationBar: BottomBar(),
       ),
     );

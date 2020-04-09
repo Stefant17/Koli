@@ -42,7 +42,7 @@ class Constants {
 
     'Skyndibiti': {
       'Icon': FontAwesomeIcons.hamburger,
-      'Color': 0xFFA23E48,
+      'Color': 0xFF36F1CD,
     },
 
     'Málefni': {

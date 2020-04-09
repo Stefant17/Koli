@@ -143,7 +143,7 @@ class DatabaseService {
     cards.documents.forEach((DocumentSnapshot snapshot) {
       UserCard newCard = UserCard(
         cardID: snapshot.documentID,
-        cardNumber: snapshot.data['CardNumber'],
+        cardNumber: snapshot.data['CardNumber'].replaceAll(' ', ''),
         cvv: snapshot.data['CVV'],
         expiry: snapshot.data['Expiry'],
         transCount: snapshot.data['TransCount']
@@ -161,8 +161,9 @@ class DatabaseService {
         .collection('Cards'));
 
     for(var i = 0; i < cardList.length; i++) {
+      print(cardList[i].cardNumber);
       String cardLines = await rootBundle.loadString(
-          'assets/testing/card_transactions/${cardList[i].cardNumber}.json'
+          'assets/testing/card_transactions/${cardList[i].cardNumber.replaceAll(' ', '')}.json'
       );
 
       var decodedLines = json.decode(cardLines);
@@ -463,6 +464,10 @@ class DatabaseService {
         name: doc.data['Name'],
       );
     }).toList();
+
+    categories.sort((a, b) {
+      return a.name.compareTo(b.name);
+    });
 
     return categories;
   }
@@ -833,5 +838,22 @@ class DatabaseService {
   //TODO: Implement this shiz
   Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName) {
 
+  }
+
+  List<UserCard> _userCardsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((card) {
+      return UserCard(
+        cardID: card.documentID,
+        cardNumber: card['CardNumber'],
+        expiry: card['Expiry'],
+        cvv: card['CVV'],
+        provider: card['Provider'],
+      );
+    }).toList();
+  }
+
+  Stream<List<UserCard>> get userCards {
+    return userCollection.document(uid).collection('Cards').snapshots()
+      .map(_userCardsFromSnapshot);
   }
 }

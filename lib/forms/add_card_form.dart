@@ -5,6 +5,7 @@ import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/card_input_formatters.dart';
 import 'package:provider/provider.dart';
 
 class AddCardForm extends StatefulWidget {
@@ -12,59 +13,30 @@ class AddCardForm extends StatefulWidget {
   _AddCardFormState createState() => _AddCardFormState();
 }
 
-class CardNumberInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    var text = newValue.text;
-
-    if (newValue.selection.baseOffset == 0) {
-      return newValue;
-    }
-
-    String newString = '';
-    for(var i = 0; i < text.length; i++) {
-      newString += text[i];
-      if((i + 1) % 4 == 0 && (i + 1) != text.length) {
-        newString += ' ';
-      }
-    }
-
-    return newValue.copyWith(
-      text: newString,
-      selection: TextSelection.collapsed(offset: newString.length)
-    );
-  }
-}
-
-class CardDateInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    var text = newValue.text;
-
-    if (newValue.selection.baseOffset == 0) {
-      return newValue;
-    }
-
-    String newString = '';
-    for(var i = 0; i < text.length; i++) {
-      newString += text[i];
-      if((i + 1) == 2) {
-        newString += '/';
-      }
-    }
-
-    return newValue.copyWith(
-        text: newString,
-        selection: TextSelection.collapsed(offset: newString.length)
-    );
-  }
-}
-
 class _AddCardFormState extends State<AddCardForm> {
   String cardNumber = '';
   String cardExpiry = '';
   String cardCVV = '';
   String cardProvider = '';
+
+  AlertDialog confirmationPopup() {
+    return AlertDialog(
+      //title: Text('Rewind and remember'),
+      content: SingleChildScrollView(
+        child: Text('Kortið hefur verið tengt við aðganginn þinn')
+      ),
+
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Í lagi'),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +61,7 @@ class _AddCardFormState extends State<AddCardForm> {
 
             Text(
               'Með því að stimpla inn kortaupplýsingar hér fyrir neðan geturðu'
-              ' tengt nýtt kort við aðganginn þinn. Færslur kortsins munu ganga'
+              ' tengt nýtt kort við aðganginn þinn. Færslur á kortinu munu ganga'
               ' upp í kolefnissporið þitt.'
             ),
 
@@ -288,7 +260,13 @@ class _AddCardFormState extends State<AddCardForm> {
                   DatabaseService(uid: user.uid).addCardToUser(
                       cardNumber, cardExpiry, cardCVV, cardProvider
                   );
-                  Navigator.pop(context);
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return confirmationPopup();
+                    }
+                  );
                 },
               ),
             )
