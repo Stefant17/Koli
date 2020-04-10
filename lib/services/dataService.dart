@@ -835,7 +835,7 @@ class DatabaseService {
   }
 
   //TODO: Implement this shiz
-  Future<void> plantTrees(int treeCount, int price, String cardID, String donorName) {
+  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName) {
 
   }
 

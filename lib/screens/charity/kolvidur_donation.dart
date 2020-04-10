@@ -1,3 +1,4 @@
+import 'package:credit_card_number_validator/credit_card_number_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +23,9 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
   String cardCVV = '';
   String cardProvider = '';
 
+  bool isCardValid = false;
+  bool hasCheckedCardNumber = false;
+
   var selectedTreeOption = '10 Tré - 2.200 kr.';
   var treeOptions = [
     [0, '10 Tré - 2.200 kr.', 10, 2200],
@@ -33,9 +37,10 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Column(
         children: <Widget>[
+          SizedBox(height: 20),
           Container(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -306,14 +311,53 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                             cardNumber = val;
                           });
                         },
+
+                        onFieldSubmitted: (val) {
+                          Map<String, dynamic> cardData = CreditCardValidator.getCard(cardNumber.replaceAll(' ', ''));
+
+                          isCardValid = cardData[CreditCardValidator.isValidCard];
+
+                          setState(() {
+                            hasCheckedCardNumber = true;
+                          });
+
+                          if(isCardValid) {
+                            setState(() {
+                              cardProvider = cardData[CreditCardValidator.cardType];
+                            });
+                          } else {
+                            setState(() {
+                              cardProvider = '';
+                            });
+                          }
+                        },
                       ),
                     ),
 
                     SizedBox(width: 10),
 
+                    !isCardValid && hasCheckedCardNumber ?
+                    Icon(
+                      FontAwesomeIcons.times,
+                      color: Colors.red,
+                    ): isCardValid ?
+                    Icon(
+                      FontAwesomeIcons.check,
+                      color: Colors.green,
+                    )
+                        :Text(''),
+
+                    SizedBox(width: 10),
+                  ],
+                ),
+
+                SizedBox(height: 20),
+
+                Row(
+                  children: <Widget>[
                     Container(
                       alignment: Alignment.centerLeft,
-                      width: 100,
+                      width: 70,
                       child: TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Dags.',
@@ -348,15 +392,11 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                         },
                       ),
                     ),
-                  ],
-                ),
 
-                SizedBox(height: 20),
+                    SizedBox(width: 10),
 
-                Row(
-                  children: <Widget>[
                     Container(
-                      width: 100,
+                      width: 90,
                       child: TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Öryggiskóði',
@@ -402,34 +442,18 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            InkWell(
-                              child: Icon(
-                                FontAwesomeIcons.ccVisa,
-                                size: 45,
-                                color: cardProvider != 'visa' ? Colors.grey[500] : Colors.blue,
-                              ),
-
-                              onTap: () {
-                                setState(() {
-                                  cardProvider = 'visa';
-                                });
-                              },
+                            Icon(
+                              FontAwesomeIcons.ccVisa,
+                              size: 45,
+                              color: cardProvider != 'VISA' ? Colors.grey[500] : Colors.blue,
                             ),
 
                             SizedBox(width: 20),
 
-                            InkWell(
-                              child: Icon(
-                                FontAwesomeIcons.ccMastercard,
-                                size: 45,
-                                color: cardProvider != 'mastercard' ? Colors.grey[500] : Colors.red[400],
-                              ),
-
-                              onTap: () {
-                                setState(() {
-                                  cardProvider = 'mastercard';
-                                });
-                              },
+                            Icon(
+                              FontAwesomeIcons.ccMastercard,
+                              size: 45,
+                              color: cardProvider != 'MASTERCARD' ? Colors.grey[500] : Colors.red[400],
                             ),
                           ],
                         ),
@@ -437,6 +461,8 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                     )
                   ],
                 ),
+
+                SizedBox(height: 20),
 
                 RaisedButton(
                   elevation: 0.0,

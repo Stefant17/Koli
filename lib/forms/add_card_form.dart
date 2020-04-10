@@ -145,7 +145,13 @@ class _AddCardFormState extends State<AddCardForm> {
                 :Text(''),
 
                 SizedBox(width: 10),
+              ],
+            ),
 
+            SizedBox(height: 20),
+
+            Row(
+              children: <Widget>[
                 Container(
                   alignment: Alignment.centerLeft,
                   width: 70,
@@ -183,15 +189,11 @@ class _AddCardFormState extends State<AddCardForm> {
                     },
                   ),
                 ),
-              ],
-            ),
 
-            SizedBox(height: 20),
+                SizedBox(width: 10),
 
-            Row(
-              children: <Widget>[
                 Container(
-                  width: 100,
+                  width: 90,
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Öryggiskóði',
