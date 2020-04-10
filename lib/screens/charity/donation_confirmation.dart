@@ -19,7 +19,24 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
   String donorName;
   String email;
 
-  //DatabaseService(uid: user.uid).plantTrees(treeCount, price, card, donorName)
+  AlertDialog confirmationPopup() {
+    return AlertDialog(
+      title: Text('Framlag staðfest'),
+      content: SingleChildScrollView(
+        child: Text('Þakka þér kærlega fyrir stuðningin!')
+      ),
+
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Í lagi'),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.pushNamed(context, '/Kolefnisjöfnun');
+          },
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +138,14 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
 
               onPressed: () {
                 DatabaseService(uid: user.uid).plantTrees(
-                  treeAmount, price, card, donorName
+                  treeAmount, price, card, donorName, email,
+                );
+
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return confirmationPopup();
+                    }
                 );
               },
             ),

@@ -13,6 +13,8 @@ import 'package:koli/models/date.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 
 import '../models/userCard.dart';
 
@@ -160,17 +162,21 @@ class DatabaseService {
         .collection('Cards'));
 
     for(var i = 0; i < cardList.length; i++) {
-      print(cardList[i].cardNumber);
-      String cardLines = await rootBundle.loadString(
-          'assets/testing/card_transactions/${cardList[i].cardNumber.replaceAll(' ', '')}.json'
-      );
+      try {
+        print(cardList[i].cardNumber);
+        String cardLines = await rootBundle.loadString(
+            'assets/testing/card_transactions/${cardList[i].cardNumber.replaceAll(' ', '')}.json'
+        );
 
-      var decodedLines = json.decode(cardLines);
-      int numberOfTrans = cardList[i].transCount;
+        var decodedLines = json.decode(cardLines);
+        int numberOfTrans = cardList[i].transCount;
 
-      if(decodedLines.length > numberOfTrans) {
-        updateCardTransCount(cardList[i], decodedLines.length);
-        parseCardTransactions(decodedLines, numberOfTrans);
+        if(decodedLines.length > numberOfTrans) {
+          updateCardTransCount(cardList[i], decodedLines.length);
+          parseCardTransactions(decodedLines, numberOfTrans);
+        }
+      } catch(e) {
+        print(e);
       }
     }
   }
@@ -188,7 +194,6 @@ class DatabaseService {
 
 
   Future<int> getCO2fromCompany(UserTransaction trans) async {
-    print('yo');
     var company = companyCollection.document(trans.companyID);
     var user = userCollection.document(uid);
 
@@ -196,9 +201,18 @@ class DatabaseService {
       return com['Name'];
     });
 
-    // TODO: Finna út jöfnu til að lækka spor
     if(companyName == 'Kolviður') {
-      return 0;
+      if(trans.amount == 2200) {
+        return -10 * 21;
+      }
+
+      else if(trans.amount == 5500) {
+        return -25 * 21;
+      }
+
+      else if(trans.amount == 11000) {
+        return -50 * 21;
+      }
     }
 
     if(trans.category == 'Bensín') {
@@ -835,8 +849,71 @@ class DatabaseService {
   }
 
   //TODO: Implement this shiz
-  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName) {
+  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName, String donorEmail) async {
+    // Get the document for Kolviður
+    Company company = await companyCollection.document('jJCsR0JmqcBRhWZxfWTU').get().then((com) {
+      return Company(
+        companyID: com.documentID,
+        mccID: com.data['MCC'],
+        name: com.data['Name'],
+        region: com.data['Region'],
+      );
+    });
 
+    var trans = UserTransaction(
+      amount: price,
+      company: company.name,
+      companyID: company.companyID,
+      date: Date(DateTime.now()).getCurrentDate(),
+      mcc: company.mccID,
+      categoryID: ' xCvETWEJWb6bBJe7Oc9y',
+      category: 'Málefni',
+      region: company.region
+    );
+
+    //TODO: Credit card stuff
+
+    await createUserTransaction(trans);
+
+    int currentUserTreeCount = await userCollection.document(uid).get().then((user) {
+      return user.data['TreesPlanted'];
+    });
+    await userCollection.document(uid).updateData({
+      'TreesPlanted': currentUserTreeCount + treeCount,
+    });
+
+    if(donorEmail != null || donorEmail != '') {
+      sendDonationEmail(donorName, donorEmail);
+    }
+  }
+
+  void sendDonationEmail(String donorName, String donorEmail) async {
+    if(donorName == null) {
+      donorName = 'viðtakandi';
+    }
+
+    String username = 'koli.kolur.kolason@gmail.com';
+    String password = 'Koli1234';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username, 'Koli')
+      ..recipients.add(donorEmail)
+      ..subject = 'Tylkinning um framlag til Kolviðar'
+      ..text =
+      'Hæ $donorName, \n\nOkkur hefur borist framlag til Kolviðar í þínu nafni.'
+      '\nPeningurinn mun fara í það að gróðursetja tré hér á landi. \n\n '
+      'Takk fyrir stuðninginn xoxo \n\n-Koli';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch(error) {
+      print(error);
+      for(var p in error.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
   }
 
   List<UserCard> _userCardsFromSnapshot(QuerySnapshot snapshot) {

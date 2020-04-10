@@ -258,8 +258,6 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                                 'treeAmount': treeAmount,
                               }
                             );
-
-                            //Navigator.pop(context);
                           }
                         },
                       ),
@@ -470,7 +468,7 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                   child: Text(
                     'Áfram',
                     style: TextStyle(
-                      color: selectedCardID != '' ? Colors.black : Colors.grey[100],
+                      color: cardNumber != '' && cardCVV != '' && cardExpiry != '' ? Colors.black : Colors.grey[100],
                     ),
                   ),
 
@@ -479,15 +477,38 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(20.0),
                       side: BorderSide(
-                        color: selectedCardID != '' ? Colors.black : Colors.grey[100],
+                        color: cardNumber != '' && cardCVV != '' && cardExpiry != '' ? Colors.black : Colors.grey[100],
                         width: 2,
                       )
                   ),
 
                   onPressed: () {
-                    if(selectedTreeOption != '') {
-                      //blablabla
-                      //Navigator.pop(context);
+                    if(cardNumber != '' && cardCVV != '' && cardExpiry != '') {
+                      var newCard = UserCard(
+                        cardNumber: cardNumber,
+                        expiry: cardExpiry,
+                        cvv: cardCVV,
+                      );
+
+                      int treeAmount;
+                      int price;
+
+                      for(var i = 0; i < treeOptions.length; i++) {
+                        if(treeOptions[i][1] == selectedTreeOption) {
+                          treeAmount = treeOptions[i][2];
+                          price = treeOptions[i][3];
+                        }
+                      }
+
+                      Navigator.pushNamed(
+                          context,
+                          '/Staðfesta framlag',
+                          arguments: {
+                            'card': newCard,
+                            'price': price,
+                            'treeAmount': treeAmount,
+                          }
+                      );
                     }
                   },
                 ),
