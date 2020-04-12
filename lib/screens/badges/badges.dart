@@ -37,7 +37,6 @@ class Badges extends StatelessWidget {
         )
       );
     }
-
     return rowList;
   }
 
@@ -51,12 +50,10 @@ class Badges extends StatelessWidget {
         if(snapshot.hasData) {
           List<Badge> badges = snapshot.data;
 
-          constructRows(badges);
-
           return Scaffold(
             appBar: appBar(context, 'Orður'),
             body: Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
               child: ListView(
                 children: constructRows(badges),
               ),
