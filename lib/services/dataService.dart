@@ -620,27 +620,13 @@ class DatabaseService {
 
 
   Future<bool> checkConditions(user, badge) async {
-    if (badge.data['Condition'] == 'Plant Trees') {
-      return await user.get().then((u) {
-        if (u.data['TreesPlanted'] >= badge.data['ConditionValue']) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    else if(badge.data['Condition'] == 'Number of Days') {
-      return await user.get().then((u) {
-        if (u.data['DaysActive'] >= badge.data['ConditionValue']) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    return false;
+    return await user.get().then((u) {
+      if(u.data[badge.data['Condition']] >= badge.data['ConditionValue']) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
 

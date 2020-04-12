@@ -97,12 +97,32 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 padding: EdgeInsets.all(20),
                                 alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  'Velkominn',
-                                  style: TextStyle(
-                                    color: Color(0xFFFAF9F9),
-                                    fontSize: 30,
-                                  )
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Velkominn',
+                                        style: TextStyle(
+                                          color: Color(0xFFFAF9F9),
+                                          fontSize: 30,
+                                        )
+                                      ),
+                                    ),
+
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child: Text(
+                                        getCurrentDate().getDayAndMonth(),
+                                        style: TextStyle(
+                                          color: Colors.grey[300],
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
 
