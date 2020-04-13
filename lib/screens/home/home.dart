@@ -49,6 +49,8 @@ class _HomeState extends State<Home> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -85,17 +87,7 @@ class _HomeState extends State<Home> {
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       if(snapshot.hasData) {
-                        int co2 = snapshot.data;// - treesPlanted;
-                        //int treesPlanted =
-
-                        DatabaseService(uid: user.uid).getTreesPlanted().then((val) {
-                          setState(() {
-                            co2 -= (val * 21 ~/ 12);
-                          });
-                        });
-
-                        //print(snapshot.data);
-                        //print(treesPlanted);
+                        int co2 = snapshot.data - (userData.treesPlanted * 21) ~/ 12;// - treesPlanted;
 
                         return Column(
                           children: <Widget>[

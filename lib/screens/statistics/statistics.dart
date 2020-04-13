@@ -13,6 +13,7 @@ class Statistics extends StatefulWidget {
   _StatisticsState createState() => _StatisticsState();
 }
 
+// TODO: implement trees planted modifier to stats
 class _StatisticsState extends State<Statistics> {
   @override
   Widget build(BuildContext context) {

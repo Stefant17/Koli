@@ -489,11 +489,6 @@ class DatabaseService {
       .map(_categoriesFromSnapshot);
   }
 
-  Future<int> getTreesPlanted() async {
-    return await userCollection.document(uid).get().then((user) {
-      return user.data['TreesPlanted'];
-    });
-  }
 
   int _co2ForCurrentMonthFromSnapshot(QuerySnapshot snapshot) {
     DateTime currentDate = DateTime.now();

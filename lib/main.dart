@@ -7,6 +7,7 @@ import 'package:koli/screens/overview/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
 import 'package:koli/screens/overview/overview_wrapper.dart';
+import 'package:koli/screens/profile/diet_settings.dart';
 import 'package:koli/screens/profile/profile.dart';
 import 'package:koli/screens/statistics/statistics.dart';
 import 'package:koli/screens/wrapper.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           //'/Góðgerðarmál': (context) => CharityScreen(),
           '/Kolefnisjöfnun': (context) => CharityScreen(),
           '/Prófíll': (context) => Profile(),
+          '/Diet settings': (context) => DietSettings(),
           '/Ný færsla': (context) => CreateTransaction(),
           '/Breyta færslu': (context) => EditTransactionForm(),
           '/Nýtt kort': (context) => AddCardForm(),
