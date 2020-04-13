@@ -9,5 +9,6 @@ Widget achievementGet(BuildContext context, Badge badge) {
     subTitle: badge.description,
     isCircle: true,
     icon: Image.asset(badge.image),
+    color: Colors.black,
   )..show();
 }
