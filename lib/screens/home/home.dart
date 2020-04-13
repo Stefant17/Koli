@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -86,7 +85,17 @@ class _HomeState extends State<Home> {
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       if(snapshot.hasData) {
-                        int co2 = snapshot.data;
+                        int co2 = snapshot.data;// - treesPlanted;
+                        //int treesPlanted =
+
+                        DatabaseService(uid: user.uid).getTreesPlanted().then((val) {
+                          setState(() {
+                            co2 -= (val * 21 ~/ 12);
+                          });
+                        });
+
+                        //print(snapshot.data);
+                        //print(treesPlanted);
 
                         return Column(
                           children: <Widget>[

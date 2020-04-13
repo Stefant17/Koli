@@ -202,7 +202,8 @@ class DatabaseService {
     });
 
     if(companyName == 'Kolviður') {
-      if(trans.amount == 2200) {
+      return 0;
+      /*if(trans.amount == 2200) {
         return -10 * 21;
       }
 
@@ -213,6 +214,7 @@ class DatabaseService {
       else if(trans.amount == 11000) {
         return -50 * 21;
       }
+       */
     }
 
     if(trans.category == 'Bensín') {
@@ -287,11 +289,7 @@ class DatabaseService {
         dairy =  (trans.amount * dairy * cat['co2_per_kg_dairy']);
         grain = (trans.amount * grain * cat['co2_per_kr_grains']);
 
-
-
-
         total = meat + fish + fruit + nuts + dairy + grain;
-
       });
       return (total).toInt();
     }
@@ -491,6 +489,11 @@ class DatabaseService {
       .map(_categoriesFromSnapshot);
   }
 
+  Future<int> getTreesPlanted() async {
+    return await userCollection.document(uid).get().then((user) {
+      return user.data['TreesPlanted'];
+    });
+  }
 
   int _co2ForCurrentMonthFromSnapshot(QuerySnapshot snapshot) {
     DateTime currentDate = DateTime.now();
@@ -512,7 +515,7 @@ class DatabaseService {
       .map(_co2ForCurrentMonthFromSnapshot);
   }
 
-
+  //TODO: Kannski sýna líka hversu mikið notandi jafnaði sig
   CO2ByMonth _co2ByMonthFromSnapshot(QuerySnapshot snapshot) {
     DateTime currentDate = DateTime.now();
     int currentMonth = currentDate.month + monthOffset;
