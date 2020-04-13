@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:koli/models/badge.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/services/dataService.dart';
+import 'package:koli/shared/achievement_get.dart';
 import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,11 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
   String donorName;
   String email;
 
-  AlertDialog confirmationPopup() {
+  void addNewBadge(Badge badge) {
+    achievementGet(this.context, badge);
+  }
+
+  AlertDialog confirmationPopup(String uid) {
     return AlertDialog(
       title: Text('Framlag staðfest'),
       content: SingleChildScrollView(
@@ -32,6 +38,8 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
           onPressed: () {
             Navigator.of(context).pop();
             Navigator.pushNamed(context, '/Kolefnisjöfnun');
+
+            DatabaseService(uid: uid).awardBadges(this.addNewBadge);
           },
         ),
       ],
@@ -142,10 +150,10 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
                 );
 
                 showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return confirmationPopup();
-                    }
+                  context: context,
+                  builder: (BuildContext context) {
+                    return confirmationPopup(user.uid);
+                  }
                 );
               },
             ),
