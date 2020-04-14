@@ -34,7 +34,7 @@ class DatabaseService {
 
   DatabaseService({ this.uid });
 
-  Future initializeUserProfile() async {
+  Future initializeUserProfile(String email) async {
     return await userCollection.document(uid).setData({
       'Username': '',
       'FirstName': '',
@@ -50,6 +50,7 @@ class DatabaseService {
       'Fruit': '0.15',
       'Dairy': '0.20',
       'Grains': '0',
+      'Email': email,
     });
   }
 
@@ -866,16 +867,23 @@ class DatabaseService {
       'TreesPlanted': currentUserTreeCount + treeCount,
     });
 
-    if(donorEmail != null || donorEmail != '') {
-      sendDonationEmail(donorName, donorEmail);
+    if(donorEmail == null || donorEmail == '') {
+      donorEmail = await userCollection.document(uid).get().then((user) {
+        return user.data['Email'];
+      });
     }
+
+    if(donorName == null || donorName == '') {
+      donorName = await userCollection.document(uid).get().then((user) {
+        return user.data['FirstName'];
+      });
+    }
+
+    sendDonationEmail(donorName, donorEmail);
+    sendConfirmationToKoli(donorName, donorEmail, price, treeCount);
   }
 
   void sendDonationEmail(String donorName, String donorEmail) async {
-    if(donorName == null) {
-      donorName = 'viðtakandi';
-    }
-
     String username = 'koli.kolur.kolason@gmail.com';
     String password = 'Koli1234';
 
@@ -888,6 +896,34 @@ class DatabaseService {
       'Hæ $donorName, \n\nOkkur hefur borist framlag til Kolviðar í þínu nafni.'
       '\nPeningurinn mun fara í það að gróðursetja tré hér á landi. \n\n '
       'Takk fyrir stuðninginn xoxo \n\n-Koli';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch(error) {
+      print(error);
+      for(var p in error.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
+  }
+
+  void sendConfirmationToKoli(String donorName, String donorEmail, int price, int treeAmount) async {
+    String username = 'koli.kolur.kolason@gmail.com';
+    String password = 'Koli1234';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username, 'Koli')
+      ..recipients.add(username)
+      ..subject = 'Staðfesting um framlag til Kolviðar - $donorName'
+      ..text =
+          'Staðfesting um framlag til kolviðar\n'
+          '-----------------------------------\n'
+          'Nafn:            $donorName\n'
+          'Netfang:        $donorEmail\n'
+          'Fjöldi trjáa:    $treeAmount\n'
+          'Verð:            $price\n';
 
     try {
       final sendReport = await send(message, smtpServer);
