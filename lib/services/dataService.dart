@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:koli/models/badge.dart';
+import 'package:koli/models/meKoli_avatar.dart';
 import 'package:koli/models/notification.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
@@ -51,6 +52,7 @@ class DatabaseService {
       'Dairy': '0.20',
       'Grains': '0',
       'Email': email,
+      'DateJoined': Date(DateTime.now()).getCurrentDate(),
     });
   }
 
@@ -948,5 +950,30 @@ class DatabaseService {
   Stream<List<UserCard>> get userCards {
     return userCollection.document(uid).collection('Cards').snapshots()
       .map(_userCardsFromSnapshot);
+  }
+
+  void confirmMeKoli(List<String> meKoli) async {
+    userCollection.document(uid).collection('meKoli').document('avatar').setData({
+      'Face': meKoli[0],
+      'Mouth': meKoli[1],
+      'Eyes': meKoli[2],
+      'Beard': meKoli[3],
+      'Eyebrows': meKoli[4]
+    });
+  }
+
+  MeKoliAvatar _meKoliAvatarFromSnapshot(DocumentSnapshot snapshot) {
+    return MeKoliAvatar(
+      face: snapshot.data['Face'],
+      eyes: snapshot.data['Eyes'],
+      mouth: snapshot.data['Mouth'],
+      eyebrows: snapshot.data['Eyebrows'],
+      beard: snapshot.data['Beard'],
+    );
+  }
+
+  Stream<MeKoliAvatar> get meKoliAvatar {
+    return userCollection.document(uid).collection('meKoli').document('avatar').snapshots()
+      .map(_meKoliAvatarFromSnapshot);
   }
 }
