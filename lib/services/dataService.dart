@@ -129,10 +129,7 @@ class DatabaseService {
 
 
   void updateCardTransCount(UserCard card, int newTransCount) {
-    userCollection.document(uid).collection('Cards').document(card.cardID).setData({
-      'CardNumber': card.cardNumber,
-      'Expiry': card.expiry,
-      'CVV': card.cvv,
+    userCollection.document(uid).collection('Cards').document(card.cardID).updateData({
       'TransCount': newTransCount,
     });
   }

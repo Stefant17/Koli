@@ -76,7 +76,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/testing/card_transactions/
-    - assets/images/meKoli
+    - assets/images/meKoli/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -12,7 +12,23 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, 'Prófíll'),
-      body: Text('piss'),
+      body: Column(
+        children: <Widget>[
+          RaisedButton(
+            child: Text('meKoli'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/meKoli stillingar');
+            },
+          ),
+
+          RaisedButton(
+            child: Text('Mataræði'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Mataræði stillingar');
+            },
+          )
+        ],
+      ),
       bottomNavigationBar: BottomBar(),
     );
   }
