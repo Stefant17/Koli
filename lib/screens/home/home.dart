@@ -162,14 +162,24 @@ class _HomeState extends State<Home> {
                                           alignment: Alignment.centerLeft,
                                           child: Column(
                                             children: <Widget>[
-                                              SizedBox(height: 20),
+                                              //SizedBox(height: 20),
                                               Container(
-                                                alignment: Alignment.bottomCenter,
+                                                alignment: Alignment.topCenter,
                                                 padding: const EdgeInsets.all(30.0),
-
 
                                                 child: Column(
                                                   children: <Widget>[
+                                                    Text(
+                                                      'Kolefnisspor',
+                                                      style: TextStyle(
+                                                        fontSize: 21,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Color(0xFFFAF9F9).withOpacity(0.5),
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(height: 10),
+
                                                     AnimatedCounter(co2: co2),
                                                     Text(
                                                       'sæti #31',
@@ -186,11 +196,30 @@ class _HomeState extends State<Home> {
                                           ),
 
                                         decoration: BoxDecoration(
-                                        color: Color(0xFF55D6BE),
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
+                                          color: Color(0xFFAEA4BF),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+
+                                          gradient: LinearGradient(
+                                            //begin: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xFF1F7A8C),
+                                              Color(0xFFAEA4BF),
+                                            ],
+                                          ),
+
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            colorFilter: ColorFilter.mode(
+                                              Colors.white.withOpacity(0.3),
+                                              BlendMode.dstATop,
+                                            ),
+                                            image: AssetImage(
+                                              'assets/images/footprints_beach.jpg',
+                                            ),
+                                          ),
                                         ),
-                                      ),
                                     ),
 
                                     SizedBox(height: 10),
@@ -199,9 +228,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 210,
                                       alignment: Alignment.centerLeft,
-                                      child: Text('bla'),
-
-
+                                      child: Text(''),//Text('bla'),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
@@ -224,7 +251,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 210,
                                       alignment: Alignment.centerLeft,
-                                      child: Text('Leaderboard'),
+                                      child: Text(''),//Text('Leaderboard'),
 
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -244,7 +271,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 160,
                                       alignment: Alignment.centerLeft,
-                                      child: Text('bla'),
+                                      child: Text(''),//Text('bla'),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
