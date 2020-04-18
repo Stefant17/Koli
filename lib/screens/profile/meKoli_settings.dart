@@ -79,8 +79,28 @@ class _MeKoliSettingsState extends State<MeKoliSettings> {
   int beardIndex = 0;
   int mouthIndex = 0;
 
+  bool checkedArguments = false;
+
   @override
   Widget build(BuildContext context) {
+    if(!checkedArguments) {
+      final Map arguments = ModalRoute
+       .of(context).settings.arguments;
+
+      final avatar = arguments['meKoli'];
+
+      if(avatar != null) {
+        faceIndex = faces.indexOf(avatar.face);
+        eyeIndex = eyes.indexOf(avatar.eyes);
+        eyebrowIndex = eyebrows.indexOf(avatar.eyebrows);
+        beardIndex = beards.indexOf(avatar.beard);
+        mouthIndex = mouths.indexOf(avatar.mouth);
+      }
+      setState(() {
+        checkedArguments = true;
+      });
+    }
+
     return Scaffold(
       appBar: appBar(context, ''),
       body: Column(

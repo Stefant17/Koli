@@ -22,8 +22,6 @@ class _ProfileState extends State<Profile> {
         if(snapshot.hasData) {
           MeKoliAvatar avatar = snapshot.data;
 
-          print(avatar.eyes);
-
           return Scaffold(
             appBar: appBar(context, 'Prófíll'),
             body: Column(
@@ -82,7 +80,9 @@ class _ProfileState extends State<Profile> {
                 RaisedButton(
                   child: Text('meKoli'),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/meKoli stillingar');
+                    Navigator.pushNamed(context, '/meKoli stillingar', arguments: {
+                      'meKoli': avatar,
+                    });
                   },
                 ),
 
@@ -113,7 +113,9 @@ class _ProfileState extends State<Profile> {
                 RaisedButton(
                   child: Text('meKoli'),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/meKoli stillingar');
+                    Navigator.pushNamed(context, '/meKoli stillingar', arguments: {
+                      'meKoli': null,
+                    });
                   },
                 ),
 

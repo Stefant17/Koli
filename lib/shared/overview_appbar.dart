@@ -8,13 +8,13 @@ var constants = Constants();
 Widget overviewAppBar (var context, String title){
   final AuthService _auth = AuthService();
 
-  void reroute(String choice) {
+  void reroute(String choice) async {
     if(choice == 'Heim') {
       Navigator.pushNamed(context, '/');
     }
 
     else if(choice == 'Skrá út') {
-      _auth.signOut();
+      await _auth.signOut();
     }
 
     else {

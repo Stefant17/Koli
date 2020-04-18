@@ -136,6 +136,16 @@ class _HomeState extends State<Home> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(20),
                                 ),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.white.withOpacity(0.3),
+                                    BlendMode.dstATop,
+                                  ),
+                                  image: AssetImage(
+                                    'assets/images/trees.jpg',
+                                  ),
+                                ),
                               ),
                             ),
 
@@ -156,13 +166,7 @@ class _HomeState extends State<Home> {
                                               Container(
                                                 alignment: Alignment.bottomCenter,
                                                 padding: const EdgeInsets.all(30.0),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 5,
-                                                    color: Colors.blue[200],
-                                                  ),
-                                                  shape: BoxShape.circle,
-                                                ),
+
 
                                                 child: Column(
                                                   children: <Widget>[
@@ -170,7 +174,7 @@ class _HomeState extends State<Home> {
                                                     Text(
                                                       'sæti #31',
                                                       style: TextStyle(
-                                                        color: Colors.blue[300],
+                                                        color: Color(0xFFFAF9F9),
                                                       ),
                                                     )
                                                   ],
@@ -182,7 +186,7 @@ class _HomeState extends State<Home> {
                                           ),
 
                                         decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Color(0xFF55D6BE),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20),
                                         ),
