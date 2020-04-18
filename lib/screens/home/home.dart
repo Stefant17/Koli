@@ -14,9 +14,11 @@ import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/home_appbar.dart';
 import 'package:koli/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/appbar.dart';
+import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -73,11 +75,8 @@ class _HomeState extends State<Home> {
         if(snapshot.hasData) {
           UserProfile userData = snapshot.data;
 
-          return Scaffold(
-            backgroundColor: Color(0xFF2D2E2E),
-            appBar: appBar(context, 'Heima'),
-
-            body: Container(
+          return Container(
+            child: Container(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               color: Color(0xFF2D2E2E),
               child: ListView(
@@ -158,42 +157,57 @@ class _HomeState extends State<Home> {
                                 Column(
                                   children: <Widget>[
                                     Container(
-                                          width: MediaQuery.of(context).size.width * 0.5 - 25,
-                                          alignment: Alignment.centerLeft,
-                                          child: Column(
-                                            children: <Widget>[
-                                              //SizedBox(height: 20),
-                                              Container(
-                                                alignment: Alignment.topCenter,
-                                                padding: const EdgeInsets.all(30.0),
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 160,
+                                      alignment: Alignment.centerLeft,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.topCenter,
+                                            padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
 
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    Text(
-                                                      'Kolefnisspor',
-                                                      style: TextStyle(
-                                                        fontSize: 21,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Color(0xFFFAF9F9).withOpacity(0.5),
-                                                      ),
-                                                    ),
-
-                                                    SizedBox(height: 10),
-
-                                                    AnimatedCounter(co2: co2),
-                                                    Text(
-                                                      'sæti #31',
-                                                      style: TextStyle(
-                                                        color: Color(0xFFFAF9F9),
-                                                      ),
-                                                    )
-                                                  ],
+                                            child: Column(
+                                              children: <Widget>[
+                                                Text(
+                                                  'Kolefnisspor',
+                                                  style: TextStyle(
+                                                    fontSize: 21,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFFAF9F9).withOpacity(0.5),
+                                                  ),
                                                 ),
+
+                                                SizedBox(height: 10),
+
+                                                AnimatedCounter(co2: co2),
+                                                Text(
+                                                  'sæti #31',
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFAF9F9),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          Container(
+                                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                            alignment: Alignment.topRight,
+                                            child: InkWell(
+                                              child: Icon(
+                                                FontAwesomeIcons.shareAlt,
+                                                color: Colors.white.withOpacity(0.6),
                                               ),
 
-                                              SizedBox(height: 20),
-                                            ],
+                                              onTap: () {
+                                                Share.share(
+                                                  'Ég er með kolefnissporið $co2 í Kola!'
+                                                );
+                                              },
+                                            ),
                                           ),
+                                        ],
+                                      ),
 
                                         decoration: BoxDecoration(
                                           color: Color(0xFFAEA4BF),
@@ -382,8 +396,6 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-
-            bottomNavigationBar: BottomBar(),
           );
         } else {
           //return Loading();
