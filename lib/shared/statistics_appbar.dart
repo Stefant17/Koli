@@ -9,6 +9,7 @@ Widget statisticsAppBar (var context, String title){
   final AuthService _auth = AuthService();
 
   void reroute(String choice) {
+    print(choice);
     if(choice == 'Heim') {
       Navigator.pushNamed(context, '/');
     }
@@ -46,7 +47,6 @@ Widget statisticsAppBar (var context, String title){
                       ),
 
                       SizedBox(width: 20),
-
                       Text('${item[1]}'),
                     ]
                 ),

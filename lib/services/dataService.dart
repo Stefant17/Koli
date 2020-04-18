@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:koli/models/badge.dart';
+//import 'package:koli/models/meKoli_avatar.dart';
 import 'package:koli/models/notification.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
@@ -13,6 +15,13 @@ import 'package:koli/models/date.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../models/userCard.dart';
+
 
 
 // Used only for statistic testing purposes
@@ -27,6 +36,19 @@ class DatabaseService {
   final CollectionReference categoryCollection = Firestore.instance.collection('Categories');
   final CollectionReference mccCollection = Firestore.instance.collection('MCC');
   final String uid;
+  bool _enabled = true;
+  int _status = 0;
+  List<String> _events = [];
+  ///Notification variables Start
+  //notification implemintantion, var í "background Services en þarf að vera hérna vegna þess að checkið er hér n´shit, gæti breyst í farmtíðinni
+  FlutterLocalNotificationsPlugin flutterLocalNotifiacionsPlugin = new FlutterLocalNotificationsPlugin();
+  var initializeSettingsAndroid;
+  // implementaði ekki fyrir IOS því var að focusa að láta þetta runna á android
+  // hér er tutorialið ef ég ákvað að halda áfram og implementa fyrir ios tutorial: https://www.youtube.com/watch?v=JBOkTsIN22M&ab_channel=CodingWithChip
+  var initializeSettingsIOS;
+  var initializeSettings;
+  ///Notification variables END
+
 
 
   DatabaseService({ this.uid });
@@ -51,7 +73,18 @@ class DatabaseService {
   }
 
 
+  Future<DocumentSnapshot> getCompanyInfoFromID(String companyName) async {
+    DocumentSnapshot curr_comp;
+    var companies = await companyCollection.getDocuments();
+    companies.documents.forEach((com) {
+      if(com.data['Name'] == companyName) {
+        curr_comp = com;
+      }
+    });
 
+    //TODO: if no id was found, create new store
+    return null;
+  }
 
   Future<String> getCompanyIdFromName(String companyName) async {
     String ID = '';
@@ -104,9 +137,12 @@ class DatabaseService {
     for(var i = numberOfTrans; i < cardTransactions.length; i++) {
       String compID = await getCompanyIdFromName(cardTransactions[i]['SOLUADILI']);
       String mcc = await getMCCnameFromCode(cardTransactions[i]['MCC']);
-
       Category cat = await getDefaultCategoryFromCompany(compID);
       var date = convertCardDateToAppFormat(cardTransactions[i]['FAERSLUDAGS']);
+      DocumentSnapshot comp = getCompanyInfoFromID(compID) as DocumentSnapshot;
+      if(comp['Co2Friend'] == true){
+        _showNotification();
+      }
 
       UserTransaction newTrans = UserTransaction(
         amount: int.parse(cardTransactions[i]['FAERSLUUPPHAED']),
@@ -228,7 +264,6 @@ class DatabaseService {
       return total.toInt();
     }
 
-    /// stefan implementar
     else if(trans.category == 'Matvörur') {
       var user = userCollection.document(uid);
       var category = categoryCollection.document(trans.categoryID);
@@ -442,6 +477,7 @@ class DatabaseService {
     return companyCollection.snapshots()
       .map(_companiesFromSnapshot);
   }
+
 
 
   List<Category> _categoriesFromSnapshot(QuerySnapshot snapshot) {
@@ -816,5 +852,39 @@ class DatabaseService {
       'TreesPlanted': TreesPlanted,
       'DaysActive': DaysActive,
     });
+  }
+
+
+  ///Notifiaction implementation
+
+  Future onselectNotification(String payload) async {
+    if (payload != null){
+      debugPrint('notifications payload  $payload');
+    }
+  }
+
+
+  void _showNotification() async{
+    await _demoNotification();
+  }
+
+
+  Future<void> _demoNotification() async{
+    // icon sem kemur upp þegar að maður fær notification , getum breytt það í að vera icon fyrir appið eða me_koli
+    initializeSettingsAndroid = new AndroidInitializationSettings('app_icon');
+    initializeSettings = new InitializationSettings(initializeSettingsAndroid, initializeSettingsIOS);
+    flutterLocalNotifiacionsPlugin.initialize(initializeSettings,
+        onSelectNotification: onselectNotification);
+    var androidChannel = AndroidNotificationDetails(
+        'channel_ID', 'Channel_name', 'child_description',
+        importance: Importance.Max,
+        priority: Priority.High,
+        ticker: 'test ticker');
+    var IOS = IOSNotificationDetails();
+    var platformChannelSpecfisics = NotificationDetails(
+        androidChannel, IOS);
+    await flutterLocalNotifiacionsPlugin.show(
+        0, 'test, hello', 'message from flutter buddy',
+        platformChannelSpecfisics, payload: 'test payload');
   }
 }

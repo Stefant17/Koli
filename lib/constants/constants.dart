@@ -9,6 +9,7 @@ class Constants {
     [FontAwesomeIcons.chartArea, 'Tölfræði'],
     [FontAwesomeIcons.award, 'Orður'],
     [FontAwesomeIcons.signOutAlt, 'Skrá út'],
+    [FontAwesomeIcons.handshake, 'companies'],
   ];
 
   var categoryIcons = {

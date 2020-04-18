@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 import 'package:koli/shared/bottom_navbar.dart';
 import 'package:koli/models/options_variables.dart';
 
+//testing background notifications
+import 'package:koli/services/backgroundService.dart';
+
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
@@ -185,22 +188,28 @@ class _ProfileState extends State<Profile> {
                     ),
                     Row(
                       children: <Widget>[
-                         Expanded( child:TextField(
-                         decoration: new InputDecoration(
-                           hintText: "First name",),
-                           onChanged: (String str) {
-                           setState(() {
-                              new_FirstName = str;
-                            });},
-                           ),),
-                         Expanded(child:TextField(
-                            decoration: new InputDecoration(
-                            hintText: "Last name",),
-                            onChanged: (String str) {
-                            setState(() {
-                              new_FirstName = str;
-                            });},
-                        ),
+                         Expanded(
+                           child:Container(
+                             padding: EdgeInsets.all(10.0),
+                             child:TextField(
+                               decoration: new InputDecoration(
+                                hintText: "First name",),
+                                onChanged: (String str) {
+                                setState(() {
+                                  new_FirstName = str;
+                                });},
+                           ),),),
+                         Expanded(
+                            child:Container(
+                              padding: EdgeInsets.all(10.0),
+                              child:TextField(
+                                decoration: new InputDecoration(
+                                hintText: "Last name",),
+                                onChanged: (String str) {
+                                  setState(() {
+                                    new_FirstName = str;
+                                  });},
+                        ),),
               )],),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
@@ -212,8 +221,12 @@ class _ProfileState extends State<Profile> {
                       children: <Widget>[
                         Expanded(
                           child:Container(
-                            color: Colors.red,
                             padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
                           child: Image(
                             width: 50.0,
                             height: 50.0,
@@ -233,8 +246,12 @@ class _ProfileState extends State<Profile> {
                         )),
                         Expanded(
                           child:Container(
-                            color: Colors.blue,
                             padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
                             child: Image(
                               image: AssetImage('assets/images/fish_icon.png'),
                               width: 50.0,
@@ -265,10 +282,13 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       Expanded(
                         child:Container(
-                          color: Colors.green,
                           padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                          ),
                           child: Image(
-                            image: AssetImage('assets/images/grain_icon.png'),
+                            image: AssetImage('assets/images/fruit_pnt.png'),
                             width: 50.0,
                             height: 50.0,
                           ),
@@ -286,8 +306,11 @@ class _ProfileState extends State<Profile> {
                       )),
                       Expanded(
                         child:Container(
-                          color: Colors.yellow,
                           padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: Colors.yellow,
+                            shape: BoxShape.circle,
+                          ),
                           child: Image(
                             image: AssetImage('assets/images/dariy_icon.png'),
                             width: 50.0,
@@ -316,12 +339,15 @@ class _ProfileState extends State<Profile> {
                      children: <Widget>[
                        Expanded(
                          child:Container(
-                           color: Colors.red,
                            padding: EdgeInsets.all(10.0),
+                           decoration: BoxDecoration(
+                             color: Colors.red,
+                             shape: BoxShape.circle,
+                           ),
                            child: Image(
                              width: 50.0,
                              height: 50.0,
-                             image: AssetImage('assets/images/car_icon.png'),
+                             image: AssetImage('assets/images/fuel_icon.png'),
                            ),
                          ),),
                        //change to disel, electric og oktan
@@ -337,12 +363,15 @@ class _ProfileState extends State<Profile> {
                     ),),
                        Expanded(
                          child:Container(
-                           color: Colors.red,
                            padding: EdgeInsets.all(10.0),
+                           decoration: BoxDecoration(
+                             color: Colors.red,
+                             shape: BoxShape.circle,
+                           ),
                            child: Image(
                              width: 50.0,
                              height: 50.0,
-                             image: AssetImage('assets/images/fuel_icon.png'),
+                             image: AssetImage('assets/images/car_icon_2.jpg'),
                            ),
                          ),),
                     // choose how large your car is
@@ -360,6 +389,7 @@ class _ProfileState extends State<Profile> {
                     RaisedButton(
                       child: Text('Staðfesta?'),
                       onPressed: (){
+
                         if(new_FirstName == ''){
                           new_FirstName = userData.firstName;
                         }

@@ -6,13 +6,13 @@ import 'package:koli/shared/appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/bottom_navbar.dart';
 
-class Profile extends StatefulWidget {
+class Frettir extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _FrettirState createState() => _FrettirState();
 }
 
 
-class _ProfileState extends State<Profile> {
+class _FrettirState extends State<Frettir> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
