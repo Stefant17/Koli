@@ -163,27 +163,38 @@ class _HomeState extends State<Home> {
                                       child: Column(
                                         children: <Widget>[
                                           Container(
-                                            alignment: Alignment.topCenter,
-                                            padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                                            alignment: Alignment.topRight,
+                                            padding: const EdgeInsets.fromLTRB(30, 15, 0, 0),
 
                                             child: Column(
                                               children: <Widget>[
-                                                Text(
-                                                  'Kolefnisspor',
-                                                  style: TextStyle(
-                                                    fontSize: 21,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFFFAF9F9).withOpacity(0.5),
+                                                Container(
+                                                  alignment: Alignment.topLeft,
+                                                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                  child: Text(
+                                                    'Kolefnisspor',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Color(0xFFFAF9F9).withOpacity(0.5),
+                                                    ),
                                                   ),
                                                 ),
 
                                                 SizedBox(height: 10),
 
-                                                AnimatedCounter(co2: co2),
-                                                Text(
-                                                  'sæti #31',
-                                                  style: TextStyle(
-                                                    color: Color(0xFFFAF9F9),
+                                                Container(
+                                                  child: AnimatedCounter(co2: co2),
+                                                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                                ),
+
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+                                                  child: Text(
+                                                    'sæti #31',
+                                                    style: TextStyle(
+                                                      color: Color(0xFFFAF9F9),
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -191,8 +202,8 @@ class _HomeState extends State<Home> {
                                           ),
 
                                           Container(
-                                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                            alignment: Alignment.topRight,
+                                            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                            alignment: Alignment.centerLeft,
                                             child: InkWell(
                                               child: Icon(
                                                 FontAwesomeIcons.shareAlt,
