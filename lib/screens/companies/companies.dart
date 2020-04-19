@@ -29,7 +29,7 @@ class Companies extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text(
-              'Kolefnisjafnandi Fyirtæki',
+              'Kolefnisjafnandi Fyrirtæki',
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,

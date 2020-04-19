@@ -15,9 +15,9 @@ import 'package:koli/models/date.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:http/http.dart' as http;
+import 'package:koli/services/backgroundService.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-
 import '../models/userCard.dart';
 
 
@@ -144,11 +144,11 @@ class DatabaseService {
     QuerySnapshot cards = await cardsCollection.getDocuments();
     cards.documents.forEach((DocumentSnapshot snapshot) {
       UserCard newCard = UserCard(
-        cardID: snapshot.documentID,
-        cardNumber: snapshot.data['CardNumber'].replaceAll(' ', ''),
-        cvv: snapshot.data['CVV'],
-        expiry: snapshot.data['Expiry'],
-        transCount: snapshot.data['TransCount']
+          cardID: snapshot.documentID,
+          cardNumber: snapshot.data['CardNumber'].replaceAll(' ', ''),
+          cvv: snapshot.data['CVV'],
+          expiry: snapshot.data['Expiry'],
+          transCount: snapshot.data['TransCount']
       );
 
       userCards.add(newCard);
@@ -159,10 +159,12 @@ class DatabaseService {
 
 
   Future checkForNewCardTransactions() async {
+    print('checking card shit');
     List<UserCard> cardList = await getUserCards(userCollection.document(uid)
         .collection('Cards'));
 
     for(var i = 0; i < cardList.length; i++) {
+      print('yo');
       try {
         print(cardList[i].cardNumber);
         String cardLines = await rootBundle.loadString(
@@ -173,6 +175,7 @@ class DatabaseService {
         int numberOfTrans = cardList[i].transCount;
 
         if(decodedLines.length > numberOfTrans) {
+          print('yo2');
           updateCardTransCount(cardList[i], decodedLines.length);
           parseCardTransactions(decodedLines, numberOfTrans);
         }
@@ -293,14 +296,14 @@ class DatabaseService {
     Company company = await companyCollection.document((trans.companyID)).get().then((com) {
       print('yo');
       return Company(
-        co2Friendly: com.data['Co2Friend']
+          co2Friendly: com.data['Co2Friend']
       );
     });
 
     print('_shownotification before');
     if(company.co2Friendly){
       print('_shownotification after');
-      //BackgroundService()._showNotification();
+      BackgroundService().showNotification();
     }
 
     return await userCollection.document(uid).collection('Trans').document().setData({
@@ -422,7 +425,7 @@ class DatabaseService {
   Stream<List<UserTransaction>> get userTransactions {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
-      .map(_userTransactionsFromSnapshot);
+        .map(_userTransactionsFromSnapshot);
   }
 
   UserProfile _userDataFromSnapshot(DocumentSnapshot snapshot) {
@@ -467,7 +470,7 @@ class DatabaseService {
 
   Stream<List<Company>> get companies {
     return companyCollection.snapshots()
-      .map(_companiesFromSnapshot);
+        .map(_companiesFromSnapshot);
   }
 
 
@@ -489,7 +492,7 @@ class DatabaseService {
 
   Stream<List<Category>> get categories {
     return categoryCollection.snapshots()
-      .map(_categoriesFromSnapshot);
+        .map(_categoriesFromSnapshot);
   }
 
 
@@ -510,7 +513,7 @@ class DatabaseService {
   Stream<int> get co2valueForCurrentMonth {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
-      .map(_co2ForCurrentMonthFromSnapshot);
+        .map(_co2ForCurrentMonthFromSnapshot);
   }
 
   //TODO: Kannski sýna líka hversu mikið notandi jafnaði sig
@@ -589,7 +592,7 @@ class DatabaseService {
 
   Stream<CO2ByCategory> get co2ByCategoryForCurrentMonth {
     return userCollection.document(uid).collection('Trans').snapshots()
-      .map(_co2byCategoryForCurrentMonthFromSnapshot);
+        .map(_co2byCategoryForCurrentMonthFromSnapshot);
   }
 
 
@@ -699,7 +702,7 @@ class DatabaseService {
 
   Stream<List<Badge>> get userBadges {
     return userCollection.document(uid).collection('Badges').snapshots()
-      .map(_userBadgesFromSnapshot);
+        .map(_userBadgesFromSnapshot);
   }
 
 
@@ -717,7 +720,7 @@ class DatabaseService {
 
   Stream<List<UserProfile>> get friendList {
     return userCollection.document(uid).collection('Friends').snapshots()
-      .map(_userFriendsFromSnapshot);
+        .map(_userFriendsFromSnapshot);
   }
 
   Future<List<UserProfile>> userSearch(String query) async {
@@ -738,11 +741,11 @@ class DatabaseService {
         if(user.data['FirstName'].toString().toLowerCase().contains(query.toLowerCase())) {
           if(!preExistingFriends.contains(user.documentID)) {
             result.add(
-              UserProfile(
-                uid: user.documentID,
-                firstName: user.data['FirstName'],
-                lastName: user.data['LastName']
-              )
+                UserProfile(
+                    uid: user.documentID,
+                    firstName: user.data['FirstName'],
+                    lastName: user.data['LastName']
+                )
             );
           }
         }
@@ -808,13 +811,13 @@ class DatabaseService {
 
   Stream<List<UserNotification>> get friendRequests {
     return userCollection.document(uid).collection('Notifications').snapshots()
-      .map(_friendRequestsFromSnapshot);
+        .map(_friendRequestsFromSnapshot);
   }
 
 
   Stream<List<UserNotification>> get notifications {
     return userCollection.document(uid).collection('Notifications').snapshots()
-      .map(_friendRequestsFromSnapshot);
+        .map(_friendRequestsFromSnapshot);
   }
 
   Future<void> acceptFriendRequest(String fromID, String notifID) async {
@@ -884,14 +887,14 @@ class DatabaseService {
     });
 
     var trans = UserTransaction(
-      amount: price,
-      company: company.name,
-      companyID: company.companyID,
-      date: Date(DateTime.now()).getCurrentDate(),
-      mcc: company.mccID,
-      categoryID: ' xCvETWEJWb6bBJe7Oc9y',
-      category: 'Málefni',
-      region: company.region
+        amount: price,
+        company: company.name,
+        companyID: company.companyID,
+        date: Date(DateTime.now()).getCurrentDate(),
+        mcc: company.mccID,
+        categoryID: ' xCvETWEJWb6bBJe7Oc9y',
+        category: 'Málefni',
+        region: company.region
     );
 
     //TODO: Credit card stuff
@@ -931,9 +934,9 @@ class DatabaseService {
       ..recipients.add(donorEmail)
       ..subject = 'Tylkinning um framlag til Kolviðar'
       ..text =
-      'Hæ $donorName, \n\nOkkur hefur borist framlag til Kolviðar í þínu nafni.'
-      '\nPeningurinn mun fara í það að gróðursetja tré hér á landi. \n\n '
-      'Takk fyrir stuðninginn xoxo \n\n-Koli';
+          'Hæ $donorName, \n\nOkkur hefur borist framlag til Kolviðar í þínu nafni.'
+          '\nPeningurinn mun fara í það að gróðursetja tré hér á landi. \n\n '
+          'Takk fyrir stuðninginn xoxo \n\n-Koli';
 
     try {
       final sendReport = await send(message, smtpServer);
@@ -988,7 +991,7 @@ class DatabaseService {
 
   Stream<List<UserCard>> get userCards {
     return userCollection.document(uid).collection('Cards').snapshots()
-      .map(_userCardsFromSnapshot);
+        .map(_userCardsFromSnapshot);
   }
 
   void confirmMeKoli(List<String> meKoli) async {
@@ -1013,6 +1016,6 @@ class DatabaseService {
 
   Stream<MeKoliAvatar> get meKoliAvatar {
     return userCollection.document(uid).collection('meKoli').document('avatar').snapshots()
-      .map(_meKoliAvatarFromSnapshot);
+        .map(_meKoliAvatarFromSnapshot);
   }
 }

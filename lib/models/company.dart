@@ -6,8 +6,6 @@ class Company {
   bool co2Friendly;
 
   int co2;
-
-
   Company({
     this.companyID, this.mccID,
     this.name, this.region, this.co2,

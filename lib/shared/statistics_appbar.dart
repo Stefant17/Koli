@@ -46,7 +46,6 @@ Widget statisticsAppBar (var context, String title){
                       ),
 
                       SizedBox(width: 20),
-
                       Text('${item[1]}'),
                     ]
                 ),

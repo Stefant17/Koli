@@ -42,7 +42,7 @@ Widget appBar (var context, String title){
                     children: <Widget> [
                       Icon(
                           item[0],
-                          color: Colors.black
+                          color: Colors.black,
                       ),
 
                       SizedBox(width: 20),

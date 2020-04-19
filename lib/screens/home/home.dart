@@ -58,10 +58,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
+    /*
     if(!checkedForNewCardTrans) {
       DatabaseService(uid: user.uid).checkForNewCardTransactions();
       checkedForNewCardTrans = true;
     }
+
+     */
 
     if(!checkedForBadges) {
       DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
