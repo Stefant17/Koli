@@ -36,12 +36,12 @@ class _OverviewState extends State<Overview> {
             var calendarDate = CalendarTime(DateTime.now());
 
             if(calendarDate.startOfToday().toString() == date + '0') {
-              userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
+              //userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
               todayTransactions.add(userTransactions[i]);
             }
 
             else if(calendarDate.startOfYesterday().toString() == date + '0') {
-              userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
+              //userTransactions[i].date = Date(DateTime.parse(date)).getDayAndMonth();
               yesterdayTransactions.add(userTransactions[i]);
             }
 
@@ -130,36 +130,6 @@ class _OverviewState extends State<Overview> {
                         uid: user.uid,
                       )).toList(),
                     ),
-
-                    /*
-                    createTransaction ? CreateTransactionForm(
-                        toggleCreateTransaction: this.toggleCreateTransaction,
-                        user: user
-                    )
-                    :
-                    Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: double.infinity,
-                          child: RaisedButton(
-                            elevation: 0.0,
-                            color: Colors.black,
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-
-                            onPressed: () {
-                              setState(() {
-                                createTransaction = true;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-
-                     */
                   ],
                 ),
               ],

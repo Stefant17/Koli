@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:koli/models/co2_by_day.dart';
 import 'package:koli/models/co2_by_month.dart';
 import 'package:koli/models/co2_by_week.dart';
+import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -27,13 +28,13 @@ class _BarChartState extends State<BarChart> {
   //https://www.youtube.com/watch?v=GwDMwnELTP4
   List<charts.Series<MonthTotal, String>> chartMonthData = List<charts.Series<MonthTotal, String>>();
 
-  void generateMonthChartData(CO2ByMonth data) {
+  void generateMonthChartData(CO2ByMonth data, int treesPlanted) {
     List<MonthTotal> monthTotal = [];
     for(var i = 0; i < data.co2Values.length; i++) {
       monthTotal.add(
         MonthTotal(
           month: data.months[i],
-          totalCo2: data.co2Values[i],
+          totalCo2: data.co2Values[i] - (treesPlanted * 21) ~/ 12,
         )
       );
     }
@@ -52,60 +53,71 @@ class _BarChartState extends State<BarChart> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        (timeSetting == 'months') ?
-        StreamBuilder<CO2ByMonth> (
-          stream: DatabaseService(uid: widget.uid).co2ByMonth,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              CO2ByMonth co2 = snapshot.data;
-              generateMonthChartData(co2);
+    return StreamBuilder<UserProfile>(
+      stream: DatabaseService(uid: widget.uid).userProfile,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          UserProfile userProfile = snapshot.data;
 
-              return Container(
-                child: Expanded (
-                  child: charts.BarChart(
-                    chartMonthData,
-                    animate: true,
-                    animationDuration: Duration(seconds: 1),
-                  ),
+          return Column(
+              children: <Widget>[
+                (timeSetting == 'months') ?
+                StreamBuilder<CO2ByMonth>(
+                  stream: DatabaseService(uid: widget.uid).co2ByMonth,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      CO2ByMonth co2 = snapshot.data;
+                      generateMonthChartData(co2, userProfile.treesPlanted);
+
+                      return Container(
+                        child: Expanded(
+                          child: charts.BarChart(
+                            chartMonthData,
+                            animate: true,
+                            animationDuration: Duration(seconds: 1),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
+                    : (timeSetting == 'weeks') ?
+                StreamBuilder<CO2ByWeek>(
+                  stream: DatabaseService(uid: widget.uid).co2ByWeek,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                          child: Text('')
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
+                    : (timeSetting == 'days') ?
+                StreamBuilder<CO2ByDay>(
+                  stream: DatabaseService(uid: widget.uid).co2ByDay,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                          child: Text('')
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                )
+                    : Container(
+                    child: Text('')
                 ),
-              );
-            } else {
-              return Container();
-            }
-          },
-        )
-        :(timeSetting == 'weeks') ?
-        StreamBuilder<CO2ByWeek> (
-          stream: DatabaseService(uid: widget.uid).co2ByWeek,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return Container(
-                child: Text('')
-              );
-            } else {
-              return Container();
-            }
-          },
-        )
-        :(timeSetting == 'days') ?
-        StreamBuilder<CO2ByDay> (
-          stream: DatabaseService(uid: widget.uid).co2ByDay,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return Container(
-                  child: Text('')
-              );
-            } else {
-              return Container();
-            }
-          },
-        )
-        :Container(
-          child: Text('')
-        ),
-      ]
+              ]
+          );
+        } else {
+          return Text('ye');
+        }
+      }
     );
   }
 }

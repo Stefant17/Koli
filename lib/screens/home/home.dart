@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,9 +14,11 @@ import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/home_appbar.dart';
 import 'package:koli/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:koli/shared/appbar.dart';
+import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,8 +29,16 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   var currentDate = DateTime.now();
   var constants = Constants();
+
   bool checkedForBadges = false;
   bool checkedForNewCardTrans = false;
+
+  List<Color> gradientList = [
+    //Color(0xFF48A9A6),
+    //Colors.greenAccent,
+    Color(0xFFA5F8D3),
+    Colors.blue,
+  ];
 
   Date getCurrentDate() {
     return Date(currentDate);
@@ -41,6 +50,8 @@ class _HomeState extends State<Home> {
       checkedForBadges = false;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +75,234 @@ class _HomeState extends State<Home> {
         if(snapshot.hasData) {
           UserProfile userData = snapshot.data;
 
-          return Scaffold(
-            backgroundColor: Colors.white,
-            appBar: appBar(context, 'Heima'),
-
-            body: Container(
-              color: Color(0xFF2E4057),
-              child: Column(
+          return Container(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              color: Color(0xFF2D2E2E),
+              child: ListView(
                 children: <Widget> [
+                  SizedBox(height: 20),
                   StreamBuilder<int>(
                     stream: DatabaseService(uid: user.uid).co2valueForCurrentMonth,
                     builder: (context, snapshot) {
                       if(snapshot.hasData) {
-                        int co2 = snapshot.data;
+                        int co2 = snapshot.data - (userData.treesPlanted * 21) ~/ 12;// - treesPlanted;
+
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 150,
+
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                alignment: Alignment.bottomLeft,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Velkominn',
+                                        style: TextStyle(
+                                          color: Color(0xFFFAF9F9),
+                                          fontSize: 30,
+                                        )
+                                      ),
+                                    ),
+
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child: Text(
+                                        getCurrentDate().getDayAndMonth(),
+                                        style: TextStyle(
+                                          color: Colors.grey[300],
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  //begin: Alignment.bottomRight,
+                                  colors: gradientList,
+                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.white.withOpacity(0.3),
+                                    BlendMode.dstATop,
+                                  ),
+                                  image: AssetImage(
+                                    'assets/images/trees.jpg',
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            SizedBox(height: 10),
+
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 160,
+                                      alignment: Alignment.centerLeft,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            alignment: Alignment.topCenter,
+                                            padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+
+                                            child: Column(
+                                              children: <Widget>[
+                                                Text(
+                                                  'Kolefnisspor',
+                                                  style: TextStyle(
+                                                    fontSize: 21,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFFAF9F9).withOpacity(0.5),
+                                                  ),
+                                                ),
+
+                                                SizedBox(height: 10),
+
+                                                AnimatedCounter(co2: co2),
+                                                Text(
+                                                  'sæti #31',
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFAF9F9),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          Container(
+                                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                            alignment: Alignment.topRight,
+                                            child: InkWell(
+                                              child: Icon(
+                                                FontAwesomeIcons.shareAlt,
+                                                color: Colors.white.withOpacity(0.6),
+                                              ),
+
+                                              onTap: () {
+                                                Share.share(
+                                                  'Ég er með kolefnissporið $co2 í Kola!'
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFAEA4BF),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+
+                                          gradient: LinearGradient(
+                                            //begin: Alignment.bottomRight,
+                                            colors: [
+                                              Color(0xFF1F7A8C),
+                                              Color(0xFFAEA4BF),
+                                            ],
+                                          ),
+
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            colorFilter: ColorFilter.mode(
+                                              Colors.white.withOpacity(0.3),
+                                              BlendMode.dstATop,
+                                            ),
+                                            image: AssetImage(
+                                              'assets/images/footprints_beach.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 210,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(''),//Text('bla'),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                SizedBox(width: 10),
+
+                                Column(
+                                  children: <Widget>[
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 210,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(''),//Text('Leaderboard'),
+
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.5 - 25,
+                                      height: 160,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(''),//Text('bla'),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          //begin: Alignment.bottomRight,
+                                          colors: gradientList,
+                                        ),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
 
                         return Container(
                           alignment: Alignment.center,
@@ -85,54 +311,13 @@ class _HomeState extends State<Home> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(height: 20),
-                                  Container(
-                                    alignment: Alignment.bottomCenter,
-                                    padding: const EdgeInsets.all(40.0),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 5,
-                                        color: Colors.blue[200],
-                                      ),
 
-                                      shape: BoxShape.circle,
-                                    ),
-
-                                    child: Column(
-                                      children: <Widget>[
-                                        AnimatedCounter(co2: co2),
-                                        Text(
-                                          'sæti #31',
-                                          style: TextStyle(
-                                            color: Colors.blue[300],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 20),
-                                  /*
-                                  Text(
-                                    'Þú ert með lægra kolefnisspor\n'
-                                        '          en 60% notenda',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-
-                                   */
-                                  SizedBox(height: 20),
-                                ],
-                              ),
 
                               //SizedBox(width: 40),
                               //VerticalDivider(color: Colors.white),
                               SizedBox(width: 40),
+
+                              /*
                               Container(
                                 alignment: Alignment.topRight,
                                 transform: Matrix4.translationValues(0.0, -10.0, 0.0),
@@ -153,6 +338,8 @@ class _HomeState extends State<Home> {
                                   ],
                                 ),
                               ),
+
+                               */
                             ],
                           ),
                         );
@@ -190,7 +377,7 @@ class _HomeState extends State<Home> {
 
                    */
 
-                  SizedBox(height: 50),
+
 
                   RaisedButton(
                     elevation: 0,
@@ -203,19 +390,12 @@ class _HomeState extends State<Home> {
                     ),
 
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AddCardForm();
-                        }
-                      );
+                      Navigator.pushNamed(context, '/Nýtt kort');
                     },
                   ),
                 ],
               ),
             ),
-
-            bottomNavigationBar: BottomBar(),
           );
         } else {
           //return Loading();

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:koli/models/badge.dart';
-//import 'package:koli/models/meKoli_avatar.dart';
+import 'package:koli/models/meKoli_avatar.dart';
 import 'package:koli/models/notification.dart';
 import 'package:koli/models/userCard.dart';
 import 'package:koli/models/category.dart';
@@ -17,9 +17,9 @@ import 'package:koli/models/transaction.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:koli/services/backgroundService.dart';
 
 
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/userCard.dart';
 
 
@@ -39,21 +39,11 @@ class DatabaseService {
   bool _enabled = true;
   int _status = 0;
   List<String> _events = [];
-  ///Notification variables Start
-  //notification implemintantion, var í "background Services en þarf að vera hérna vegna þess að checkið er hér n´shit, gæti breyst í farmtíðinni
-  FlutterLocalNotificationsPlugin flutterLocalNotifiacionsPlugin = new FlutterLocalNotificationsPlugin();
-  var initializeSettingsAndroid;
-  // implementaði ekki fyrir IOS því var að focusa að láta þetta runna á android
-  // hér er tutorialið ef ég ákvað að halda áfram og implementa fyrir ios tutorial: https://www.youtube.com/watch?v=JBOkTsIN22M&ab_channel=CodingWithChip
-  var initializeSettingsIOS;
-  var initializeSettings;
-  ///Notification variables END
-
 
 
   DatabaseService({ this.uid });
 
-  Future initializeUserProfile() async {
+  Future initializeUserProfile(String email) async {
     return await userCollection.document(uid).setData({
       'Username': '',
       'FirstName': '',
@@ -69,6 +59,8 @@ class DatabaseService {
       'Fruit': '0.15',
       'Dairy': '0.20',
       'Grains': '0',
+      'Email': email,
+      'DateJoined': Date(DateTime.now()).getCurrentDate(),
     });
   }
 
@@ -140,8 +132,10 @@ class DatabaseService {
       Category cat = await getDefaultCategoryFromCompany(compID);
       var date = convertCardDateToAppFormat(cardTransactions[i]['FAERSLUDAGS']);
       DocumentSnapshot comp = getCompanyInfoFromID(compID) as DocumentSnapshot;
+      print('_shownotification before');
       if(comp['Co2Friend'] == true){
-        _showNotification();
+        print('_shownotification after');
+        BackgroundService()._showNotification();
       }
 
       UserTransaction newTrans = UserTransaction(
@@ -161,10 +155,7 @@ class DatabaseService {
 
 
   void updateCardTransCount(UserCard card, int newTransCount) {
-    userCollection.document(uid).collection('Cards').document(card.cardID).setData({
-      'CardNumber': card.cardNumber,
-      'Expiry': card.expiry,
-      'CVV': card.cvv,
+    userCollection.document(uid).collection('Cards').document(card.cardID).updateData({
       'TransCount': newTransCount,
     });
   }
@@ -177,7 +168,7 @@ class DatabaseService {
     cards.documents.forEach((DocumentSnapshot snapshot) {
       UserCard newCard = UserCard(
         cardID: snapshot.documentID,
-        cardNumber: snapshot.data['CardNumber'],
+        cardNumber: snapshot.data['CardNumber'].replaceAll(' ', ''),
         cvv: snapshot.data['CVV'],
         expiry: snapshot.data['Expiry'],
         transCount: snapshot.data['TransCount']
@@ -195,35 +186,60 @@ class DatabaseService {
         .collection('Cards'));
 
     for(var i = 0; i < cardList.length; i++) {
-      String cardLines = await rootBundle.loadString(
-          'assets/testing/card_transactions/${cardList[i].cardNumber}.json'
-      );
+      try {
+        print(cardList[i].cardNumber);
+        String cardLines = await rootBundle.loadString(
+            'assets/testing/card_transactions/${cardList[i].cardNumber.replaceAll(' ', '')}.json'
+        );
 
-      var decodedLines = json.decode(cardLines);
-      int numberOfTrans = cardList[i].transCount;
+        var decodedLines = json.decode(cardLines);
+        int numberOfTrans = cardList[i].transCount;
 
-      if(decodedLines.length > numberOfTrans) {
-        updateCardTransCount(cardList[i], decodedLines.length);
-        parseCardTransactions(decodedLines, numberOfTrans);
+        if(decodedLines.length > numberOfTrans) {
+          updateCardTransCount(cardList[i], decodedLines.length);
+          parseCardTransactions(decodedLines, numberOfTrans);
+        }
+      } catch(e) {
+        print(e);
       }
     }
   }
 
 
-  Future<bool> addCardToUser(String number, String expiry, String cvv) async {
+  Future<bool> addCardToUser(String number, String expiry, String cvv, String provider) async {
     await userCollection.document(uid).collection('Cards').add({
       'CardNumber': number,
       'Expiry': expiry,
       'CVV': cvv,
+      'Provider': provider,
       'TransCount': 0
     });
   }
 
 
   Future<int> getCO2fromCompany(UserTransaction trans) async {
-    print('yo');
     var company = companyCollection.document(trans.companyID);
     var user = userCollection.document(uid);
+
+    var companyName = await company.get().then((com) {
+      return com['Name'];
+    });
+
+    if(companyName == 'Kolviður') {
+      return 0;
+      /*if(trans.amount == 2200) {
+        return -10 * 21;
+      }
+
+      else if(trans.amount == 5500) {
+        return -25 * 21;
+      }
+
+      else if(trans.amount == 11000) {
+        return -50 * 21;
+      }
+       */
+    }
 
     if(trans.category == 'Bensín') {
       var emissionPerLitre = 0.18;
@@ -296,11 +312,7 @@ class DatabaseService {
         dairy =  (trans.amount * dairy * cat['co2_per_kg_dairy']);
         grain = (trans.amount * grain * cat['co2_per_kr_grains']);
 
-
-
-
         total = meat + fish + fruit + nuts + dairy + grain;
-
       });
       return (total).toInt();
     }
@@ -488,6 +500,10 @@ class DatabaseService {
       );
     }).toList();
 
+    categories.sort((a, b) {
+      return a.name.compareTo(b.name);
+    });
+
     return categories;
   }
 
@@ -518,7 +534,7 @@ class DatabaseService {
       .map(_co2ForCurrentMonthFromSnapshot);
   }
 
-
+  //TODO: Kannski sýna líka hversu mikið notandi jafnaði sig
   CO2ByMonth _co2ByMonthFromSnapshot(QuerySnapshot snapshot) {
     DateTime currentDate = DateTime.now();
     int currentMonth = currentDate.month + monthOffset;
@@ -626,27 +642,13 @@ class DatabaseService {
 
 
   Future<bool> checkConditions(user, badge) async {
-    if (badge.data['Condition'] == 'Plant Trees') {
-      return await user.get().then((u) {
-        if (u.data['TreesPlanted'] >= badge.data['ConditionValue']) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    else if(badge.data['Condition'] == 'Number of Days') {
-      return await user.get().then((u) {
-        if (u.data['DaysActive'] >= badge.data['ConditionValue']) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    }
-
-    return false;
+    return await user.get().then((u) {
+      if(u.data[badge.data['Condition']] >= badge.data['ConditionValue']) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
 
@@ -855,36 +857,150 @@ class DatabaseService {
   }
 
 
-  ///Notifiaction implementation
 
-  Future onselectNotification(String payload) async {
-    if (payload != null){
-      debugPrint('notifications payload  $payload');
+
+  //TODO: Implement this shiz
+  Future<void> plantTrees(int treeCount, int price, UserCard card, String donorName, String donorEmail) async {
+    // Get the document for Kolviður
+    Company company = await companyCollection.document('jJCsR0JmqcBRhWZxfWTU').get().then((com) {
+      return Company(
+        companyID: com.documentID,
+        mccID: com.data['MCC'],
+        name: com.data['Name'],
+        region: com.data['Region'],
+      );
+    });
+
+    var trans = UserTransaction(
+        amount: price,
+        company: company.name,
+        companyID: company.companyID,
+        date: Date(DateTime.now()).getCurrentDate(),
+        mcc: company.mccID,
+        categoryID: ' xCvETWEJWb6bBJe7Oc9y',
+        category: 'Málefni',
+        region: company.region
+    );
+
+    //TODO: Credit card stuff
+
+    await createUserTransaction(trans);
+
+    int currentUserTreeCount = await userCollection.document(uid).get().then((user) {
+      return user.data['TreesPlanted'];
+    });
+    await userCollection.document(uid).updateData({
+      'TreesPlanted': currentUserTreeCount + treeCount,
+    });
+
+    if(donorEmail == null || donorEmail == '') {
+      donorEmail = await userCollection.document(uid).get().then((user) {
+        return user.data['Email'];
+      });
+    }
+
+    if(donorName == null || donorName == '') {
+      donorName = await userCollection.document(uid).get().then((user) {
+        return user.data['FirstName'];
+      });
+    }
+
+    sendDonationEmail(donorName, donorEmail);
+    sendConfirmationToKoli(donorName, donorEmail, price, treeCount);
+  }
+
+  void sendDonationEmail(String donorName, String donorEmail) async {
+    String username = 'koli.kolur.kolason@gmail.com';
+    String password = 'Koli1234';
+
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username, 'Koli')
+      ..recipients.add(donorEmail)
+      ..subject = 'Tylkinning um framlag til Kolviðar'
+      ..text =
+          'Hæ $donorName, \n\nOkkur hefur borist framlag til Kolviðar í þínu nafni.'
+          '\nPeningurinn mun fara í það að gróðursetja tré hér á landi. \n\n '
+          'Takk fyrir stuðninginn xoxo \n\n-Koli';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch(error) {
+      print(error);
+      for(var p in error.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
     }
   }
 
+  void sendConfirmationToKoli(String donorName, String donorEmail, int price, int treeAmount) async {
+    String username = 'koli.kolur.kolason@gmail.com';
+    String password = 'Koli1234';
 
-  void _showNotification() async{
-    await _demoNotification();
+    final smtpServer = gmail(username, password);
+    final message = Message()
+      ..from = Address(username, 'Koli')
+      ..recipients.add(username)
+      ..subject = 'Staðfesting um framlag til Kolviðar - $donorName'
+      ..text =
+          'Staðfesting um framlag til kolviðar\n'
+          '-----------------------------------\n'
+          'Nafn:            $donorName\n'
+          'Netfang:        $donorEmail\n'
+          'Fjöldi trjáa:    $treeAmount\n'
+          'Verð:            $price\n';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch(error) {
+      print(error);
+      for(var p in error.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
   }
 
+  List<UserCard> _userCardsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((card) {
+      return UserCard(
+        cardID: card.documentID,
+        cardNumber: card['CardNumber'],
+        expiry: card['Expiry'],
+        cvv: card['CVV'],
+        provider: card['Provider'],
+      );
+    }).toList();
+  }
 
-  Future<void> _demoNotification() async{
-    // icon sem kemur upp þegar að maður fær notification , getum breytt það í að vera icon fyrir appið eða me_koli
-    initializeSettingsAndroid = new AndroidInitializationSettings('app_icon');
-    initializeSettings = new InitializationSettings(initializeSettingsAndroid, initializeSettingsIOS);
-    flutterLocalNotifiacionsPlugin.initialize(initializeSettings,
-        onSelectNotification: onselectNotification);
-    var androidChannel = AndroidNotificationDetails(
-        'channel_ID', 'Channel_name', 'child_description',
-        importance: Importance.Max,
-        priority: Priority.High,
-        ticker: 'test ticker');
-    var IOS = IOSNotificationDetails();
-    var platformChannelSpecfisics = NotificationDetails(
-        androidChannel, IOS);
-    await flutterLocalNotifiacionsPlugin.show(
-        0, 'test, hello', 'message from flutter buddy',
-        platformChannelSpecfisics, payload: 'test payload');
+  Stream<List<UserCard>> get userCards {
+    return userCollection.document(uid).collection('Cards').snapshots()
+        .map(_userCardsFromSnapshot);
+  }
+
+  void confirmMeKoli(List<String> meKoli) async {
+    userCollection.document(uid).collection('meKoli').document('avatar').setData({
+      'Face': meKoli[0],
+      'Mouth': meKoli[1],
+      'Eyes': meKoli[2],
+      'Beard': meKoli[3],
+      'Eyebrows': meKoli[4]
+    });
+  }
+
+  MeKoliAvatar _meKoliAvatarFromSnapshot(DocumentSnapshot snapshot) {
+    return MeKoliAvatar(
+      face: snapshot.data['Face'],
+      eyes: snapshot.data['Eyes'],
+      mouth: snapshot.data['Mouth'],
+      eyebrows: snapshot.data['Eyebrows'],
+      beard: snapshot.data['Beard'],
+    );
+  }
+
+  Stream<MeKoliAvatar> get meKoliAvatar {
+    return userCollection.document(uid).collection('meKoli').document('avatar').snapshots()
+        .map(_meKoliAvatarFromSnapshot);
   }
 }

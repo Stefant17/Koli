@@ -23,6 +23,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.12.9+4
   provider: ^3.1.0
@@ -45,6 +46,9 @@ dependencies:
   flutter_rounded_date_picker: 1.0.0
   autocomplete_textfield: ^1.7.3
   background_fetch: ^0.5.1
+  url_launcher: ^5.4.2
+  credit_card_number_validator: ^1.0.4
+  share: ^0.6.3+6
 
   flutter_picker:
     git: git://github.com/yangyxd/flutter_picker.git
@@ -73,6 +77,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/testing/card_transactions/
+    - assets/images/meKoli/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

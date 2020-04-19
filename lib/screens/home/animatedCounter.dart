@@ -52,7 +52,8 @@ class _AnimatedCounterState extends State<AnimatedCounter>
       '$i kg',
       style: TextStyle(
         fontSize: 25,
-        color: Colors.blue
+        //color: Colors.blue
+        color: Color(0xFFFAF9F9)
       ),
     );
   }

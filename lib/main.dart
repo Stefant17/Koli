@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:koli/screens/companies/companyList.dart';
+import 'package:koli/forms/add_card_form.dart';
+import 'package:koli/forms/edit_transaction_form.dart';
+import 'package:koli/screens/charity/charity.dart';
+import 'package:koli/screens/charity/donation_confirmation.dart';
 import 'package:koli/screens/overview/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
 import 'package:koli/screens/overview/overview_wrapper.dart';
+import 'package:koli/screens/profile/diet_settings.dart';
+import 'package:koli/screens/profile/meKoli_settings.dart';
 import 'package:koli/screens/profile/profile.dart';
 import 'package:koli/screens/statistics/statistics.dart';
 import 'package:koli/screens/wrapper.dart';
@@ -28,9 +34,16 @@ void main() {
           '/Yfirlit': (context) => OverViewWrapper(),
           '/Tölfræði': (context) => Statistics(),
           '/Orður': (context) => Badges(),
+          //'/Góðgerðarmál': (context) => CharityScreen(),
+          '/Kolefnisjöfnun': (context) => CharityScreen(),
           '/Prófíll': (context) => Profile(),
+          '/Mataræði stillingar': (context) => DietSettings(),
+          '/meKoli stillingar': (context) => MeKoliSettings(),
           '/Ný færsla': (context) => CreateTransaction(),
           '/companies': (context) => CompanyList(),
+          '/Breyta færslu': (context) => EditTransactionForm(),
+          '/Nýtt kort': (context) => AddCardForm(),
+          '/Staðfesta framlag': (context) => DonationConfirmation(),
         },
       ),
     );

@@ -26,7 +26,7 @@ class AuthService {
       FirebaseUser user = result.user;
 
       // Create a new user profile in the database
-      await DatabaseService(uid: user.uid).initializeUserProfile();
+      await DatabaseService(uid: user.uid).initializeUserProfile(email);
       return _userFromFirebaseUser(user);
     } catch(error) {
       print(error.toString());
