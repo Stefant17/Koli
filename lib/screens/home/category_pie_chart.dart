@@ -51,7 +51,7 @@ class CategoryPieChart extends StatelessWidget {
     );
 
     for(var i = 0; i < categoryTotal.length; i++) {
-      print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
+      //print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
     }
   }
 

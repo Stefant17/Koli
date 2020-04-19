@@ -111,9 +111,9 @@ class DatabaseService {
     for(var i = numberOfTrans; i < cardTransactions.length; i++) {
       String compID = await getCompanyIdFromName(cardTransactions[i]['SOLUADILI']);
       String mcc = await getMCCnameFromCode(cardTransactions[i]['MCC']);
+      String date = convertCardDateToAppFormat(cardTransactions[i]['FAERSLUDAGS']);
 
       Category cat = await getDefaultCategoryFromCompany(compID);
-      var date = convertCardDateToAppFormat(cardTransactions[i]['FAERSLUDAGS']);
 
       UserTransaction newTrans = UserTransaction(
         amount: int.parse(cardTransactions[i]['FAERSLUUPPHAED']),
@@ -289,6 +289,19 @@ class DatabaseService {
 
   Future createUserTransaction(UserTransaction trans) async {
     trans.co2 = await getCO2fromCompany(trans);
+
+    Company company = await companyCollection.document((trans.companyID)).get().then((com) {
+      print('yo');
+      return Company(
+        co2Friendly: com.data['Co2Friend']
+      );
+    });
+
+    print('_shownotification before');
+    if(company.co2Friendly){
+      print('_shownotification after');
+      //BackgroundService()._showNotification();
+    }
 
     return await userCollection.document(uid).collection('Trans').document().setData({
       'Amount': trans.amount,
