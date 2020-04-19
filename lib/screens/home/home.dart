@@ -317,81 +317,71 @@ class _HomeState extends State<Home> {
                             ),
                           ],
                         );
-
-                        return Container(
-                          alignment: Alignment.center,
-                          color: Color(0xFF2D2E2E),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-
-
-                              //SizedBox(width: 40),
-                              //VerticalDivider(color: Colors.white),
-                              SizedBox(width: 40),
-
-                              /*
-                              Container(
-                                alignment: Alignment.topRight,
-                                transform: Matrix4.translationValues(0.0, -10.0, 0.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.face,
-                                      size: 125,
-                                      color: Colors.grey[600],
-                                    ),
-                                    Text(
-                                      '${userData.firstName}',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                               */
-                            ],
-                          ),
-                        );
                       } else {
                         return Text('ya');
                       }
                     }
                   ),
-                  /*
-                  Container(
-                    //margin: EdgeInsets.fromLTRB(50, 20, 0, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            '${getCurrentDate().getCurrentDate()}',
-                            style: TextStyle(
-                              fontSize: 40,
-                            ),
-                          ),
-                        ),
 
-                        Container(
-                          child: Text(
-                            '${getCurrentDate().getCurrentWeekday()}',
-                            style: TextStyle(
-                              fontSize: 30,
+                  SizedBox(height: 10),
+
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      alignment: Alignment.bottomLeft,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                                'Velkominn',
+                                style: TextStyle(
+                                  color: Color(0xFFFAF9F9),
+                                  fontSize: 30,
+                                )
                             ),
                           ),
+
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              getCurrentDate().getDayAndMonth(),
+                              style: TextStyle(
+                                color: Colors.grey[300],
+                                fontSize: 20,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        //begin: Alignment.bottomRight,
+                        colors: gradientList,
+                      ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          Colors.white.withOpacity(0.3),
+                          BlendMode.dstATop,
                         ),
-                      ],
+                        image: AssetImage(
+                          'assets/images/trees.jpg',
+                        ),
+                      ),
                     ),
                   ),
-
-                   */
-
-
 
                   RaisedButton(
                     elevation: 0,

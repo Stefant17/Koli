@@ -6,10 +6,11 @@ class Constants {
     [FontAwesomeIcons.home, 'Heim'],
     [FontAwesomeIcons.fileContract, 'Yfirlit'],
     [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
-    [FontAwesomeIcons.chartArea, 'Tölfræði'],
+    [FontAwesomeIcons.solidChartBar, 'Tölfræði'],
     [FontAwesomeIcons.award, 'Orður'],
     //[FontAwesomeIcons.handHoldingHeart, 'Góðgerðarmál'],
     [FontAwesomeIcons.seedling, 'Kolefnisjöfnun'],
+    [FontAwesomeIcons.shoppingCart, 'Fyrirtæki'],
     [FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
     [FontAwesomeIcons.signOutAlt, 'Skrá út'],
   ];

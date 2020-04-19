@@ -8,14 +8,14 @@ import 'package:koli/views/transaction_view.dart';
 import 'package:provider/provider.dart';
 import 'package:calendar_time/calendar_time.dart';
 
-class Overview extends StatefulWidget {
+class Transactions extends StatefulWidget {
   @override
-  _OverviewState createState() => _OverviewState();
+  _TransactionsState createState() => _TransactionsState();
 }
 
 /////////////////////////////VALIDATE
 
-class _OverviewState extends State<Overview> {
+class _TransactionsState extends State<Transactions> {
   var constants = Constants();
 
   @override

@@ -3,10 +3,11 @@ import 'package:koli/forms/add_card_form.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/screens/charity/charity.dart';
 import 'package:koli/screens/charity/donation_confirmation.dart';
-import 'package:koli/screens/overview/create_transaction.dart';
+import 'package:koli/screens/companies/companies.dart';
+import 'package:koli/screens/transactions/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
-import 'package:koli/screens/overview/overview_wrapper.dart';
+import 'package:koli/screens/transactions/transactions_wrapper.dart';
 import 'package:koli/screens/profile/diet_settings.dart';
 import 'package:koli/screens/profile/meKoli_settings.dart';
 import 'package:koli/screens/profile/profile.dart';
@@ -26,11 +27,12 @@ class MyApp extends StatelessWidget {
         //home: Wrapper(),
         routes: {
           '/': (context) => Wrapper(),
-          '/Yfirlit': (context) => OverViewWrapper(),
+          '/Yfirlit': (context) => TransactionWrapper(),
           '/Tölfræði': (context) => Statistics(),
           '/Orður': (context) => Badges(),
           //'/Góðgerðarmál': (context) => CharityScreen(),
           '/Kolefnisjöfnun': (context) => CharityScreen(),
+          '/Fyrirtæki': (context) => Companies(),
           '/Prófíll': (context) => Profile(),
           '/Mataræði stillingar': (context) => DietSettings(),
           '/meKoli stillingar': (context) => MeKoliSettings(),

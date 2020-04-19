@@ -444,6 +444,7 @@ class DatabaseService {
         name: doc.data['Name'],
         region: doc.data['Region'],
         co2: doc.data['Co2'],
+        co2Friendly: doc.data['Co2Friend'],
       );
     }).toList();
 
