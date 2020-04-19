@@ -10,6 +10,7 @@ import 'package:koli/models/date.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/screens/home/animatedCounter.dart';
+import 'package:koli/screens/home/category_pie_chart.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
@@ -276,14 +277,16 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 210,
                                       alignment: Alignment.centerLeft,
-                                      child: Text(''),//Text('Leaderboard'),
+                                      child: CategoryPieChart(),//Text('Leaderboard'),
 
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
+                                        /*gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
                                           colors: gradientList,
                                         ),
-                                        color: Colors.white,
+
+                                         */
+                                        color: Colors.grey[800],
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20),
                                         ),

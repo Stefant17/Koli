@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:koli/models/badge.dart';
+import 'package:koli/models/co2_by_category.dart';
 import 'package:koli/models/meKoli_avatar.dart';
 import 'package:koli/models/notification.dart';
 import 'package:koli/models/userCard.dart';
@@ -203,18 +204,6 @@ class DatabaseService {
 
     if(companyName == 'Kolviður') {
       return 0;
-      /*if(trans.amount == 2200) {
-        return -10 * 21;
-      }
-
-      else if(trans.amount == 5500) {
-        return -25 * 21;
-      }
-
-      else if(trans.amount == 11000) {
-        return -50 * 21;
-      }
-       */
     }
 
     if(trans.category == 'Bensín') {
@@ -551,6 +540,42 @@ class DatabaseService {
     CollectionReference transactionCollection = userCollection.document(uid).collection('Trans');
     return transactionCollection.snapshots()
         .map(_co2ByMonthFromSnapshot);
+  }
+
+
+  CO2ByCategory _co2byCategoryFromSnapshot(QuerySnapshot snapshot) {
+
+  }
+
+
+  Stream<CO2ByCategory> get co2ByCategory {
+
+  }
+
+
+  CO2ByCategory _co2byCategoryForCurrentMonthFromSnapshot(QuerySnapshot snapshot) {
+    String currentMonth = getMonth(Date(DateTime.now()).getCurrentDate());
+
+    List<String> categories = [];
+    List<int> co2Values = [];
+
+    snapshot.documents.map((doc) {
+      if(getMonth(doc.data['Date']) == currentMonth && doc.data['Category'] != 'Málefni') {
+        categories.add(doc.data['Category']);
+        co2Values.add(doc.data['CO2']);
+      }
+    }).toList();
+
+    return CO2ByCategory(
+      categories: categories,
+      co2Values: co2Values,
+    );
+  }
+
+
+  Stream<CO2ByCategory> get co2ByCategoryForCurrentMonth {
+    return userCollection.document(uid).collection('Trans').snapshots()
+      .map(_co2byCategoryForCurrentMonthFromSnapshot);
   }
 
 

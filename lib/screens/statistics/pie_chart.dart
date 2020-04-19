@@ -14,7 +14,7 @@ class MonthTotal {
 }
 
 class PieChart extends StatefulWidget {
-  String uid;
+  final uid;
 
   PieChart({ this.uid });
 
