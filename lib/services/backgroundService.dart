@@ -53,6 +53,7 @@ class BackgroundService {
     }
   }
 
+
   Future<void> _demoNotification() async {
     // icon sem kemur upp þegar að maður fær notification , getum breytt það í að vera icon fyrir appið eða me_koli
     initializeSettingsAndroid = new AndroidInitializationSettings('app_icon');

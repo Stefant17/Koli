@@ -11,6 +11,7 @@ import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/screens/home/animatedCounter.dart';
 import 'package:koli/screens/home/category_pie_chart.dart';
+import 'package:koli/screens/home/fun_facts.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
@@ -302,7 +303,12 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 160,
                                       alignment: Alignment.centerLeft,
-                                      child: Text(''),//Text('bla'),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text('Vissir þú?'),
+                                          FunFacts(),
+                                        ],
+                                      ),//Text('bla'),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
