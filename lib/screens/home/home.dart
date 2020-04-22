@@ -303,18 +303,31 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 160,
                                       alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                                       child: Column(
                                         children: <Widget>[
-                                          Text('Vissir þú?'),
-                                          FunFacts(),
+                                          Text(
+                                            'Vissir þú?',
+                                            style: TextStyle(
+                                              color: Colors.white.withOpacity(0.5),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+
+                                          SizedBox(height: 10),
+
+                                          Expanded(
+                                            child: FunFacts()
+                                          ),
                                         ],
                                       ),//Text('bla'),
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
+                                        /*gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
                                           colors: gradientList,
-                                        ),
-                                        color: Colors.white,
+                                        ),*/
+                                        color: Colors.grey[600],
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20),
                                         ),
