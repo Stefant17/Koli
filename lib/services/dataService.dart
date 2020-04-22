@@ -54,6 +54,7 @@ class DatabaseService {
       'Grains': '0',
       'Email': email,
       'DateJoined': Date(DateTime.now()).getCurrentDate(),
+      'Co2ForThisMonth': 0,
     });
   }
 
@@ -506,6 +507,10 @@ class DatabaseService {
       }
     }).toList();
 
+    userCollection.document(uid).updateData({
+      'Co2ForThisMonth': total
+    });
+
     return total;
   }
 
@@ -761,6 +766,7 @@ class DatabaseService {
         uid: friend.documentID,
         firstName: friend.data['FirstName'],
         lastName: friend.data['LastName'],
+        username: friend.data['Username'],
         age: friend.data['Age'],
         treesPlanted: friend.data['TreesPlanted'],
         daysActive: friend.data['DaysActive'],
@@ -772,6 +778,7 @@ class DatabaseService {
     userCollection.document(uid).collection('Friends').document(newFriendID).setData({
       'FirstName': newFriend.firstName,
       'LastName': newFriend.lastName,
+      'Username': newFriend.username,
       'Age': newFriend.age,
       'TreesPlanted': newFriend.treesPlanted,
       'DaysActive': newFriend.daysActive,
@@ -781,7 +788,7 @@ class DatabaseService {
     });
 
     String currentUserName  = await userCollection.document(uid).get().then((u){
-      return u.data['FirstName'];
+      return u.data['Username'];
     });
 
     userCollection.document(newFriendID).collection('Notifications').add({
@@ -826,6 +833,7 @@ class DatabaseService {
         uid: friend.documentID,
         firstName: friend.data['FirstName'],
         lastName: friend.data['LastName'],
+        username: friend.data['Username'],
         age: friend.data['Age'],
         treesPlanted: friend.data['TreesPlanted'],
         daysActive: friend.data['DaysActive'],
@@ -837,6 +845,7 @@ class DatabaseService {
     userCollection.document(uid).collection('Friends').document(fromID).setData({
       'FirstName': newFriend.firstName,
       'LastName': newFriend.lastName,
+      'Username': newFriend.username,
       'Age': newFriend.age,
       'TreesPlanted': newFriend.treesPlanted,
       'DaysActive': newFriend.daysActive,
@@ -1005,6 +1014,9 @@ class DatabaseService {
   }
 
   MeKoliAvatar _meKoliAvatarFromSnapshot(DocumentSnapshot snapshot) {
+    if(snapshot.data == null) {
+      return MeKoliAvatar();
+    }
     return MeKoliAvatar(
       face: snapshot.data['Face'],
       eyes: snapshot.data['Eyes'],
@@ -1014,8 +1026,51 @@ class DatabaseService {
     );
   }
 
+
   Stream<MeKoliAvatar> get meKoliAvatar {
     return userCollection.document(uid).collection('meKoli').document('avatar').snapshots()
         .map(_meKoliAvatarFromSnapshot);
+  }
+
+
+  List<UserProfile> _friendsAndCo2FromSnapshot(QuerySnapshot snapshot) {
+    List<UserProfile> friends = [];
+    snapshot.documents.map((doc) {
+      if(!doc.data['PendingInvite']) {
+        friends.add(
+          UserProfile(
+            username: doc.data['Username'],
+            uid: doc.documentID,
+            co2ForCurrentMonth: doc.data['Co2ForThisMonth']
+          ),
+        );
+      }
+    }).toList();
+
+    friends.sort((a, b) {
+      return a.co2ForCurrentMonth.compareTo(b.co2ForCurrentMonth);
+    });
+
+    return friends;
+  }
+
+
+  Stream<List<UserProfile>> get friendsAndCo2 {
+    return userCollection.document(uid).collection('Friends').snapshots()
+      .map(_friendsAndCo2FromSnapshot);
+  }
+
+
+  Future<void> updateFriendsCo2() async {
+    var friends = await userCollection.document(uid).collection('Friends').getDocuments();
+    friends.documents.forEach((friend) {
+      if(!friend.data['PendingInvite']) {
+        userCollection.document(friend.documentID).get().then((doc) {
+          userCollection.document(uid).collection('Friends').document(friend.documentID).updateData({
+            'Co2ForThisMonth': doc.data['Co2ForThisMonth'] - (doc.data['TreesPlanted'] ~/ 12),
+          });
+        });
+      }
+    });
   }
 }

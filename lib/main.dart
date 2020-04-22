@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:koli/screens/companies/companyList.dart';
 import 'package:koli/forms/add_card_form.dart';
 import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/screens/charity/charity.dart';
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
         //home: Wrapper(),
         routes: {
           '/': (context) => Wrapper(),
-          '/Yfirlit': (context) => TransactionWrapper(),
+          '/Færslur': (context) => TransactionWrapper(),
           '/Tölfræði': (context) => Statistics(),
           '/Orður': (context) => Badges(),
           //'/Góðgerðarmál': (context) => CharityScreen(),
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
           '/Mataræði stillingar': (context) => DietSettings(),
           '/meKoli stillingar': (context) => MeKoliSettings(),
           '/Ný færsla': (context) => CreateTransaction(),
-          '/companies': (context) => CompanyList(),
           '/Breyta færslu': (context) => EditTransactionForm(),
           '/Nýtt kort': (context) => AddCardForm(),
           '/Staðfesta framlag': (context) => DonationConfirmation(),

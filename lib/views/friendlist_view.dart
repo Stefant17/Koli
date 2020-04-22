@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/views/user_view.dart';
-import 'package:mailer/mailer.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/views/friend_view.dart';
-import 'package:mailer/smtp_server.dart';
 import 'package:provider/provider.dart';
 
 class FriendList extends StatefulWidget {

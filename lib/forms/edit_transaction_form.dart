@@ -359,7 +359,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
 
                             DatabaseService(uid: user.uid).editUserTransaction(
                                 updatedTrans, userTransaction.transID);
-                            Navigator.pushNamed(context, '/Yfirlit');
+                            Navigator.pushNamed(context, '/Færslur');
                           },
                         ),
                       ],

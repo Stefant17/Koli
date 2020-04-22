@@ -19,12 +19,9 @@ class _AnimatedCounterState extends State<AnimatedCounter>
   void initState() {
     super.initState();
 
-    print(this.widget.co2);
     double a = this.widget.co2.toDouble();
     int time = 2;
     var rounded = ((a~/100).round() * 100);
-
-    print(rounded);
 
     if(a > 100) {
       time = (a~/rounded).toInt() + 1;

@@ -6,9 +6,6 @@ import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
 import 'package:provider/provider.dart';
 
-//testing background notifications
-import 'package:koli/services/backgroundService.dart';
-
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();

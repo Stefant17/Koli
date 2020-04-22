@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class FunFacts extends StatefulWidget {
   @override
@@ -72,7 +69,7 @@ class _FunFactsState extends State<FunFacts> {
       child: Text(
         facts[currentFactIndex],
         style: TextStyle(
-          color: Colors.white.withOpacity(0.7),
+          color: Colors.white.withOpacity(0.9),
           fontSize: 15,
         )
       ),

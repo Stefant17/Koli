@@ -53,8 +53,6 @@ class CategoryPieChart extends StatelessWidget {
       ),
     );
 
-
-
     for(var i = 0; i < categoryTotal.length; i++) {
       //print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
     }
@@ -69,6 +67,19 @@ class CategoryPieChart extends StatelessWidget {
       builder: (context, snapshot) {
         if(snapshot.hasData) {
           CO2ByCategory data = snapshot.data;
+          if(data.categories.isEmpty) {
+            return Container(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Þegar þú ert kominn með nokkrar færslur, '
+                'er hægt að sjá yfirlit yfir vöruflokka hér',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ),
+            );
+          }
+
           generateData(data);
 
           return Container(

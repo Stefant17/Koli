@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/category.dart';
 import 'package:koli/models/company.dart';
@@ -349,7 +346,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
 
                               //widget.toggleCreateTransaction(false);
                               newDate = Date(DateTime.now()).getCurrentDate();
-                              Navigator.of(context).pushNamed("/Yfirlit");
+                              Navigator.of(context).pushNamed('/Færslur');
                               //}
                             },
                           ),

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
-import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
 

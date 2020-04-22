@@ -66,9 +66,9 @@ class BackgroundService {
         importance: Importance.Max,
         priority: Priority.High,
         ticker: 'test ticker');
-    var IOS = IOSNotificationDetails();
+    var ios = IOSNotificationDetails();
     var platformChannelSpecfisics = NotificationDetails(
-        androidChannel, IOS);
+        androidChannel, ios);
     await flutterLocalNotifiacionsPlugin.show(
         0, 'test, hello', 'Þú varst að versla við fyrirtæki sem er að kolefnisjafna sig!',
         platformChannelSpecfisics, payload: 'test payload');

@@ -1,25 +1,19 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:koli/constants/constants.dart';
-import 'package:koli/forms/add_card_form.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/screens/home/animatedCounter.dart';
 import 'package:koli/screens/home/category_pie_chart.dart';
+import 'package:koli/screens/home/friend_leaderboard.dart';
 import 'package:koli/screens/home/fun_facts.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/achievement_get.dart';
-import 'package:koli/shared/bottom_navbar.dart';
-import 'package:koli/shared/home_appbar.dart';
-import 'package:koli/shared/loading.dart';
 import 'package:provider/provider.dart';
-import 'package:koli/shared/appbar.dart';
 import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
@@ -59,20 +53,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
 
-    /*
-    if(!checkedForNewCardTrans) {
-      DatabaseService(uid: user.uid).checkForNewCardTransactions();
-      checkedForNewCardTrans = true;
-    }
-
-     */
-
     if(!checkedForBadges) {
       DatabaseService(uid: user.uid).awardBadges(this.addNewBadge);
       checkedForBadges = true;
     }
 
-    DatabaseService().getClimateChangeInfo();
+    DatabaseService(uid: user.uid).updateFriendsCo2();
 
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,
@@ -258,7 +244,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 210,
                                       alignment: Alignment.centerLeft,
-                                      child: Text(''),//Text('bla'),
+                                      child: FriendLeaderboard(),//Text('bla'),
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
@@ -329,7 +315,7 @@ class _HomeState extends State<Home> {
                                           Text(
                                             'Vissir þú?',
                                             style: TextStyle(
-                                              color: Colors.white.withOpacity(0.5),
+                                              color: Colors.white.withOpacity(0.7),
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
                                             ),

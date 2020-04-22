@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
-import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';

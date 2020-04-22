@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class UserProfile {
   String uid;
   String firstName;
@@ -11,9 +9,9 @@ class UserProfile {
   int age;
   int daysActive;
   int treesPlanted;
+  int co2ForCurrentMonth;
 
   bool pendingInvite;
-
 
   String meat;
   String veg;
@@ -32,7 +30,7 @@ class UserProfile {
     this.daysActive, this.treesPlanted,
     this.pendingInvite,
     this.meat, this.fish, this.fruit, this.dairy, this.grains,
-    this.username,
+    this.username, this.co2ForCurrentMonth,
   });
 
 }
