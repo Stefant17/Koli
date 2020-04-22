@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
     //Color(0xFF48A9A6),
     //Colors.greenAccent,
     Color(0xFFA5F8D3),
-    Colors.blue,
+    Color(0xFF00b0ff),
   ];
 
   Date getCurrentDate() {
@@ -262,7 +262,10 @@ class _HomeState extends State<Home> {
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           //begin: Alignment.bottomRight,
-                                          colors: gradientList,
+                                          colors: [
+                                            Color(0xFF2c818b),
+                                            Color(0xFF4bc3d1),
+                                          ],
                                         ),
                                         color: Colors.white,
                                         borderRadius: BorderRadius.all(
@@ -284,15 +287,32 @@ class _HomeState extends State<Home> {
                                       child: CategoryPieChart(),//Text('Leaderboard'),
 
                                       decoration: BoxDecoration(
-                                        /*gradient: LinearGradient(
-                                          //begin: Alignment.bottomRight,
-                                          colors: gradientList,
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          colors: [
+                                            Color(0xFFa5f8d3),
+                                            Colors.blue,
+                                            //Color(0xFFa9cef4),
+                                            //Color(0xFF577399),
+                                            //Color(0xFF495867),
+                                          ],
                                         ),
-
-                                         */
-                                        color: Colors.grey[800],
+                                        
+                                        color: Color(0xFF028090).withOpacity(0.8),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20),
+                                        ),
+
+
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          colorFilter: ColorFilter.mode(
+                                            Colors.white.withOpacity(0.2),
+                                            BlendMode.dstATop,
+                                          ),
+                                          image: AssetImage(
+                                            'assets/images/shopping.jpg',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -303,7 +323,7 @@ class _HomeState extends State<Home> {
                                       width: MediaQuery.of(context).size.width * 0.5 - 25,
                                       height: 160,
                                       alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                      padding: EdgeInsets.fromLTRB(20, 10, 20, 5),
                                       child: Column(
                                         children: <Widget>[
                                           Text(
@@ -323,13 +343,27 @@ class _HomeState extends State<Home> {
                                         ],
                                       ),//Text('bla'),
                                       decoration: BoxDecoration(
-                                        /*gradient: LinearGradient(
-                                          //begin: Alignment.bottomRight,
-                                          colors: gradientList,
-                                        ),*/
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomLeft,
+                                          colors: [
+                                            Color(0xFF2c818b),
+                                            Color(0xFF4bc3d1),
+                                          ],
+                                        ),
                                         color: Colors.grey[600],
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20),
+                                        ),
+
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          colorFilter: ColorFilter.mode(
+                                            Colors.white.withOpacity(0.3),
+                                            BlendMode.dstATop,
+                                          ),
+                                          image: AssetImage(
+                                            'assets/images/forest.jpg',
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -385,8 +419,11 @@ class _HomeState extends State<Home> {
 
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        //begin: Alignment.bottomRight,
-                        colors: gradientList,
+                        begin: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF134c53),
+                          Color(0xFF2c818b),
+                        ],
                       ),
                       color: Colors.white,
                       borderRadius: BorderRadius.all(

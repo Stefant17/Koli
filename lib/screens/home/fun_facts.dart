@@ -12,7 +12,6 @@ class FunFacts extends StatefulWidget {
 
 class _FunFactsState extends State<FunFacts> {
   Timer fadeOutTimer;
-  Timer fadeInTimer;
 
   Random random = new Random();
 
@@ -42,6 +41,12 @@ class _FunFactsState extends State<FunFacts> {
     });
 
     currentFactIndex = random.nextInt(facts.length);
+  }
+
+  @override
+  void dispose() {
+    fadeOutTimer.cancel();
+    super.dispose();
   }
 
   void nextFact() {

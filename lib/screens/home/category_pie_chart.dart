@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:koli/models/co2_by_category.dart';
@@ -46,9 +47,13 @@ class CategoryPieChart extends StatelessWidget {
         domainFn: (CategoryTotal c,_) => c.category,
         measureFn: (CategoryTotal c,_) => c.totalCo2,
         labelAccessorFn: (CategoryTotal c,_) => '${c.category}, ${c.totalCo2}kg', //'${m.percentage}'
+        colorFn: (_, index) => charts.MaterialPalette.teal.makeShades(categoryTotal.length)[index],
+        fillColorFn: (_, __) => charts.MaterialPalette.transparent,
         //colorFn: (MonthTotal m,_) => charts.ColorUtil.fromDartColor(m.color),
       ),
     );
+
+
 
     for(var i = 0; i < categoryTotal.length; i++) {
       //print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
@@ -72,14 +77,6 @@ class CategoryPieChart extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'Hvaðan kemur\n  sporið þitt?',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
-
                 Container(
                   child: Expanded(
                     child: charts.PieChart(
@@ -97,7 +94,23 @@ class CategoryPieChart extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+
+                Container(
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Hvaðan kemur\n  sporið þitt?',
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
 
               ],
             ),
