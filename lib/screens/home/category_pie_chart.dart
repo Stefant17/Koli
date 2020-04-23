@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:pie_chart/pie_chart.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/co2_by_category.dart';
 import 'package:koli/models/user.dart';
@@ -21,9 +22,12 @@ class CategoryPieChart extends StatefulWidget {
 }
 
 class _CategoryPieChartState extends State<CategoryPieChart> {
-  List<charts.Series<CategoryTotal, String>> chartCategoryData =
-    List<charts.Series<CategoryTotal, String>>();
+  //List<charts.Series<CategoryTotal, String>> chartCategoryData =
+  //  List<charts.Series<CategoryTotal, String>>();
+  Map<String, double> dataMap = new Map();
+  List<Color> colors = [];
   var icons = Constants().categoryIcons;
+
 
   @override
   void initState() {
@@ -54,6 +58,12 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
       }
     }
 
+    for(var i = 0; i < categoryTotal.length; i++) {
+      dataMap.putIfAbsent(categoryTotal[i].category, () => categoryTotal[i].totalCo2 + 0.0);
+      colors.add(categoryTotal[i].color);
+    }
+    /*
+
     chartCategoryData.add(
       charts.Series(
         id: 'Blabla',
@@ -69,6 +79,8 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
     for(var i = 0; i < categoryTotal.length; i++) {
       //print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
     }
+
+     */
   }
 
   @override
@@ -103,6 +115,18 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
               children: <Widget>[
                 Container(
                   child: Expanded(
+                    child: PieChart(
+                      dataMap: dataMap,
+                      chartRadius: 200,
+                      colorList: colors,
+                      chartLegendSpacing: 30,
+                      showChartValuesOutside: true,
+                      legendPosition: LegendPosition.bottom,
+                      showLegends: true,
+                      chartType: ChartType.ring,
+                    ),
+
+                    /*
                     child: charts.PieChart(
                       chartCategoryData,
                       animate: true,
@@ -116,6 +140,8 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
                         ]
                       ),
                     ),
+
+                     */
                   ),
                 ),
 

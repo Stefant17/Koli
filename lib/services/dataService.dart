@@ -717,6 +717,7 @@ class DatabaseService {
         uid: doc.documentID,
         firstName: doc.data['FirstName'],
         lastName: doc.data['LastName'],
+        username: doc.data['Username'],
         pendingInvite: doc.data['PendingInvite'],
       );
     }).toList();

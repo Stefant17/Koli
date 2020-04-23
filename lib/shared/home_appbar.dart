@@ -81,23 +81,10 @@ Widget homeAppBar (var context, String title){
       indicatorColor: Colors.white,
       tabs: [
         Tab(
-          child: Row(
-            children: <Widget>[
-              Icon(FontAwesomeIcons.infoCircle),
-              SizedBox(width: 20),
-              Text('Upplýsingar'),
-            ],
-          ),
+          child: Text('Yfirlit')
         ),
         Tab(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Framlag'),
-              SizedBox(width: 20),
-              Icon(FontAwesomeIcons.donate),
-            ],
-          ),
+          child: Text('Fréttir'),
         ),
       ],
     ),

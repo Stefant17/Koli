@@ -13,7 +13,7 @@ class FriendView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${friend.firstName}',
+            '${friend.username}',
             style: TextStyle(
               fontSize: 20,
               color: friend.pendingInvite ? Colors.grey : Colors.black,
