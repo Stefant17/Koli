@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
           '/Færslur': (context) => TransactionWrapper(),
           '/Tölfræði': (context) => Statistics(),
           '/Orður': (context) => Badges(),
-          //'/Góðgerðarmál': (context) => CharityScreen(),
           '/Kolefnisjöfnun': (context) => CharityScreen(),
           '/Fyrirtæki': (context) => Companies(),
           '/Prófíll': (context) => Profile(),

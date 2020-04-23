@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/co2_by_category.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
@@ -9,13 +10,25 @@ import 'package:provider/provider.dart';
 class CategoryTotal {
   String category;
   int totalCo2;
+  Color color;
 
-  CategoryTotal({ this.category, this.totalCo2 });
+  CategoryTotal({ this.category, this.totalCo2, this.color });
 }
 
-class CategoryPieChart extends StatelessWidget {
-  List<charts.Series<CategoryTotal, String>> chartCategoryData
-    = List<charts.Series<CategoryTotal, String>>();
+class CategoryPieChart extends StatefulWidget {
+  @override
+  _CategoryPieChartState createState() => _CategoryPieChartState();
+}
+
+class _CategoryPieChartState extends State<CategoryPieChart> {
+  List<charts.Series<CategoryTotal, String>> chartCategoryData =
+    List<charts.Series<CategoryTotal, String>>();
+  var icons = Constants().categoryIcons;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void generateData(CO2ByCategory data) {
     List<CategoryTotal> categoryTotal = [];
@@ -34,7 +47,8 @@ class CategoryPieChart extends StatelessWidget {
         categoryTotal.add(
           CategoryTotal(
             category: data.categories[i],
-            totalCo2: data.co2Values[i]
+            totalCo2: data.co2Values[i],
+            color: Color(icons[data.categories[i]]['Color']),
           )
         );
       }
@@ -46,10 +60,9 @@ class CategoryPieChart extends StatelessWidget {
         data: categoryTotal,
         domainFn: (CategoryTotal c,_) => c.category,
         measureFn: (CategoryTotal c,_) => c.totalCo2,
-        labelAccessorFn: (CategoryTotal c,_) => '${c.category}, ${c.totalCo2}kg', //'${m.percentage}'
-        colorFn: (_, index) => charts.MaterialPalette.teal.makeShades(categoryTotal.length)[index],
+        labelAccessorFn: (CategoryTotal c,_) => c.category,
         fillColorFn: (_, __) => charts.MaterialPalette.transparent,
-        //colorFn: (MonthTotal m,_) => charts.ColorUtil.fromDartColor(m.color),
+        colorFn: (CategoryTotal c,_) => charts.ColorUtil.fromDartColor(c.color),
       ),
     );
 
@@ -95,13 +108,12 @@ class CategoryPieChart extends StatelessWidget {
                       animate: true,
                       animationDuration: Duration(seconds: 1),
                       defaultRenderer: new charts.ArcRendererConfig(
-                          arcWidth: 100,
-                          arcRendererDecorators: [
-                            new charts.ArcLabelDecorator(
-                                labelPosition: charts.ArcLabelPosition
-                                    .inside
-                            )
-                          ]
+                        arcWidth: 60,
+                        arcRendererDecorators: [
+                          new charts.ArcLabelDecorator(
+                            labelPosition: charts.ArcLabelPosition.inside,
+                          )
+                        ]
                       ),
                     ),
                   ),

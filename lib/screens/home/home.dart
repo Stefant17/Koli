@@ -23,18 +23,30 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
-  var currentDate = DateTime.now();
-  var constants = Constants();
+  var currentDate;
+  var constants;
 
-  bool checkedForBadges = false;
-  bool checkedForNewCardTrans = false;
+  bool checkedForBadges;
+  bool checkedForNewCardTrans;
 
-  List<Color> gradientList = [
-    //Color(0xFF48A9A6),
-    //Colors.greenAccent,
-    Color(0xFFA5F8D3),
-    Color(0xFF00b0ff),
-  ];
+  List<Color> gradientList;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentDate = DateTime.now();
+    constants = Constants();
+    checkedForBadges = false;
+    checkedForNewCardTrans = false;
+
+    gradientList = [
+      //Color(0xFF48A9A6),
+      //Colors.greenAccent,
+      Color(0xFFA5F8D3),
+      Color(0xFF00b0ff),
+    ];
+  }
 
   Date getCurrentDate() {
     return Date(currentDate);
