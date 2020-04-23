@@ -55,6 +55,10 @@ class DatabaseService {
       'Email': email,
       'DateJoined': Date(DateTime.now()).getCurrentDate(),
       'Co2ForThisMonth': 0,
+      'EcoFriendlyStoreShopCount': 0,
+      'FriendCount': 0,
+      'FootprintReduced': 0,
+      'BadgesEarned': 0,
     });
   }
 
@@ -744,7 +748,8 @@ class DatabaseService {
     var users = await userCollection.getDocuments();
     users.documents.forEach((user) {
       if(user.documentID != uid) {
-        if(user.data['FirstName'].toString().toLowerCase().contains(query.toLowerCase())) {
+        if(user.data['FirstName'].toString().toLowerCase().contains(query.toLowerCase())
+         || user.data['Username'].toString().toLowerCase().contains(query.toLowerCase())) {
           if(!preExistingFriends.contains(user.documentID)) {
             result.add(
                 UserProfile(
@@ -860,6 +865,22 @@ class DatabaseService {
     });
 
     userCollection.document(uid).collection('Notifications').document(notifID).delete();
+
+    int prevFriendCount = await userCollection.document(uid).get().then((doc) {
+      return doc.data['FriendCount'];
+    });
+
+    userCollection.document(uid).updateData({
+      'FriendCount': prevFriendCount + 1,
+    });
+
+    prevFriendCount = await userCollection.document(fromID).get().then((doc) {
+      return doc.data['FriendCount'];
+    });
+
+    userCollection.document(fromID).updateData({
+      'FriendCount': prevFriendCount + 1,
+    });
   }
 
   // TODO: Decline friend request
