@@ -44,6 +44,11 @@ class _AnimatedCounterState extends State<AnimatedCounter>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Text(
       '$i kg',

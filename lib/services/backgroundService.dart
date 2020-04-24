@@ -70,7 +70,8 @@ class BackgroundService {
     var platformChannelSpecfisics = NotificationDetails(
         androidChannel, ios);
     await flutterLocalNotifiacionsPlugin.show(
-        0, 'test, hello', 'Þú varst að versla við fyrirtæki sem er að kolefnisjafna sig!',
+        0, 'Verslun við kolefnisjafnandi fyrirtæki',
+        'Þú varst að versla við fyrirtæki sem er að kolefnisjafna sig!',
         platformChannelSpecfisics, payload: 'test payload');
   }
 

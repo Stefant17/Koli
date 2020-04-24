@@ -12,6 +12,7 @@ import 'package:koli/screens/home/friend_leaderboard.dart';
 import 'package:koli/screens/home/fun_facts.dart';
 import 'package:koli/services/authService.dart';
 import 'package:koli/services/dataService.dart';
+import 'package:koli/services/location_service.dart';
 import 'package:koli/shared/achievement_get.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -30,6 +31,8 @@ class _HomeState extends State<Home> {
   bool checkedForNewCardTrans;
 
   List<Color> gradientList;
+
+  LocationService locationService = LocationService();
 
   @override
   void initState() {

@@ -296,18 +296,30 @@ class DatabaseService {
 
 
   Future createUserTransaction(UserTransaction trans) async {
+    if(trans.category == null || trans.categoryID == null
+     || trans.category == '' || trans.categoryID == '') {
+      Category cat = await getDefaultCategoryFromCompany(trans.companyID);
+      trans.category = cat.name;
+      trans.categoryID = cat.catID;
+    }
+
     trans.co2 = await getCO2fromCompany(trans);
 
     Company company = await companyCollection.document((trans.companyID)).get().then((com) {
-      print('yo');
       return Company(
           co2Friendly: com.data['Co2Friend']
       );
     });
 
-    print('_shownotification before');
     if(company.co2Friendly){
-      print('_shownotification after');
+      int ecoFriendlyStoreShopCount = await userCollection.document(uid).get().then((user) {
+        return user.data['EcoFriendlyStoreShopCount'];
+      });
+
+      await userCollection.document(uid).updateData({
+        'EcoFriendlyStoreShopCount': ecoFriendlyStoreShopCount + 1,
+      });
+
       BackgroundService().showNotification();
     }
 
@@ -664,6 +676,14 @@ class DatabaseService {
       'Image': newBadge.image,
     });
 
+    int badgeCount = await userCollection.document(uid).get().then((user) {
+      return user.data['BadgesEarned'];
+    });
+
+    await userCollection.document(uid).updateData({
+      'BadgesEarned': badgeCount + 1,
+    });
+
     return newBadge;
   }
 
@@ -752,11 +772,12 @@ class DatabaseService {
          || user.data['Username'].toString().toLowerCase().contains(query.toLowerCase())) {
           if(!preExistingFriends.contains(user.documentID)) {
             result.add(
-                UserProfile(
-                    uid: user.documentID,
-                    firstName: user.data['FirstName'],
-                    lastName: user.data['LastName']
-                )
+              UserProfile(
+                uid: user.documentID,
+                firstName: user.data['FirstName'],
+                lastName: user.data['LastName'],
+                username: user.data['Username'],
+              )
             );
           }
         }

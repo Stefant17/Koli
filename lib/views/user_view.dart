@@ -19,7 +19,7 @@ class UserView extends StatelessWidget {
           Row (
             children: <Widget>[
               Text(
-                '${user.firstName}',
+                '${user.username}',
                 style: TextStyle(
                   fontSize: 20,
                 ),
