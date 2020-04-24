@@ -7,9 +7,11 @@ import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
+import 'package:koli/screens/transactions/transactions_wrapper.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/slide_page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 
@@ -123,7 +125,13 @@ class _CreateTransactionState extends State<CreateTransaction> {
                                 ),
 
                                 onPressed: () {
-                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    SlidePageTransition(
+                                      widget: TransactionWrapper(),
+                                      offset: 1
+                                    )
+                                  );
                                 },
                               ),
                             ),
@@ -346,13 +354,22 @@ class _CreateTransactionState extends State<CreateTransaction> {
 
                               //widget.toggleCreateTransaction(false);
                               newDate = Date(DateTime.now()).getCurrentDate();
-                              Navigator.of(context).pushNamed('/Færslur');
+                              //Navigator.of(context).pushNamed('/Færslur');
+                              Navigator.push(
+                                context,
+                                SlidePageTransition(
+                                  widget: TransactionWrapper(),
+                                  offset: 1,
+                                )
+                              );
                               //}
                             },
                           ),
                         ],
                       ),
                       bottomNavigationBar: BottomBar(),
+                      floatingActionButton: Constants().homeFAB(context),
+                      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                     );
                   } else {
                     return Card();

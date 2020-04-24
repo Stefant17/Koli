@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/screens/home/bla.dart';
 import 'package:koli/screens/home/home.dart';
 import 'package:koli/shared/bottom_navbar.dart';
@@ -26,6 +27,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
             Bla(),
           ],
         ),
+        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomBar(),
       ),
     );

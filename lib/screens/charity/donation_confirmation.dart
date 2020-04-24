@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/userCard.dart';
@@ -161,6 +162,8 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
         ),
       ),
       bottomNavigationBar: BottomBar(),
+      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

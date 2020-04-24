@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/badge.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
@@ -60,6 +61,8 @@ class Badges extends StatelessWidget {
             ),
 
             bottomNavigationBar: BottomBar(),
+            floatingActionButton: Constants().homeFAB(context),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           );
         } else {
           return Text('NOTHING!');

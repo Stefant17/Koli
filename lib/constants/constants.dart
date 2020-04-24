@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:koli/screens/home/home_wrapper.dart';
+import 'package:koli/shared/fade_page_transition.dart';
 
 class Constants {
   List<List> menuList = [
@@ -50,4 +53,23 @@ class Constants {
       'Color': 0xFF3FA7D6,
     }
   };
+
+  FloatingActionButton homeFAB(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.grey[900],
+      heroTag: 'HomeFAB',
+      child: Icon(
+        Icons.home
+      ),
+
+      onPressed: () {
+        Navigator.push(
+            context,
+            FadePageTransition(
+              widget: HomeWrapper(),
+            )
+        );
+      },
+    );
+  }
 }

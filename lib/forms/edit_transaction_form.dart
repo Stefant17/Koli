@@ -8,12 +8,18 @@ import 'package:koli/models/company.dart';
 import 'package:koli/models/date.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
+import 'package:koli/screens/transactions/transactions_wrapper.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
 import 'package:koli/shared/bottom_navbar.dart';
+import 'package:koli/shared/slide_page_transition.dart';
 import 'package:provider/provider.dart';
 
 class EditTransactionForm extends StatefulWidget {
+  final trans;
+
+  EditTransactionForm({ this.trans });
+
   @override
   _EditTransactionFormState createState() => _EditTransactionFormState();
 }
@@ -67,13 +73,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
         GlobalKey<AutoCompleteTextFieldState<Company>> key = new GlobalKey();
         AutoCompleteTextField<Company> inputField;
 
-        final Map arguments = ModalRoute
-            .of(context)
-            .settings
-            .arguments;
-        final userTransaction = arguments['trans'];
-
-        //inputField.textField.controller.text = arguments.company;
+        final userTransaction = widget.trans;
 
         if (snapshot.hasData) {
           List<Company> companies = snapshot.data;
@@ -103,7 +103,13 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                               ),
 
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  SlidePageTransition(
+                                    widget: TransactionWrapper(),
+                                    offset: 1,
+                                  )
+                                );
                               },
                             ),
                           ),
@@ -359,13 +365,23 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
 
                             DatabaseService(uid: user.uid).editUserTransaction(
                                 updatedTrans, userTransaction.transID);
-                            Navigator.pushNamed(context, '/Færslur');
+                            //Navigator.pushNamed(context, '/Færslur');
+
+                            Navigator.push(
+                                context,
+                                SlidePageTransition(
+                                  widget: TransactionWrapper(),
+                                  offset: 1,
+                                )
+                            );
                           },
                         ),
                       ],
                     ),
 
                     bottomNavigationBar: BottomBar(),
+                    floatingActionButton: Constants().homeFAB(context),
+                    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                   );
                 } else {
                   return Text('yo');

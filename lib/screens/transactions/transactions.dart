@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/models/user.dart';
+import 'package:koli/screens/transactions/create_transaction.dart';
 import 'package:koli/services/dataService.dart';
+import 'package:koli/shared/slide_page_transition.dart';
 import 'package:koli/views/transaction_view.dart';
 import 'package:provider/provider.dart';
 import 'package:calendar_time/calendar_time.dart';
@@ -60,7 +62,15 @@ class _TransactionsState extends State<Transactions> {
               ),
 
               onPressed: () {
-                Navigator.pushNamed(context, '/Ný færsla');
+                Navigator.push(
+                  context,
+                  SlidePageTransition(
+                    widget: CreateTransaction(),
+                    offset: -1,
+                  )
+                );
+
+                //Navigator.pushNamed(context, '/Ný færsla');
               },
             ),
             body: ListView(

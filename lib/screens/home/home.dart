@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
 
   List<Color> gradientList;
 
-  LocationService locationService = LocationService();
+  //LocationService locationService = LocationService();
 
   @override
   void initState() {

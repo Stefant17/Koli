@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/screens/charity/kolvidur_donation.dart';
 import 'package:koli/screens/charity/kolvidur_info.dart';
 import 'package:koli/shared/charity_appbar.dart';
@@ -25,6 +26,8 @@ class _CharityScreenState extends State<CharityScreen> {
         ),
         backgroundColor: Colors.white,
         bottomNavigationBar: BottomBar(),
+        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

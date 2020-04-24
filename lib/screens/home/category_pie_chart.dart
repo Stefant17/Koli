@@ -22,10 +22,10 @@ class CategoryPieChart extends StatefulWidget {
 }
 
 class _CategoryPieChartState extends State<CategoryPieChart> {
-  //List<charts.Series<CategoryTotal, String>> chartCategoryData =
-  //  List<charts.Series<CategoryTotal, String>>();
-  Map<String, double> dataMap = new Map();
-  List<Color> colors = [];
+  List<charts.Series<CategoryTotal, String>> chartCategoryData =
+    List<charts.Series<CategoryTotal, String>>();
+  //Map<String, double> dataMap = new Map();
+  //List<Color> colors = [];
   var icons = Constants().categoryIcons;
 
 
@@ -58,11 +58,12 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
       }
     }
 
+    /*
     for(var i = 0; i < categoryTotal.length; i++) {
       dataMap.putIfAbsent(categoryTotal[i].category, () => categoryTotal[i].totalCo2 + 0.0);
       colors.add(categoryTotal[i].color);
     }
-    /*
+    */
 
     chartCategoryData.add(
       charts.Series(
@@ -75,12 +76,6 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
         colorFn: (CategoryTotal c,_) => charts.ColorUtil.fromDartColor(c.color),
       ),
     );
-
-    for(var i = 0; i < categoryTotal.length; i++) {
-      //print(categoryTotal[i].category + ': ' + categoryTotal[i].totalCo2.toString());
-    }
-
-     */
   }
 
   @override
@@ -115,7 +110,7 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
               children: <Widget>[
                 Container(
                   child: Expanded(
-                    child: PieChart(
+                    /*child: PieChart(
                       dataMap: dataMap,
                       chartRadius: 200,
                       colorList: colors,
@@ -126,7 +121,8 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
                       chartType: ChartType.ring,
                     ),
 
-                    /*
+                   */
+
                     child: charts.PieChart(
                       chartCategoryData,
                       animate: true,
@@ -140,8 +136,6 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
                         ]
                       ),
                     ),
-
-                     */
                   ),
                 ),
 

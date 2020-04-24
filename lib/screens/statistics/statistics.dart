@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/statistics/bar_chart.dart';
 import 'package:koli/screens/statistics/line_chart.dart';
@@ -31,6 +32,8 @@ class _StatisticsState extends State<Statistics> {
         ),
 
         bottomNavigationBar: BottomBar(),
+        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

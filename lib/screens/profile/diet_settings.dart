@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/models/user_profile.dart';
 import 'package:koli/services/dataService.dart';
@@ -416,6 +417,8 @@ class _DietSettingsState extends State<DietSettings> {
         ],
       ),
       bottomNavigationBar: BottomBar(),
+      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:koli/constants/constants.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/services/dataService.dart';
 import 'package:koli/shared/appbar.dart';
@@ -303,6 +304,8 @@ class _AddCardFormState extends State<AddCardForm> {
         ),
       ),
       bottomNavigationBar: BottomBar(),
+      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

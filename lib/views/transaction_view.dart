@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:koli/constants/constants.dart';
+import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/models/transaction.dart';
 import 'package:koli/services/dataService.dart';
+import 'package:koli/shared/slide_page_transition.dart';
 
 class TransactionView extends StatefulWidget {
   final UserTransaction userTransaction;
@@ -32,9 +34,21 @@ class _TransactionViewState extends State<TransactionView> {
       return InkWell(
         onTap: () {
           setState(() {
-            Navigator.pushNamed(
+            /*Navigator.pushNamed(
               context, '/Breyta færslu',
               arguments:  {'trans' :widget.userTransaction}
+            );
+
+             */
+
+            Navigator.push(
+              context,
+              SlidePageTransition(
+                widget: EditTransactionForm(
+                  trans: widget.userTransaction,
+                ),
+                offset: -1,
+              )
             );
           });
         },
