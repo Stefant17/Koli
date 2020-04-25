@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.grey[900],
+          backgroundColor: Colors.white,
           elevation: 0.0,
           title: Text(
             'Innskráning',

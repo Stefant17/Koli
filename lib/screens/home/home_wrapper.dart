@@ -27,7 +27,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
             Bla(),
           ],
         ),
-        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButton: HomeFAB(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomBar(),
       ),

@@ -25,6 +25,7 @@ class Companies extends StatelessWidget {
 
     return Scaffold(
       appBar: appBar(context, 'Fyrirtæki'),
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -61,7 +62,7 @@ class Companies extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

@@ -104,6 +104,7 @@ class _MeKoliSettingsState extends State<MeKoliSettings> {
 
     return Scaffold(
       appBar: appBar(context, ''),
+      backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           Container(
@@ -448,7 +449,7 @@ class _MeKoliSettingsState extends State<MeKoliSettings> {
         ],
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

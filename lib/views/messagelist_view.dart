@@ -18,7 +18,7 @@ class _MessageListState extends State<MessageList> {
       body: Text('Skilaboð'),
 
       bottomNavigationBar: BottomBar(currentTab: bottomBarIndex),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );

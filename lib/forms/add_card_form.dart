@@ -51,6 +51,7 @@ class _AddCardFormState extends State<AddCardForm> {
 
     return Scaffold(
       appBar: appBar(context, ''),
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -304,7 +305,7 @@ class _AddCardFormState extends State<AddCardForm> {
         ),
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

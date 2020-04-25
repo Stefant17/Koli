@@ -11,6 +11,7 @@ class UserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = Provider.of<User>(context);
+
     return Container(
       padding: EdgeInsets.all(20),
       child: Row(
@@ -18,18 +19,49 @@ class UserView extends StatelessWidget {
         children: <Widget>[
           Row (
             children: <Widget>[
-              Text(
-                '${user.username}',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+              Icon(
+                Icons.face,
+                size: 50,
               ),
 
-              RaisedButton(
-                child: Text('+'),
-                onPressed: () {
-                  DatabaseService(uid: currentUser.uid).addFriend(user.uid);
-                },
+              SizedBox(width: 20),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    '${user.username}',
+                    style: TextStyle(
+                      fontSize: 23,
+                      color: Colors.black
+                    ),
+                  ),
+
+                  Text(
+                    '${user.firstName} ${user.lastName}',
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              ),
+
+              Container(
+                alignment: Alignment.centerRight,
+                child: RaisedButton(
+                  child: Text('+'),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      side: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      )
+                  ),
+                  onPressed: () {
+                    DatabaseService(uid: currentUser.uid).addFriend(user.uid);
+                  },
+                ),
               ),
             ]
           ),

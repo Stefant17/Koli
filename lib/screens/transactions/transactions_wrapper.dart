@@ -11,7 +11,7 @@ class TransactionWrapper extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: overviewAppBar(context, 'Færslur'),
-        //backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         body: TabBarView(
           children: <Widget>[
             Transactions(),
@@ -20,7 +20,7 @@ class TransactionWrapper extends StatelessWidget {
         ),
 
         bottomNavigationBar: BottomBar(),
-        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButton: HomeFAB(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );

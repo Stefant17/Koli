@@ -83,7 +83,7 @@ class _NotificationListState extends State<NotificationList> {
       ),
 
       bottomNavigationBar: BottomBar(currentTab: bottomBarIndex),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );

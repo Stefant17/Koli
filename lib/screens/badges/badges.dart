@@ -53,6 +53,7 @@ class Badges extends StatelessWidget {
 
           return Scaffold(
             appBar: appBar(context, 'Orður'),
+            backgroundColor: Colors.white,
             body: Container(
               padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
               child: ListView(
@@ -61,7 +62,7 @@ class Badges extends StatelessWidget {
             ),
 
             bottomNavigationBar: BottomBar(),
-            floatingActionButton: Constants().homeFAB(context),
+            floatingActionButton: HomeFAB(),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           );
         } else {

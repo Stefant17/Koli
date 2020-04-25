@@ -23,6 +23,7 @@ class _StatisticsState extends State<Statistics> {
       length: 3,
       child: Scaffold(
         appBar: statisticsAppBar(context, 'Tölfræði'),
+        backgroundColor: Colors.white,
         body: TabBarView(
           children: <Widget>[
             BarChart(uid: user.uid),
@@ -32,7 +33,7 @@ class _StatisticsState extends State<Statistics> {
         ),
 
         bottomNavigationBar: BottomBar(),
-        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButton: HomeFAB(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );

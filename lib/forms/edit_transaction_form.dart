@@ -86,6 +86,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
 
                   return Scaffold(
                     appBar: appBar(context, ''),
+                    backgroundColor: Colors.white,
                     body: Column(
                       children: <Widget>[
                         Padding(
@@ -380,7 +381,7 @@ class _EditTransactionFormState extends State<EditTransactionForm> {
                     ),
 
                     bottomNavigationBar: BottomBar(),
-                    floatingActionButton: Constants().homeFAB(context),
+                    floatingActionButton: HomeFAB(),
                     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                   );
                 } else {

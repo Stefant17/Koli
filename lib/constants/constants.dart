@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/screens/home/home_wrapper.dart';
 import 'package:koli/shared/fade_page_transition.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class Constants {
   List<List> menuList = [
@@ -9,7 +10,7 @@ class Constants {
     [FontAwesomeIcons.fileContract, 'Færslur'],
     [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
     [FontAwesomeIcons.solidChartBar, 'Tölfræði'],
-    [FontAwesomeIcons.award, 'Orður'],
+    [FontAwesomeIcons.medal, 'Orður'],
     //[FontAwesomeIcons.handHoldingHeart, 'Góðgerðarmál'],
     [FontAwesomeIcons.seedling, 'Kolefnisjöfnun'],
     [FontAwesomeIcons.shoppingCart, 'Fyrirtæki'],
@@ -53,23 +54,85 @@ class Constants {
       'Color': 0xFF3FA7D6,
     }
   };
+/*
+  Widget homeFAB(BuildContext context) {
+    bool keyboardVisible = false;
 
-  FloatingActionButton homeFAB(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: Colors.grey[900],
-      heroTag: 'HomeFAB',
-      child: Icon(
-        Icons.home
-      ),
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        keyboardVisible = visible;
+      }
+    );
 
-      onPressed: () {
-        Navigator.push(
+    if(!keyboardVisible) {
+      return FloatingActionButton(
+        backgroundColor: Colors.grey[900],
+        heroTag: 'HomeFAB',
+
+        child: Icon(
+          Icons.home
+        ),
+
+        onPressed: () {
+          Navigator.push(
             context,
             FadePageTransition(
               widget: HomeWrapper(),
             )
-        );
-      },
+          );
+        },
+      );
+    } else {
+      return SizedBox();
+    }
+  }
+
+ */
+}
+
+class HomeFAB extends StatefulWidget {
+  @override
+  _HomeFABState createState() => _HomeFABState();
+}
+
+class _HomeFABState extends State<HomeFAB> {
+  bool keyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          keyboardVisible = visible;
+        });
+      }
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('yo');
+    if(!keyboardVisible) {
+      return FloatingActionButton(
+        backgroundColor: Colors.grey[900],
+        heroTag: 'HomeFAB',
+
+        child: Icon(
+            Icons.home
+        ),
+
+        onPressed: () {
+          Navigator.push(
+            context,
+            FadePageTransition(
+              widget: HomeWrapper(),
+            )
+          );
+        },
+      );
+    } else {
+      return SizedBox();
+    }
   }
 }

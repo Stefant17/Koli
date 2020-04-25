@@ -368,7 +368,7 @@ class _CreateTransactionState extends State<CreateTransaction> {
                         ],
                       ),
                       bottomNavigationBar: BottomBar(),
-                      floatingActionButton: Constants().homeFAB(context),
+                      floatingActionButton: HomeFAB(),
                       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                     );
                   } else {

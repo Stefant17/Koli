@@ -61,6 +61,7 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
 
     return Scaffold(
       appBar: appBar(context, ''),
+      backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.all(30),
         child: Column(
@@ -162,7 +163,7 @@ class _DonationConfirmationState extends State<DonationConfirmation> {
         ),
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

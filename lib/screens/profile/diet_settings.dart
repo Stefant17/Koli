@@ -417,7 +417,7 @@ class _DietSettingsState extends State<DietSettings> {
         ],
       ),
       bottomNavigationBar: BottomBar(),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

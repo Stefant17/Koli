@@ -25,6 +25,7 @@ class _ProfileState extends State<Profile> {
 
           return Scaffold(
             appBar: appBar(context, 'Prófíll'),
+            backgroundColor: Colors.white,
             body: Column(
               children: <Widget>[
                 Container(
@@ -128,7 +129,7 @@ class _ProfileState extends State<Profile> {
               ],
             ),
             bottomNavigationBar: BottomBar(),
-            floatingActionButton: Constants().homeFAB(context),
+            floatingActionButton: HomeFAB(),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           );
         }

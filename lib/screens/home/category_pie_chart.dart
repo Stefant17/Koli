@@ -127,7 +127,7 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
                       chartCategoryData,
                       animate: true,
                       animationDuration: Duration(seconds: 1),
-                      defaultRenderer: new charts.ArcRendererConfig(
+                      /*defaultRenderer: new charts.ArcRendererConfig(
                         arcWidth: 60,
                         arcRendererDecorators: [
                           new charts.ArcLabelDecorator(
@@ -135,6 +135,8 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
                           )
                         ]
                       ),
+
+                       */
                     ),
                   ),
                 ),

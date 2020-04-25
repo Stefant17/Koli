@@ -22,7 +22,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.white,
         elevation: 0.0,
         title: Text(
           'Nýskráning',

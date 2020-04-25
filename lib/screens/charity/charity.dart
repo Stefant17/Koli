@@ -17,7 +17,6 @@ class _CharityScreenState extends State<CharityScreen> {
       length: 2,
       child: Scaffold(
         appBar: charityAppBar(context, 'Kolefnisjöfnun'),
-        //backgroundColor: Colors.white,
         body: TabBarView(
           children: <Widget>[
             KolvidurInfo(),
@@ -26,7 +25,7 @@ class _CharityScreenState extends State<CharityScreen> {
         ),
         backgroundColor: Colors.white,
         bottomNavigationBar: BottomBar(),
-        floatingActionButton: Constants().homeFAB(context),
+        floatingActionButton: HomeFAB(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );

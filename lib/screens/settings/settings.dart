@@ -15,10 +15,18 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context, 'Stillingar'),
-      body: Text('Stillingar'),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: <Widget>[
+          Text('Aðgangur'),
+          Text('Tilkynningar'),
+          Text('Kort'),
+          Text('Um Okkur')
+        ],
+      ),
 
       bottomNavigationBar: BottomBar(currentTab: bottomBarIndex),
-      floatingActionButton: Constants().homeFAB(context),
+      floatingActionButton: HomeFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
     );
