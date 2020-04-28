@@ -16,7 +16,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         appBar: homeAppBar(context, 'Heima'),
         backgroundColor: Color(0xFF2D2E2E),
@@ -24,7 +24,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
         body: TabBarView(
           children: <Widget>[
             Home(),
-            Bla(),
+            //Bla(),
           ],
         ),
         floatingActionButton: HomeFAB(),

@@ -192,6 +192,7 @@ class _HomeState extends State<Home> {
                                                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                                                 ),
 
+                                                /*
                                                 Container(
                                                   padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
                                                   child: Text(
@@ -201,6 +202,8 @@ class _HomeState extends State<Home> {
                                                     ),
                                                   ),
                                                 ),
+
+                                                 */
                                               ],
                                             ),
                                           ),
@@ -379,7 +382,7 @@ class _HomeState extends State<Home> {
                   ),
 
                   SizedBox(height: 10),
-
+                  /*
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 150,
@@ -440,6 +443,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
+
+                   */
 
                   RaisedButton(
                     elevation: 0,

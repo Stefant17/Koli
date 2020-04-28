@@ -44,8 +44,8 @@ class _BarChartState extends State<BarChart> {
         id: 'Blabla',
         data: monthTotal,
         domainFn: (MonthTotal m,_) => m.month,
-        measureFn: (MonthTotal m,_) => m.totalCo2
-        //labelAccessorFn: (MonthTotal m,_) => '${m.percentage}'
+        measureFn: (MonthTotal m,_) => m.totalCo2,
+        labelAccessorFn: (MonthTotal m,_) => '${m.totalCo2}'
         //colorFn: (MonthTotal m,_) => charts.ColorUtil.fromDartColor(m.color),
       ),
     );
@@ -112,6 +112,7 @@ class _BarChartState extends State<BarChart> {
                     : Container(
                     child: Text('')
                 ),
+                SizedBox(height: 30),
               ]
           );
         } else {

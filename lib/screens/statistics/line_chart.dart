@@ -136,6 +136,7 @@ class _LineChartState extends State<LineChart> {
                   : Container(
                   child: Text('')
               ),
+              SizedBox(height: 30),
             ],
           );
         } else {

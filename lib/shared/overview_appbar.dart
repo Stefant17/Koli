@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:koli/constants/constants.dart';
@@ -75,7 +76,16 @@ Widget overviewAppBar (var context, String title){
         },
       ),
     ],
+    bottom: TabBar(
+      indicatorColor: Colors.white,
+      tabs: [
+        Tab(
+          child: Text('')
+        )
+      ]
+    ),
 
+    /*
     bottom: TabBar(
       indicatorColor: Colors.white,
       tabs: [
@@ -91,5 +101,7 @@ Widget overviewAppBar (var context, String title){
         Tab(text: 'Blabla')
       ],
     ),
+
+     */
   ); //AppBar
 }

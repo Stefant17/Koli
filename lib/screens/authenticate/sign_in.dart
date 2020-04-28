@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           elevation: 0.0,
           title: Text(
             'Innskráning',
@@ -65,6 +65,7 @@ class _SignInState extends State<SignIn> {
                     labelText: 'Netfang',
                   ),
                   validator: (val) => val.isEmpty ? 'Vinsamlegast sláðu inn netfang' : null,
+                  keyboardType: TextInputType.emailAddress,
                   onChanged: (val) {
                     setState(() => email = val);
                   }

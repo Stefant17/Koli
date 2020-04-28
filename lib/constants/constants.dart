@@ -8,13 +8,13 @@ class Constants {
   List<List> menuList = [
     [FontAwesomeIcons.home, 'Heim'],
     [FontAwesomeIcons.fileContract, 'Færslur'],
-    [FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
+    //[FontAwesomeIcons.calendarDay, 'Dags yfirlit'],
     [FontAwesomeIcons.solidChartBar, 'Tölfræði'],
     [FontAwesomeIcons.medal, 'Orður'],
     //[FontAwesomeIcons.handHoldingHeart, 'Góðgerðarmál'],
     [FontAwesomeIcons.seedling, 'Kolefnisjöfnun'],
     [FontAwesomeIcons.shoppingCart, 'Fyrirtæki'],
-    [FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
+    //[FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
     [FontAwesomeIcons.signOutAlt, 'Skrá út'],
   ];
 
@@ -112,7 +112,6 @@ class _HomeFABState extends State<HomeFAB> {
 
   @override
   Widget build(BuildContext context) {
-    print('yo');
     if(!keyboardVisible) {
       return FloatingActionButton(
         backgroundColor: Colors.grey[900],

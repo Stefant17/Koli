@@ -78,6 +78,16 @@ Widget homeAppBar (var context, String title){
     ],
 
     bottom: TabBar(
+      indicatorColor: Colors.grey[800],
+      tabs: [
+        Tab(
+          child: Text('')
+        ),
+      ]
+    )
+
+    /*
+    bottom: TabBar(
       indicatorColor: Colors.white,
       tabs: [
         Tab(
@@ -88,5 +98,7 @@ Widget homeAppBar (var context, String title){
         ),
       ],
     ),
+
+     */
   ); //AppBar
 }

@@ -8,14 +8,14 @@ class TransactionWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 1,
       child: Scaffold(
         appBar: overviewAppBar(context, 'Færslur'),
         backgroundColor: Colors.white,
         body: TabBarView(
           children: <Widget>[
             Transactions(),
-            Text('blabla')
+            //Text('blabla')
           ],
         ),
 

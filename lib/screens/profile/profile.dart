@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
                   },
                 ),
                 RaisedButton(
-                  child: Text('Mataræði'),
+                  child: Text('Stillingar'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/Mataræði stillingar');
                   },
@@ -121,7 +121,7 @@ class _ProfileState extends State<Profile> {
                 ),
 
                 RaisedButton(
-                  child: Text('Mataræði'),
+                  child: Text('Stillingar'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/Mataræði stillingar');
                   },

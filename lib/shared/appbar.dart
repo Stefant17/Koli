@@ -13,6 +13,7 @@ Widget appBar (var context, String title){
     }
 
     else if(choice == 'Skrá út') {
+      print('check');
       await _auth.signOut();
     }
 

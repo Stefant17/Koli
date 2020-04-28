@@ -690,6 +690,7 @@ class DatabaseService {
 
   Future<bool> checkConditions(user, badge) async {
     return await user.get().then((u) {
+      print(badge.data['Name']);
       if(u.data[badge.data['Condition']] >= badge.data['ConditionValue']) {
         return true;
       } else {
@@ -910,7 +911,7 @@ class DatabaseService {
   }
 
   Future<void> updateUserProfile(String firstName, String lastName, int age, String meat, String fish, String dariy, String fruit, String CarFuelType, String CarSize, int TreesPlanted, String Username, int DaysActive) async {
-    return await userCollection.document(uid).setData({
+    return await userCollection.document(uid).updateData({
       'FirstName': firstName,
       'LastName': lastName,
       'Age': age,

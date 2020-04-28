@@ -22,7 +22,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 0.0,
         title: Text(
           'Nýskráning',
@@ -61,6 +61,7 @@ class _RegisterState extends State<Register> {
                   labelText: 'Netfang',
                 ),
                 validator: (val) => val.isEmpty ? 'Vinsamlegast sláðu inn netfang' : null,
+                keyboardType: TextInputType.emailAddress,
                 onChanged: (val) {
                   setState(() => email = val);
                 }

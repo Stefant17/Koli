@@ -12,9 +12,9 @@ class BadgeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        height: 120,
+        height: 140,
         width: 110,
-        //padding: EdgeInsets.all(10),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,13 +25,16 @@ class BadgeView extends StatelessWidget {
               height: 75,
             ),
 
+            SizedBox(height: 10),
+
             Expanded(
               child: Container(
                 width: 100,
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 child: Text(
                   '${ badge.name }',
                   softWrap: true,
+                  textAlign: TextAlign.center,
                 ),
               )
             ),
