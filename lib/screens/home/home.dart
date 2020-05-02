@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
     }
 
     DatabaseService(uid: user.uid).updateFriendsCo2();
+    DatabaseService(uid: user.uid).checkForNewCardTransactions();
 
     return StreamBuilder<UserProfile>(
       stream: DatabaseService(uid: user.uid).userProfile,

@@ -261,7 +261,7 @@ class _KolvidurDonationState extends State<KolvidurDonation> {
                           }
                         },
                       ),
-
+                      SizedBox(height: 30),
                     ],
                   ),
                 );

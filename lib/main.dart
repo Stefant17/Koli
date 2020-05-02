@@ -4,6 +4,7 @@ import 'package:koli/forms/edit_transaction_form.dart';
 import 'package:koli/screens/charity/charity.dart';
 import 'package:koli/screens/charity/donation_confirmation.dart';
 import 'package:koli/screens/companies/companies.dart';
+import 'package:koli/screens/education/education.dart';
 import 'package:koli/screens/transactions/create_transaction.dart';
 import 'package:koli/models/user.dart';
 import 'package:koli/screens/badges/badges.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
           '/Breyta færslu': (context) => EditTransactionForm(),
           '/Nýtt kort': (context) => AddCardForm(),
           '/Staðfesta framlag': (context) => DonationConfirmation(),
+          '/Fræðsla': (context) => Education(),
         },
       ),
     );

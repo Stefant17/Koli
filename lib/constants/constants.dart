@@ -14,7 +14,7 @@ class Constants {
     //[FontAwesomeIcons.handHoldingHeart, 'Góðgerðarmál'],
     [FontAwesomeIcons.seedling, 'Kolefnisjöfnun'],
     [FontAwesomeIcons.shoppingCart, 'Fyrirtæki'],
-    //[FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
+    [FontAwesomeIcons.chalkboardTeacher, 'Fræðsla'],
     [FontAwesomeIcons.signOutAlt, 'Skrá út'],
   ];
 

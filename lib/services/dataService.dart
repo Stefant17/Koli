@@ -921,7 +921,7 @@ class DatabaseService {
       'Dairy': dariy,
       'CarFuelType': CarFuelType,
       'CarSize': CarSize,
-      'Username': Username,
+      //'Username': Username,
       'TreesPlanted': TreesPlanted,
       'DaysActive': DaysActive,
     });
